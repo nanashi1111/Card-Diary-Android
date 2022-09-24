@@ -1,0 +1,117 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdkVersion 32
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.klmobile.carddiary"
+        minSdkVersion 16
+        targetSdkVersion 32
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'UNSPLASH_ACCESS_KEY', '"Client-ID d132f67143bf64c0c12e5eceb8ab9006bbda519a5857720bf6c68ad0adc4c2a3"'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'BASE_URL', '"https://api.unsplash.com/"'
+            buildConfigField 'boolean', 'LOGGABLE', 'false'
+        }
+        debug {
+            testCoverageEnabled true
+            debuggable true
+            buildConfigField 'String', 'BASE_URL', '"https://api.unsplash.com/"'
+            buildConfigField 'boolean', 'LOGGABLE', 'true'
+        }
+    }
+
+    buildFeatures{
+        dataBinding {
+            enabled = true
+        }
+        viewBinding {
+            enabled = true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    implementation dataDependencies.lifecycleExtension
+    implementation dataDependencies.viewmodelKtx
+    implementation dataDependencies.runtimeKtx
+    implementation dataDependencies.livedataKtx
+    implementation dataDependencies.coroutineCore
+
+    implementation dataDependencies.appCompat
+    implementation dataDependencies.material
+    implementation dataDependencies.constraintLayout
+
+    compileOnly dataDependencies.javaxAnnotation
+    implementation dataDependencies.javaxInject
+    implementation dataDependencies.gson
+    implementation dataDependencies.androidAnnotations
+
+    implementation dataDependencies.activityKtx
+    implementation dataDependencies.fragmentKtx
+    implementation dataDependencies.ktxCore
+    implementation dataDependencies.retrofit
+    implementation dataDependencies.retrofitGsonConverter
+    implementation dataDependencies.logger
+    implementation dataDependencies.multiDex
+    implementation dataDependencies.dexter
+    implementation dataDependencies.loggingInterceptor
+    implementation dataDependencies.hilt
+    kapt dataDependencies.hiltCompiler
+
+    implementation dataDependencies.reactiveStream
+    implementation dataDependencies.xRecyclerView
+    implementation dataDependencies.sdp
+    implementation dataDependencies.glide
+
+    debugImplementation dataDependencies.chuckDebug
+    releaseImplementation dataDependencies.chuckRelease
+
+    implementation dataDependencies.navigationFragmentKtx
+    implementation dataDependencies.navigationUiKtx
+
+    implementation "androidx.paging:paging-runtime:3.0.0-alpha12"
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    implementation 'androidx.work:work-runtime-ktx:2.7.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'org.mockito:mockito-core:2.16.0'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.5'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation 'android.arch.core:core-testing:1.1.0'
+}
+
+repositories {
+    google()
+}
