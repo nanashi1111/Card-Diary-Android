@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="status_bar">#808080</color>
     <color name="transparent">#ffffffff</color>
+
+    <color name="tint_white_background_icon">#777777</color>
+    <color name="bg_button_dashboard">#373737</color>
+    <color name="tint_dark_background_icon_dashboard">#B2B2B2</color>
+
+    <color name="text_year_selector">#5B5B5B</color>
+    <color name="border_button_select_weather">#80777777</color>
 </resources>

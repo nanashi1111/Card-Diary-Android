@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Unsplash Demo</string>
+    <string name="app_name">Card Diary</string>
     <string name="topics">Topics</string>
+    <string name="today">Today</string>
 </resources>

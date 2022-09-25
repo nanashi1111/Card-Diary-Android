@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dashboard_action_button_height">@dimen/_30sdp</dimen>
+    <dimen name="viewpager_next_item_visible">40dp</dimen>
+    <dimen name="viewpager_current_item_horizontal_margin">20dp</dimen>
+</resources>

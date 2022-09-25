@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ToolBarIcon">
+        <item name="android:layout_width">?attr/actionBarSize</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:tint">@color/tint_white_background_icon</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+    </style>
+
+</resources>

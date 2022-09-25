@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.klmobile.carddiary"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
@@ -101,6 +101,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     implementation 'androidx.work:work-runtime-ktx:2.7.0'
+    implementation 'com.wajahatkarim:EasyFlipView:3.0.3'
+    implementation 'com.loopeer.lib:shadow:0.0.4-beta3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
