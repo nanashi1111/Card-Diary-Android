@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_general_dialog"
+        android:padding="@dimen/_15sdp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="@string/title_year_selector_dialog"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:selectAllOnFocus="true"
+            android:id="@+id/etYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@null"
+            android:fontFamily="@font/quicksand_regular"
+            android:hint="@string/hint_year_selector_dialog"
+            android:inputType="numberSigned"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            tools:text="1992" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etYear">
+
+            <TextView
+                android:id="@+id/btCancel"
+                style="@style/DialogButton"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:text="@string/txt_year_picker_negative" />
+
+            <TextView
+                android:id="@+id/btOk"
+                style="@style/DialogButton"
+                android:text="@string/txt_year_picker_positive" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

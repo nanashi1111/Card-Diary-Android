@@ -2,4 +2,11 @@
     <string name="app_name">Card Diary</string>
     <string name="topics">Topics</string>
     <string name="today">Today</string>
+    <string name="txt_year_picker_positive">OK</string>
+    <string name="txt_year_picker_negative">Cancel</string>
+    <string name="msg_invalid_year_empty">Please select a year</string>
+    <string name="msg_invalid_year_invalid">Please input a valid year</string>
+    <string name="title_year_selector_dialog">Select a year</string>
+    <string name="hint_year_selector_dialog">Please input a year</string>
+    <string name="hint_write_diary">Select a date to write</string>
 </resources>

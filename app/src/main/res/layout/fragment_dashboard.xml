@@ -93,17 +93,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clWeather"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dashboard_action_button_height"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
         android:background="@drawable/bg_weather_button"
-        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
         android:paddingVertical="@dimen/_5sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/rlCalendar">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivWeather"
-            android:layout_width="@dimen/_25sdp"
+            android:layout_width="@dimen/_30sdp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:tint="@color/tint_white_background_icon"

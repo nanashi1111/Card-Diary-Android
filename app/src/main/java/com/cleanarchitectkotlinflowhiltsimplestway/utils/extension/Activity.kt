@@ -7,10 +7,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.TextView
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.cleanarchitectkotlinflowhiltsimplestway.R
@@ -129,19 +127,16 @@ fun Activity.getScreenHeight(): Int {
 
 fun Activity.openURL(url: String) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
 
-fun getScaleValue(oldScaleIndex: Int, newScaleIndex: Int): Float {
-    val oldScaleValue = when (oldScaleIndex) {
-        0 -> 0.75f
-        1 -> 1f
-        2 -> 1.5f
-        else -> 2f
-    }
+fun Activity.showKeyboard(editText: EditText) {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+}
 
-    val newScaleValue = when (newScaleIndex) {
-        0 -> 0.75f
-        1 -> 1f
-        2 -> 1.5f
-        else -> 2f
+fun Activity.hideKeyboard() {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view = currentFocus
+    if (view == null) {
+        view = View(this)
     }
-    return newScaleValue / oldScaleValue
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }

@@ -4,10 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/bg_circled_dark_button.xml" value="0.149" />
+        <entry key="app/src/main/res/drawable/bg_general_dialog.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/bg_weather_button.xml" value="0.149" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1359375" />
+        <entry key="app/src/main/res/layout/dialog_year_picker.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_month_card.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_day_in_month.xml" value="0.165" />
         <entry key="app/src/main/res/layout/layout_app_toolbar.xml" value="0.1359375" />
       </map>
     </option>

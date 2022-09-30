@@ -11,6 +11,8 @@ import android.webkit.WebView
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -125,5 +127,9 @@ fun ImageView.loadImageFitToImageViewWithCorder(
         .placeholder(placeholderId)
         .error(errorId)
         .transition(DrawableTransitionOptions.withCrossFade()).into(this)
+}
+
+fun TextView.color(@ColorRes resId: Int) {
+    setTextColor(ContextCompat.getColor(context, resId))
 }
 
