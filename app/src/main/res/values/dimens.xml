@@ -3,4 +3,6 @@
     <dimen name="dashboard_action_button_height">@dimen/_40sdp</dimen>
     <dimen name="viewpager_next_item_visible">60dp</dimen>
     <dimen name="viewpager_current_item_horizontal_margin">30dp</dimen>
+    <dimen name="shadow_size">2.5dp</dimen>
+    <dimen name="shadow_radius">15dp</dimen>
 </resources>

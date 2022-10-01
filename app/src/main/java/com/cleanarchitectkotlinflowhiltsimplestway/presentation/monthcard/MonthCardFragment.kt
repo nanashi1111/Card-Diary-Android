@@ -1,63 +1,90 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentMonthCardBinding
-import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.MonthDayData
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.monthInText
-import com.dtv.starter.presenter.utils.log.Logger
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.DashboardFragment
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
+import com.wajahatkarim3.easyflipviewpager.CardFlipPageTransformer2
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, MonthCardViewModel>(FragmentMonthCardBinding::inflate) {
 
-  override val viewModel: MonthCardViewModel by viewModels()
+  override val viewModel: MonthCardViewModel by lazy {
+    (requireParentFragment() as DashboardFragment).monthCardViewModel
+  }
+
+  private val month: Int by lazy {
+    requireArguments().getInt(KEY_MONTH)
+  }
+
+  private val year: Int by lazy {
+    requireArguments().getInt(KEY_YEAR)
+  }
 
   override fun initView() {
-    viewBinding.apply {
-      //Texts
-      val month = requireArguments().getInt(KEY_MONTH)
-      tvMonthInNumber.text = "$month"
-      tvMonthInNumberBack.text = "$month"
-      tvMonthInText.text = monthInText(month)
-      tvMonthInTextBack.text = monthInText(month)
-      //Calendar
-      rvDateInMonth.layoutManager = GridLayoutManager(requireContext(), 7)
-      //fake data
-      val data = mutableListOf<MonthDayData>()
-      for (i in 0..30) {
-        data.add(MonthDayData(2022, 10, i + 1, Random().nextInt(2)))
-      }
-      val adapter = MonthCardAdapter(data) {
-        Logger.d("SelectedDate: $it")
-      }
-      rvDateInMonth.adapter = adapter
-      shadowView.setOnClickListener {
-        flipView.flipTheView(true)
-      }
-      shadowViewBack.setOnClickListener {
-        flipView.flipTheView(true)
-      }
+    viewBinding.vpMonthCard.apply {
+      offscreenPageLimit = 3
+      isUserInputEnabled = false
+      adapter = FlipMonthCardAdapter(this@MonthCardFragment)
+      setPageTransformer(CardFlipPageTransformer2().apply {
+        isScalable = false
+      })
+      //setPageTransformer (Pager2_FidgetSpinTransformer())
     }
   }
 
   override suspend fun subscribeData() {
+    safeCollectFlow(viewModel.monthCardStateFlow) {
+      when (it) {
+        MonthCardState.FRONT -> setItem(0)
+        else -> setItem(1)
+      }
+    }
   }
 
   companion object {
-
-    const val KEY_MONTH = "month"
-
-    fun getInstance(month: Int): MonthCardFragment {
+    fun getInstance(month: Int, year: Int): MonthCardFragment {
       return MonthCardFragment().apply {
         arguments = Bundle().apply {
           putInt(KEY_MONTH, month)
+          putInt(KEY_YEAR, year)
         }
       }
     }
   }
+
+  inner class FlipMonthCardAdapter(val f: Fragment): FragmentStateAdapter(f) {
+    override fun getItemCount() = 2
+
+    override fun createFragment(position: Int): Fragment {
+      return when (position) {
+        0 -> MonthCardFrontFragment.getInstance(month, year)
+        else -> MonthCardBehindFragment.getInstance(month, year)
+      }
+    }
+  }
+
+  private fun setItem(position: Int) {
+    if (position > 1) {
+      return
+    }
+    if (month == (requireParentFragment() as DashboardFragment).currentItem()) {
+      viewBinding.vpMonthCard.setCurrentItem(position, true)
+    } else {
+      lifecycleScope.launch {
+        //delay(200)
+        viewBinding.vpMonthCard.setCurrentItem(position, true)
+      }
+    }
+
+  }
 }
+
+const val KEY_MONTH = "month"
+const val KEY_YEAR = "year"

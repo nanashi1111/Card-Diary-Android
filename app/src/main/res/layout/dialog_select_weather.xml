@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:fontFamily="@font/oswald_bold"
+            android:text="@string/select_weather"
+            android:textColor="@color/create_diary_text_hint" />
+
+        <TextView
+            android:id="@+id/tvSave"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/oswald_bold"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:text="@string/cancel"
+            android:textColor="@color/create_diary_text_content"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <View style="@style/Divider" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+
+        <ImageView
+            style="@style/WeatherSelectorIcon"
+            android:src="@drawable/ic_weather_sun" />
+
+        <TextView
+            android:text="@string/weather_sunny"
+            style="@style/WeatherSelectorText"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <View style="@style/Divider" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+
+        <ImageView
+            style="@style/WeatherSelectorIcon"
+            android:src="@drawable/ic_weather_cloudy" />
+
+        <TextView
+            android:text="@string/weather_cloudy"
+            style="@style/WeatherSelectorText"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <View style="@style/Divider" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+
+        <ImageView
+            style="@style/WeatherSelectorIcon"
+            android:src="@drawable/ic_weather_rainy" />
+
+        <TextView
+            android:text="@string/weather_rainy"
+            style="@style/WeatherSelectorText"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <View style="@style/Divider" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+
+        <ImageView
+            style="@style/WeatherSelectorIcon"
+            android:src="@drawable/ic_weather_snowy" />
+
+        <TextView
+            android:text="@string/weather_snowy"
+            style="@style/WeatherSelectorText"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <View style="@style/Divider" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+
+        <ImageView
+            style="@style/WeatherSelectorIcon"
+            android:src="@drawable/ic_weather_thunder" />
+
+        <TextView
+            android:text="@string/weather_lighting"
+            style="@style/WeatherSelectorText"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <View style="@style/Divider" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+
+        <ImageView
+            style="@style/WeatherSelectorIcon"
+            android:src="@drawable/ic_weather_tornado" />
+
+        <TextView
+            android:text="@string/weather_stormy"
+            style="@style/WeatherSelectorText"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -3,17 +3,24 @@ package com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentDashboardBinding
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardFragment
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardState
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardViewModel
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.OnYearSelected
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.YearPickerDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.currentMonth
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.currentYear
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.viewpager.HorizontalMarginItemDecoration
+import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
+import com.dtv.starter.presenter.utils.extension.tint
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -22,11 +29,19 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
 
   override val viewModel: DashboardViewModel by viewModels()
 
+  val monthCardViewModel: MonthCardViewModel by viewModels()
+
   override fun initView() {
     viewBinding.apply {
       setupCarousel(vpDashboard)
-      tvYearSelector.setOnClickListener {
+      tvYearSelector.setSafeOnClickListener {
         showYearSelector()
+      }
+      rlCalendar.setSafeOnClickListener {
+        monthCardViewModel.toggleMonthCardState()
+      }
+      rlCreate.setSafeOnClickListener {
+        findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToCreateDiaryPostFragment())
       }
       resetAndFocusCurrentMonth(currentYear(), currentMonth())
     }
@@ -64,19 +79,39 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
   }
 
   override suspend fun subscribeData() {
+    safeCollectFlow(monthCardViewModel.monthCardStateFlow) {
+      when (it) {
+        MonthCardState.FRONT -> {
+          viewBinding.apply {
+            rlCalendar.setBackgroundResource(R.drawable.bg_circled_dark_button)
+            ivToggleCalendar.setImageResource(R.drawable.ic_diary_calendar)
+            ivToggleCalendar.tint(R.color.tint_dark_background_icon_dashboard)
+          }
+        }
+        else -> {
+          viewBinding.apply {
+            rlCalendar.setBackgroundResource(R.drawable.bg_circled_main_blue_button)
+            ivToggleCalendar.setImageResource(R.drawable.ic_undo)
+            ivToggleCalendar.tint(R.color.white)
+          }
+        }
+      }
+    }
   }
 
   private fun resetAndFocusCurrentMonth(year: Int, month: Int) {
     viewBinding.vpDashboard.apply {
-      adapter = DashBoardAdapter(this@DashboardFragment)
+      adapter = DashBoardAdapter(this@DashboardFragment, year)
       currentItem = month - 1
     }
   }
 
+  fun currentItem() = viewBinding.vpDashboard.currentItem
+
 }
 
-class DashBoardAdapter(val f: Fragment): FragmentStateAdapter(f) {
+class DashBoardAdapter(val f: Fragment, val year: Int): FragmentStateAdapter(f) {
   override fun getItemCount() = 12
 
-  override fun createFragment(position: Int) = MonthCardFragment.getInstance(1 + position)
+  override fun createFragment(position: Int) = MonthCardFragment.getInstance(position, year)
 }

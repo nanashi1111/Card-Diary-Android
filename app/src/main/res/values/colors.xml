@@ -20,4 +20,10 @@
     <color name="lb_text_end_week">#f84e95</color>
     <color name="lb_text_start_week">#75affb</color>
     <color name="lb_text_middle_weel">#a7a7a7</color>
+    <color name="tool_bar_item_create">#6d6d6d</color>
+    <color name="place_holder_add_image">#ededed</color>
+    <color name="bg_btn_add_image">#c1c1c1</color>
+    <color name="create_diary_text_hint">#BEBEBE</color>
+    <color name="create_diary_text_content">#666666</color>
+    <color name="weather_selector">#333333</color>
 </resources>

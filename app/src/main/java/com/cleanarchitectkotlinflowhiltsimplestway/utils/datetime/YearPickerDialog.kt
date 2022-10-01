@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.DialogYearPickerBinding
 import com.dtv.starter.presenter.utils.extension.getScreenWidth
+import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 import com.dtv.starter.presenter.utils.extension.showKeyboard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -55,21 +56,21 @@ class YearPickerDialog: DialogFragment() {
   }
 
   private fun setListeners() {
-    vb.btOk.setOnClickListener {
+    vb.btOk.setSafeOnClickListener {
       val yearInText = vb.etYear.text.toString()
       if (yearInText.isEmpty()) {
         Toast.makeText(context, context?.getString(R.string.msg_invalid_year_empty), Toast.LENGTH_SHORT).show()
-        return@setOnClickListener
+        return@setSafeOnClickListener
       }
       val year = yearInText.toInt()
       if (year <= 0) {
         Toast.makeText(context, context?.getString(R.string.msg_invalid_year_invalid), Toast.LENGTH_SHORT).show()
-        return@setOnClickListener
+        return@setSafeOnClickListener
       }
       listener?.onYearSelected(year)
       dismissAllowingStateLoss()
     }
-    vb.btCancel.setOnClickListener {
+    vb.btCancel.setSafeOnClickListener {
       dismissAllowingStateLoss()
     }
   }

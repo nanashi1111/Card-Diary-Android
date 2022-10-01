@@ -8,3 +8,9 @@ fun NavController.safeNavigate(direction: NavDirections) {
     navigate(direction)
   }
 }
+
+fun NavController.safeNavigateUp() {
+  currentDestination?.let {
+    navigateUp()
+  }
+}

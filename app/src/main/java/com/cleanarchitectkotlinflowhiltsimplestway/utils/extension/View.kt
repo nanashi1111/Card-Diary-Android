@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Rect
+import android.os.SystemClock
 import android.view.*
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -131,5 +132,31 @@ fun ImageView.loadImageFitToImageViewWithCorder(
 
 fun TextView.color(@ColorRes resId: Int) {
     setTextColor(ContextCompat.getColor(context, resId))
+}
+
+fun ImageView.tint(@ColorRes resId: Int) {
+    setColorFilter(ContextCompat.getColor(context, resId))
+}
+
+class SafeClickListener(
+    private var defaultInterval: Int = 500,
+    private val onSafeCLick: (View) -> Unit
+) : View.OnClickListener {
+    private var lastTimeClicked: Long = 0
+    override fun onClick(v: View) {
+        if (SystemClock.elapsedRealtime() - lastTimeClicked < defaultInterval) {
+            return
+        }
+        lastTimeClicked = SystemClock.elapsedRealtime()
+        onSafeCLick(v)
+    }
+}
+
+
+fun View.setSafeOnClickListener(delay: Int? = null, block: (View) -> Unit) {
+    val safeClickListener = SafeClickListener(delay ?: 500) {
+        block(it)
+    }
+    setOnClickListener(safeClickListener)
 }
 

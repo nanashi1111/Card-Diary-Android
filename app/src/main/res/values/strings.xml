@@ -9,4 +9,14 @@
     <string name="title_year_selector_dialog">Select a year</string>
     <string name="hint_year_selector_dialog">Please input a year</string>
     <string name="hint_write_diary">Select a date to write</string>
+    <string name="title">Title</string>
+    <string name="hint_write_diary_content">Write your today</string>
+    <string name="select_weather">Select weather</string>
+    <string name="weather_sunny">Sunny</string>
+    <string name="weather_cloudy">Cloudy</string>
+    <string name="weather_rainy">Rainy</string>
+    <string name="weather_snowy">Snowy</string>
+    <string name="weather_lighting">Lighting</string>
+    <string name="weather_stormy">Stormy</string>
+    <string name="cancel">Cancel</string>
 </resources>

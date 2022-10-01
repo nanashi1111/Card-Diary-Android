@@ -13,3 +13,9 @@ fun monthInText(month: Int) :String {
   val sdf = SimpleDateFormat("MMM")
   return sdf.format(c.time)
 }
+
+fun dateTimeInCreateDiaryScreen(d: Date? = null): String {
+  val date = d ?: Date()
+  val sdf = SimpleDateFormat("EEE, MMM dd/yyyy")
+  return sdf.format(date)
+}

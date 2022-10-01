@@ -12,6 +12,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.ItemDayInMonthBinding
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.MonthDayData
 import com.dtv.starter.presenter.utils.extension.color
+import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 
 
 class MonthCardAdapter(private val monthDayData: List<MonthDayData>, val onDateSelected: (MonthDayData) -> Unit) : RecyclerView.Adapter<MonthCardAdapter.ViewHolder>() {
@@ -25,7 +26,7 @@ class MonthCardAdapter(private val monthDayData: List<MonthDayData>, val onDateS
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.binding.data = monthDayData[position]
     holder.binding.executePendingBindings()
-    holder.binding.root.setOnClickListener {
+    holder.binding.root.setSafeOnClickListener {
       onDateSelected(monthDayData[position])
     }
   }

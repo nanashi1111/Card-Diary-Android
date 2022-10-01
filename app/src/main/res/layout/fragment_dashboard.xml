@@ -67,13 +67,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/_10sdp"
+            android:id="@+id/ivToggleCalendar"
             android:tint="@color/tint_dark_background_icon_dashboard"
             app:srcCompat="@drawable/ic_diary_calendar" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rlEdit"
+        android:id="@+id/rlCreate"
         android:layout_width="@dimen/dashboard_action_button_height"
         android:layout_height="@dimen/dashboard_action_button_height"
         android:layout_marginHorizontal="@dimen/_15sdp"
@@ -106,6 +107,7 @@
             android:layout_width="@dimen/_30sdp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
             android:tint="@color/tint_white_background_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
