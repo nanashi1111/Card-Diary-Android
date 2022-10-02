@@ -1,6 +1,5 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard
 
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -10,12 +9,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.ItemDayInMonthBinding
-import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.MonthDayData
+import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.DayData
 import com.dtv.starter.presenter.utils.extension.color
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 
 
-class MonthCardAdapter(private val monthDayData: List<MonthDayData>, val onDateSelected: (MonthDayData) -> Unit) : RecyclerView.Adapter<MonthCardAdapter.ViewHolder>() {
+class MonthCardAdapter(private val monthDayData: List<DayData>, val onDateSelected: (DayData) -> Unit) : RecyclerView.Adapter<MonthCardAdapter.ViewHolder>() {
 
   class ViewHolder(val binding: ItemDayInMonthBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -35,7 +34,7 @@ class MonthCardAdapter(private val monthDayData: List<MonthDayData>, val onDateS
 }
 
 @BindingAdapter("bindCalendarDateColor")
-fun TextView.bindCalendarDateColor(data: MonthDayData) {
+fun TextView.bindCalendarDateColor(data: DayData) {
   if (data.isSunday()) {
     color(R.color.lb_text_end_week)
   } else if (data.isMonday()) {
@@ -46,10 +45,10 @@ fun TextView.bindCalendarDateColor(data: MonthDayData) {
 }
 
 @BindingAdapter("bindCalendarDateFont")
-fun TextView.bindCalendarDateFont(data: MonthDayData) {
-  if (data.numberOfDiary > 0) {
+fun TextView.bindCalendarDateFont(data: DayData) {
+  if (data.numberOfPosts > 0) {
     typeface = ResourcesCompat.getFont(context!!, R.font.quicksand_bold)
   } else {
-    typeface = ResourcesCompat.getFont(context!!, R.font.quicksand_medium)
+    typeface = ResourcesCompat.getFont(context!!, R.font.quicksand_regular)
   }
 }

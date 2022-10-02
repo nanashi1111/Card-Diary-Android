@@ -1,8 +1,5 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.LayoutInflater
@@ -14,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.DialogYearPickerBinding
-import com.dtv.starter.presenter.utils.extension.getScreenWidth
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseDialogFragment
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 import com.dtv.starter.presenter.utils.extension.showKeyboard
 import kotlinx.coroutines.delay
@@ -22,7 +19,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class YearPickerDialog: DialogFragment() {
+class YearPickerDialog: BaseDialogFragment() {
 
   lateinit var vb: DialogYearPickerBinding
 
@@ -75,7 +72,7 @@ class YearPickerDialog: DialogFragment() {
     }
   }
 
-  override fun onStart() {
+  /*override fun onStart() {
     super.onStart()
     val dialog: Dialog? = dialog
     dialog?.let {
@@ -84,7 +81,7 @@ class YearPickerDialog: DialogFragment() {
       dialog.window?.setLayout(width, height)
       dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
-  }
+  }*/
 }
 
 interface OnYearSelected {

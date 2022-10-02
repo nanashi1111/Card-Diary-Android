@@ -2,6 +2,7 @@ package com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,6 +23,8 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
   override val viewModel: MonthCardViewModel by lazy {
     (requireParentFragment() as DashboardFragment).monthCardViewModel
   }
+
+  val monthPostsViewModel: MonthPostViewModel by viewModels()
 
   private val month: Int by lazy {
     requireArguments().getInt(KEY_MONTH)

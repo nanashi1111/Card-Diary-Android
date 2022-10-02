@@ -18,13 +18,19 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateDiaryPostViewModel @Inject constructor(
   private val saveDiaryUseCase: SaveDiaryUseCase
-): BaseViewModel() {
+) : BaseViewModel() {
 
   private val _saveDiaryResultFlow = MutableSharedFlow<State<Boolean>>()
   val saveDiaryResultFlow: Flow<State<Boolean>> = _saveDiaryResultFlow
 
   val selectedWeather = MutableStateFlow(WeatherType.SUNNY)
   val openningOptionMenu = MutableStateFlow(false)
+
+  var postId: Long
+
+  init {
+    postId = System.currentTimeMillis()
+  }
 
   var focusedImagePosition = 0
     private set(value) {
@@ -33,9 +39,11 @@ class CreateDiaryPostViewModel @Inject constructor(
 
   fun saveDiary(images: List<Uri>, title: String, content: String, weather: WeatherType) {
     viewModelScope.launch {
-      saveDiaryUseCase.invoke(SaveDiaryUseCase.Params(
-        images, title, content, weather
-      )).collectLatest {
+      saveDiaryUseCase.invoke(
+        SaveDiaryUseCase.Params(
+          postId, images, title, content, weather
+        )
+      ).collectLatest {
         _saveDiaryResultFlow.emit(it)
       }
     }

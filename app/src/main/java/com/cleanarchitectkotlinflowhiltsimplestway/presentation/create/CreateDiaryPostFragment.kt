@@ -26,10 +26,13 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.photo.Pho
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.photo.SelectedPhotoAdapter
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.WeatherSelectedListener
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.WeatherSelectorDialog
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmDialog
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmListener
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.dateTimeInCreateDiaryScreen
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigateUp
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.showErrorMessage
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.showSuccessMessage
 import com.dtv.starter.presenter.utils.extension.beGone
 import com.dtv.starter.presenter.utils.extension.beVisible
 import com.dtv.starter.presenter.utils.extension.beVisibleIf
@@ -66,7 +69,14 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
   override fun initView() {
     viewBinding.apply {
       ivBack.setSafeOnClickListener {
-        findNavController().safeNavigateUp()
+        ConfirmDialog.getInstance().apply {
+          listener = object :ConfirmListener {
+            override fun onConfirmed() {
+              findNavController().safeNavigateUp()
+            }
+          }
+          show(this@CreateDiaryPostFragment.childFragmentManager, "Confirm")
+        }
       }
       ivWeather.setSafeOnClickListener {
         WeatherSelectorDialog.newInstance(
@@ -129,6 +139,10 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
         showPhotoPickerChooserDialog()
         viewModel.toggleOpeningOptionMenu()
       }
+
+      llOptions.vContainer.setSafeOnClickListener {
+        viewModel.toggleOpeningOptionMenu()
+      }
     }
   }
 
@@ -150,7 +164,8 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
           Logger.d("Saving diary error: ${it.exception}")
         }
         is State.DataState -> {
-          Logger.d("Saving diary success")
+          showSuccessMessage(getString(R.string.save_diary_success))
+          findNavController().safeNavigateUp()
         }
       }
     }
@@ -176,12 +191,14 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
           llOptions.llRemoveImage.beVisible()
           llOptions.btToggleOptions.setImageResource(R.drawable.ic_cancel)
           llOptions.btToggleOptions.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#65dbff"))
+          llOptions.vContainer.beVisible()
         } else {
           llOptions.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.bg_create_post_options_layout_close))
           llOptions.llAddImage.beGone()
           llOptions.llRemoveImage.beGone()
           llOptions.btToggleOptions.setImageResource(R.drawable.ic_options_create_post)
           llOptions.btToggleOptions.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#373737"))
+          llOptions.vContainer.beGone()
         }
       }
     }

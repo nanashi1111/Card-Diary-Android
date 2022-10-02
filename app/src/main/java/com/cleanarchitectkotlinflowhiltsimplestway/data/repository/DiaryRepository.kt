@@ -14,6 +14,8 @@ interface DiaryRepository {
     weather: WeatherType
   ): Boolean
 
+  fun getDiaryPosts(startDate: Long, endDate: Long): List<DiaryPostData>
+
   fun getAll(): List<DiaryPostData>
 }
 
@@ -25,6 +27,8 @@ class DiaryRepositoryImpl(private val appDatabase: AppDatabase): DiaryRepository
     appDatabase.diaryDao().saveDiaryPost(post)
     return true
   }
+
+  override fun getDiaryPosts(startDate: Long, endDate: Long)  = appDatabase.diaryDao().getDiaryPosts(startDate, endDate)
 
   override fun getAll(): List<DiaryPostData> {
     return appDatabase.diaryDao().getDiaryPosts(0L, Date().time)

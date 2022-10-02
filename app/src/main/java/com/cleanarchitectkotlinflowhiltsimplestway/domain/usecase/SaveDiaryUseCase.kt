@@ -21,7 +21,7 @@ class SaveDiaryUseCase @Inject constructor(
   private val context: Context,
   private val diaryRepository: DiaryRepository): UseCase<Boolean, SaveDiaryUseCase.Params>() {
 
-  class Params(val images: List<Uri>, val title: String, val content: String, val weatherType: WeatherType)
+  class Params(val id: Long, val images: List<Uri>, val title: String, val content: String, val weatherType: WeatherType)
 
   override fun buildFlow(param: Params): Flow<State<Boolean>> {
     return flow {
@@ -29,20 +29,23 @@ class SaveDiaryUseCase @Inject constructor(
       //validation
       val error = validate(param)
       if (error == null) {
-        val id = System.currentTimeMillis()
         //Save file
-        val folder = FileUtils.createDiaryFolderForDate(context, id)
+        val folder = FileUtils.createDiaryFolderForDate(context, param.id)
         val savedFiles = param.images.mapIndexed { index, uri ->
           FileUtils.saveFile(uri, File(folder, "$index"))
         }
 
         diaryRepository.saveDiaryPost(
-          id = id,
+          id = param.id,
           images = savedFiles,
           title = param.title,
           content = param.content,
           weather = param.weatherType
         )
+
+        val totalPosts = diaryRepository.getAll()
+        Logger.d("TotalPost: ${totalPosts.size}")
+
         emit(State.DataState(true))
       }
       else {
