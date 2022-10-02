@@ -102,6 +102,13 @@ dependencies {
 
     implementation 'androidx.work:work-runtime-ktx:2.7.0'
     implementation 'com.wajahatkarim:easyflipviewpager:2.0.1'
+    implementation 'com.github.Drjacky:ImagePicker:2.1.16'
+    implementation 'com.github.wangjiegulu:rfab:2.0.0'
+
+    implementation dataDependencies.room
+    annotationProcessor dataDependencies.roomCompiler
+    kapt dataDependencies.roomCompiler
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

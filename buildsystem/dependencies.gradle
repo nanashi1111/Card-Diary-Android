@@ -31,6 +31,7 @@ ext {
     coroutineCoreVersion = '1.6.1'
     chuckVersion = '1.1.0'
     navigationVersion = '2.5.0-alpha03'
+    room_version = '2.4.2'
 
     dataDependencies = [
             okHttp               : "com.squareup.okhttp:okhttp:${okHttpVersion}",
@@ -64,6 +65,9 @@ ext {
             chuckDebug           : "com.readystatesoftware.chuck:library:${chuckVersion}",
             chuckRelease         : "com.readystatesoftware.chuck:library-no-op:${chuckVersion}",
             navigationFragmentKtx: "androidx.navigation:navigation-fragment-ktx:${navigationVersion}",
-            navigationUiKtx      : "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
+            navigationUiKtx      : "androidx.navigation:navigation-ui-ktx:${navigationVersion}",
+            room                 : "androidx.room:room-runtime:${room_version}",
+            roomCompiler         : "androidx.room:room-compiler:${room_version}"
+
     ]
 }

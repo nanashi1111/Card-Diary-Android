@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -21,7 +21,7 @@
             android:textColor="@color/create_diary_text_hint" />
 
         <TextView
-            android:id="@+id/tvSave"
+            android:id="@+id/tvCancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
@@ -36,81 +36,126 @@
 
     <View style="@style/Divider" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+    <RelativeLayout
+        android:id="@+id/rlSunny"
+        style="@style/WeatherSelectorContainer">
 
         <ImageView
             style="@style/WeatherSelectorIcon"
             android:src="@drawable/ic_weather_sun" />
 
         <TextView
-            android:text="@string/weather_sunny"
-            style="@style/WeatherSelectorText"/>
+            style="@style/WeatherSelectorText"
+            android:text="@string/weather_sunny" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <ImageView
+            android:id="@+id/ivSelectedSunny"
+            style="@style/WeatherSelectorCheck"
+            tools:visibility="visible" />
+
+
+    </RelativeLayout>
+
     <View style="@style/Divider" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+    <RelativeLayout
+        android:id="@+id/rlCloudy"
+        style="@style/WeatherSelectorContainer">
 
         <ImageView
             style="@style/WeatherSelectorIcon"
             android:src="@drawable/ic_weather_cloudy" />
 
         <TextView
-            android:text="@string/weather_cloudy"
-            style="@style/WeatherSelectorText"/>
+            style="@style/WeatherSelectorText"
+            android:text="@string/weather_cloudy" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <ImageView
+            android:id="@+id/ivSelectedCloudy"
+            style="@style/WeatherSelectorCheck"
+            tools:visibility="visible" />
+    </RelativeLayout>
+
     <View style="@style/Divider" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+    <RelativeLayout
+        android:id="@+id/rlRainy"
+        style="@style/WeatherSelectorContainer">
 
         <ImageView
             style="@style/WeatherSelectorIcon"
             android:src="@drawable/ic_weather_rainy" />
 
         <TextView
-            android:text="@string/weather_rainy"
-            style="@style/WeatherSelectorText"/>
+            style="@style/WeatherSelectorText"
+            android:text="@string/weather_rainy" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <ImageView
+            android:id="@+id/ivSelectedRainy"
+            style="@style/WeatherSelectorCheck"
+            tools:visibility="visible" />
+    </RelativeLayout>
+
     <View style="@style/Divider" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+    <RelativeLayout
+        android:id="@+id/rlSnowy"
+        style="@style/WeatherSelectorContainer">
 
         <ImageView
             style="@style/WeatherSelectorIcon"
             android:src="@drawable/ic_weather_snowy" />
 
         <TextView
-            android:text="@string/weather_snowy"
-            style="@style/WeatherSelectorText"/>
+            style="@style/WeatherSelectorText"
+            android:text="@string/weather_snowy" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <ImageView
+            android:id="@+id/ivSelectedSnowy"
+            style="@style/WeatherSelectorCheck"
+            tools:visibility="visible" />
+    </RelativeLayout>
+
     <View style="@style/Divider" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+    <RelativeLayout
+        android:id="@+id/rlLighting"
+        style="@style/WeatherSelectorContainer">
 
         <ImageView
             style="@style/WeatherSelectorIcon"
             android:src="@drawable/ic_weather_thunder" />
 
         <TextView
-            android:text="@string/weather_lighting"
-            style="@style/WeatherSelectorText"/>
+            style="@style/WeatherSelectorText"
+            android:text="@string/weather_lighting" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <ImageView
+            android:id="@+id/ivSelectedLighting"
+            style="@style/WeatherSelectorCheck"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
+
     <View style="@style/Divider" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat style="@style/WeatherSelectorContainer">
+    <RelativeLayout
+        android:id="@+id/rlStormy"
+        style="@style/WeatherSelectorContainer">
 
         <ImageView
             style="@style/WeatherSelectorIcon"
             android:src="@drawable/ic_weather_tornado" />
 
         <TextView
-            android:text="@string/weather_stormy"
-            style="@style/WeatherSelectorText"/>
+            style="@style/WeatherSelectorText"
+            android:text="@string/weather_stormy" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <ImageView
+            android:id="@+id/ivSelectedStormy"
+            style="@style/WeatherSelectorCheck"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,46 +1,38 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.utils.extension
 
 import android.content.Context
+import android.net.Uri
 import android.os.Environment
-import com.dtv.starter.presenter.utils.log.Logger
-import okhttp3.ResponseBody
+import androidx.core.net.toFile
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.InputStream
+import java.nio.channels.FileChannel
 
 object FileUtils {
-  fun saveFile(context: Context, body: ResponseBody?, path: String):String{
-    if (body==null)
-      return ""
-    if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
-      return ""
+
+  fun saveFile(sourceUri: Uri, destination: File): String {
+    return try {
+      val source = sourceUri.toFile()
+      val src: FileChannel = FileInputStream(source).channel
+      val des: FileChannel = FileOutputStream(destination).channel
+      des.transferFrom(src, 0, src.size())
+      src.close()
+      des.close()
+      destination.absolutePath
+    } catch (e: Exception) {
+      e.printStackTrace()
+      ""
     }
-    var input: InputStream? = null
-    try {
-      input = body.byteStream()
-      //val directory = File (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/UnsplashDemo" )
-      val directory = File (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/UnsplashDemo" )
-      if (!directory.exists()) {
-        directory.mkdirs()
-      }
-      val filePath = directory.absolutePath +"/"+path
-      val fos = FileOutputStream(filePath)
-      fos.use { output ->
-        val buffer = ByteArray(4 * 1024) // or other buffer size
-        var read: Int
-        while (input.read(buffer).also { read = it } != -1) {
-          output.write(buffer, 0, read)
-        }
-        output.flush()
-      }
-      return filePath
-    }catch (e:Exception){
-      Logger.d("saveFile: ${e}")
+  }
+
+  fun createDiaryFolderForDate(context: Context, timestamp: Long): File {
+    val folderName = "$timestamp"
+    val folder = File(context.filesDir, folderName)
+    if (!folder.exists()) {
+      folder.mkdirs()
     }
-    finally {
-      input?.close()
-    }
-    return ""
+    return folder
   }
 
   private fun isExternalStorageReadOnly(): Boolean {

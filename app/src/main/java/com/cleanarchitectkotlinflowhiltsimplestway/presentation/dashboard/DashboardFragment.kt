@@ -1,8 +1,12 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard
 
+import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -22,6 +26,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.utils.viewpager.HorizontalMar
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 import com.dtv.starter.presenter.utils.extension.tint
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
@@ -79,20 +84,29 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
   }
 
   override suspend fun subscribeData() {
-    safeCollectFlow(monthCardViewModel.monthCardStateFlow) {
-      when (it) {
-        MonthCardState.FRONT -> {
-          viewBinding.apply {
-            rlCalendar.setBackgroundResource(R.drawable.bg_circled_dark_button)
-            ivToggleCalendar.setImageResource(R.drawable.ic_diary_calendar)
-            ivToggleCalendar.tint(R.color.tint_dark_background_icon_dashboard)
-          }
-        }
-        else -> {
-          viewBinding.apply {
-            rlCalendar.setBackgroundResource(R.drawable.bg_circled_main_blue_button)
-            ivToggleCalendar.setImageResource(R.drawable.ic_undo)
-            ivToggleCalendar.tint(R.color.white)
+
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        safeCollectFlow(monthCardViewModel.monthCardStateFlow) {
+          when (it) {
+            MonthCardState.FRONT -> {
+              viewBinding.apply {
+                rlCalendar.setBackgroundResource(R.drawable.bg_circled_dark_button)
+                ivToggleCalendar.setImageResource(R.drawable.ic_diary_calendar)
+                ivToggleCalendar.tint(R.color.tint_dark_background_icon_dashboard)
+              }
+            }
+            else -> {
+              viewBinding.apply {
+                rlCalendar.setBackgroundResource(R.drawable.bg_circled_main_blue_button)
+                ivToggleCalendar.setImageResource(R.drawable.ic_undo)
+                ivToggleCalendar.tint(R.color.white)
+              }
+            }
           }
         }
       }

@@ -1,9 +1,52 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.create
 
+import android.net.Uri
+import androidx.lifecycle.viewModelScope
+import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
+import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.WeatherType
+import com.cleanarchitectkotlinflowhiltsimplestway.domain.usecase.SaveDiaryUseCase
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewModel
+import com.dtv.starter.presenter.utils.log.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateDiaryPostViewModel @Inject constructor(): BaseViewModel() {
+class CreateDiaryPostViewModel @Inject constructor(
+  private val saveDiaryUseCase: SaveDiaryUseCase
+): BaseViewModel() {
+
+  private val _saveDiaryResultFlow = MutableSharedFlow<State<Boolean>>()
+  val saveDiaryResultFlow: Flow<State<Boolean>> = _saveDiaryResultFlow
+
+  val selectedWeather = MutableStateFlow(WeatherType.SUNNY)
+  val openningOptionMenu = MutableStateFlow(false)
+
+  var focusedImagePosition = 0
+    private set(value) {
+      field = value
+    }
+
+  fun saveDiary(images: List<Uri>, title: String, content: String, weather: WeatherType) {
+    viewModelScope.launch {
+      saveDiaryUseCase.invoke(SaveDiaryUseCase.Params(
+        images, title, content, weather
+      )).collectLatest {
+        _saveDiaryResultFlow.emit(it)
+      }
+    }
+  }
+
+  fun toggleOpeningOptionMenu() {
+    openningOptionMenu.value = !openningOptionMenu.value
+  }
+
+  fun focusImage(position: Int) {
+    focusedImagePosition = position
+  }
+
 }

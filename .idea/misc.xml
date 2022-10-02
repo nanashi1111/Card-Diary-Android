@@ -5,21 +5,25 @@
       <map>
         <entry key="app/src/main/res/drawable/bg_circled_dark_button.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/bg_circled_main_blue_button.xml" value="0.15" />
+        <entry key="app/src/main/res/drawable/bg_create_post_option_title.xml" value="0.1715" />
         <entry key="app/src/main/res/drawable/bg_general_dialog.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/bg_weather_button.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/shadow_blue.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/shadow_gradient.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/shadow_white.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1359375" />
+        <entry key="app/src/main/res/layout/dialog_select_photo_chooser.xml" value="0.121875" />
         <entry key="app/src/main/res/layout/dialog_select_weather.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_year_picker.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_create_diary_post.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_create_diary_post.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_month_card.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_month_card_behind.xml" value="0.13489583333333333" />
         <entry key="app/src/main/res/layout/fragment_month_card_front.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_day_in_month.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/item_selected_photo.xml" value="0.12083333333333333" />
         <entry key="app/src/main/res/layout/layout_app_toolbar.xml" value="0.1359375" />
+        <entry key="app/src/main/res/layout/layout_create_post_actions.xml" value="0.25" />
       </map>
     </option>
   </component>

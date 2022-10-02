@@ -16,7 +16,7 @@ abstract class UseCase<Output, Params> {
       }.catch { cause: Throwable ->
         emit(State.ErrorState(cause))
       }
-      //.flowOn(Dispatchers.IO)
+      .flowOn(Dispatchers.IO)
   }
 
   abstract fun buildFlow(param: Params): Flow<State<Output>>

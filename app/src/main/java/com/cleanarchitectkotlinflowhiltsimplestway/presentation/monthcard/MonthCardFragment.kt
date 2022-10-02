@@ -2,12 +2,16 @@ package com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentMonthCardBinding
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.DashboardFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
+import com.dtv.starter.presenter.utils.extension.tint
 import com.wajahatkarim3.easyflipviewpager.CardFlipPageTransformer2
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -40,10 +44,19 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
   }
 
   override suspend fun subscribeData() {
-    safeCollectFlow(viewModel.monthCardStateFlow) {
-      when (it) {
-        MonthCardState.FRONT -> setItem(0)
-        else -> setItem(1)
+
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        safeCollectFlow(viewModel.monthCardStateFlow) {
+          when (it) {
+            MonthCardState.FRONT -> setItem(0)
+            else -> setItem(1)
+          }
+        }
       }
     }
   }

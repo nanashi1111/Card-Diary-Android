@@ -6,7 +6,7 @@ import com.orhanobut.logger.Logger
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App : Application() {
+class App : Application(){
 
     companion object {
         lateinit var app: App
@@ -17,4 +17,5 @@ class App : Application() {
         app = this
         Logger.addLogAdapter(AndroidLogAdapter())
     }
+
 }

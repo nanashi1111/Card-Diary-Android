@@ -42,12 +42,46 @@
     </style>
 
     <style name="WeatherSelectorText">
-        <item name="android:layout_marginStart">@dimen/_10sdp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">@dimen/_35sdp</item>
         <item name="android:textSize">15sp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:textColor">@color/weather_selector</item>
+    </style>
+
+    <style name="WeatherSelectorCheck">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_height">@dimen/_15sdp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_check</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="CreatePostOptionText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingStart">@dimen/_10sdp</item>
+        <item name="android:paddingEnd">@dimen/_10sdp</item>
+        <item name="android:paddingTop">@dimen/_5sdp</item>
+        <item name="android:paddingBottom">@dimen/_5sdp</item>
+        <item name="android:background">@drawable/bg_create_post_option_title</item>
+        <item name="android:layout_marginStart">@dimen/_10sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+    </style>
+
+    <style name="CreatePostOptionButton">
+
+        <item name="android:clipToPadding">false</item>
+        <item name="android:clipChildren">false</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:tint">@color/white</item>
+        <item name="android:layout_margin">@dimen/_10sdp</item>
     </style>
 
 </resources>

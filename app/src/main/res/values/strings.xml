@@ -19,4 +19,12 @@
     <string name="weather_lighting">Lighting</string>
     <string name="weather_stormy">Stormy</string>
     <string name="cancel">Cancel</string>
+    <string name="title_dialog_choose_photo_picker">Choose one method...</string>
+    <string name="option_take_photo">Take photo from camera</string>
+    <string name="option_select_photo">Choose from gallery</string>
+    <string name="save">Save</string>
+    <string name="error_empty_content">Please give some content</string>
+    <string name="error_empty_title">Please give a title</string>
+    <string name="option_remove_current_image">Remove current image</string>
+    <string name="option_add_new_image">Add new image</string>
 </resources>
