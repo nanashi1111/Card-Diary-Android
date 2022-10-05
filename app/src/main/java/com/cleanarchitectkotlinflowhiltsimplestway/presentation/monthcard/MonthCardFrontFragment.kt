@@ -4,12 +4,15 @@ import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentMonthCardFrontBinding
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.DashboardFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.monthInText
 import com.dtv.starter.presenter.utils.extension.beVisibleIf
-import com.dtv.starter.presenter.utils.log.Logger
+import com.dtv.starter.presenter.utils.extension.loadResource
+import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,11 +53,10 @@ class MonthCardFrontFragment : BaseViewBindingFragment<FragmentMonthCardFrontBin
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
         val month = 1 + requireArguments().getInt(KEY_MONTH)
         val year = requireArguments().getInt(KEY_YEAR)
+        viewBinding.ivBackground.loadResource(resourceId(month), resources.getDimensionPixelSize(R.dimen.background_image_radius))
         monthPostsViewModel.getPostInMonth(month, year)
       }
     }
-
-
   }
 
   override fun initView() {
@@ -62,15 +64,30 @@ class MonthCardFrontFragment : BaseViewBindingFragment<FragmentMonthCardFrontBin
     viewBinding.apply {
       tvMonthInNumber.text = "${1 + month}"
       tvMonthInText.text = monthInText(month)
+      root.setSafeOnClickListener {
+        (((requireParentFragment() as MonthCardFragment).requireParentFragment()) as DashboardFragment).showMonthPost(
+          1 + month, requireArguments().getInt(KEY_YEAR)
+        )
+      }
     }
   }
 
-  override fun onResume() {
-    super.onResume()
-
+  override suspend fun subscribeData() {
   }
 
-  override suspend fun subscribeData() {
+  private fun resourceId(month: Int) = when (month) {
+    1 -> R.drawable.bg_jan
+    2 -> R.drawable.bg_feb
+    3 -> R.drawable.bg_mar
+    4 -> R.drawable.bg_apr
+    5 -> R.drawable.bg_may
+    6 -> R.drawable.bg_jun
+    7 -> R.drawable.bg_jul
+    8 -> R.drawable.bg_aug
+    9 -> R.drawable.bg_sep
+    10 -> R.drawable.bg_oct
+    11 -> R.drawable.bg_nov
+    else -> R.drawable.bg_dec
   }
 
   companion object {

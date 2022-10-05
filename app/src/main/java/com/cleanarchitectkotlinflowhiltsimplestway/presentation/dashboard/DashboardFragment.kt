@@ -122,6 +122,10 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
 
   fun currentItem() = viewBinding.vpDashboard.currentItem
 
+  fun showMonthPost(month: Int, year: Int) {
+    findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToMonthPostsFragment(month, year))
+  }
+
 }
 
 class DashBoardAdapter(val f: Fragment, val year: Int): FragmentStateAdapter(f) {

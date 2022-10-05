@@ -17,10 +17,42 @@
             app:exitAnim="@anim/default_exit_anim"
             app:popEnterAnim="@anim/default_pop_enter_anim"
             app:popExitAnim="@anim/default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_monthPostsFragment"
+            app:destination="@id/monthPostsFragment"
+            app:enterAnim="@anim/default_enter_anim"
+            app:exitAnim="@anim/default_exit_anim"
+            app:popEnterAnim="@anim/default_pop_enter_anim"
+            app:popExitAnim="@anim/default_pop_exit_anim">
+
+            <argument
+                android:name="month"
+                app:argType="integer"
+                app:nullable="false" />
+            <argument
+                android:name="year"
+                app:argType="integer"
+                app:nullable="false" />
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/createDiaryPostFragment"
         android:name="com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.CreateDiaryPostFragment"
         android:label="CreateDiaryPostFragment"
         tools:layout="@layout/fragment_create_diary_post" />
+    <fragment
+        android:id="@+id/monthPostsFragment"
+        android:name="com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.MonthPostsFragment"
+        android:label="MonthPostsFragment"
+        tools:layout="@layout/fragment_month_posts">
+        <argument
+            android:name="month"
+            app:argType="integer"
+            app:nullable="false" />
+        <argument
+            android:name="year"
+            app:argType="integer"
+            app:nullable="false" />
+    </fragment>
 </navigation>

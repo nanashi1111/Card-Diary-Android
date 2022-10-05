@@ -3,28 +3,23 @@ package com.dtv.starter.presenter.utils.extension
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Rect
 import android.os.SystemClock
-import android.view.*
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.widget.EditText
-import android.widget.FrameLayout
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
-import androidx.appcompat.app.AlertDialog
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.cleanarchitectkotlinflowhiltsimplestway.R
+import java.io.File
+
 
 fun View.beInvisibleIf(beInvisible: Boolean) = if (beInvisible) beInvisible() else beVisible()
 
@@ -112,6 +107,19 @@ fun ImageView.loadImageFitToImageView(
         .transition(DrawableTransitionOptions.withCrossFade()).into(this)
 }
 
+fun ImageView.loadImageFileFitToImageView(
+    url: String?,
+    placeholderId: Int = R.drawable.ic_loading_non_rounded_placeholder,
+    errorId: Int = R.drawable.ic_loading_non_rounded_error
+) {
+    Glide.with(context).clear(this)
+    val options = RequestOptions().centerCrop()
+    Glide.with(context).load(File(url)).apply(options)
+        .placeholder(placeholderId)
+        .error(errorId)
+        .transition(DrawableTransitionOptions.withCrossFade()).into(this)
+}
+
 fun ImageView.loadImageFitToImageViewWithCorder(
     url: String?,
     topLeft: Float = 0f,
@@ -158,5 +166,11 @@ fun View.setSafeOnClickListener(delay: Int? = null, block: (View) -> Unit) {
         block(it)
     }
     setOnClickListener(safeClickListener)
+}
+
+fun ImageView.loadResource(@DrawableRes resId: Int, corner: Int) {
+    Glide.with(context).load(resId).transform(CenterCrop(),RoundedCorners(corner))
+        .override(width, height)
+        .into(this)
 }
 

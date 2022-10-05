@@ -30,4 +30,5 @@
     <color name="bg_create_post_options_layout_close">#00000000</color>
     <color name="item_add_image">#283492</color>
     <color name="item_remove_image">#d74214</color>
+    <color name="overlay_image">#30000000</color>
 </resources>

@@ -7,6 +7,8 @@
         <entry key="app/src/main/res/drawable/bg_circled_main_blue_button.xml" value="0.15" />
         <entry key="app/src/main/res/drawable/bg_create_post_option_title.xml" value="0.1715" />
         <entry key="app/src/main/res/drawable/bg_general_dialog.xml" value="0.149" />
+        <entry key="app/src/main/res/drawable/bg_image_overlay.xml" value="0.164" />
+        <entry key="app/src/main/res/drawable/bg_overlay.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/bg_weather_button.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/shadow_blue.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/shadow_gradient.xml" value="0.149" />
@@ -21,7 +23,9 @@
         <entry key="app/src/main/res/layout/fragment_month_card.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_month_card_behind.xml" value="0.13489583333333333" />
         <entry key="app/src/main/res/layout/fragment_month_card_front.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_month_posts.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_day_in_month.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/item_month_post.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_selected_photo.xml" value="0.12083333333333333" />
         <entry key="app/src/main/res/layout/layout_app_toolbar.xml" value="0.1359375" />
         <entry key="app/src/main/res/layout/layout_create_post_actions.xml" value="0.25" />

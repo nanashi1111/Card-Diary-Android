@@ -5,4 +5,5 @@
     <dimen name="viewpager_current_item_horizontal_margin">30dp</dimen>
     <dimen name="shadow_size">2.5dp</dimen>
     <dimen name="shadow_radius">15dp</dimen>
+    <dimen name="background_image_radius">15sp</dimen>
 </resources>

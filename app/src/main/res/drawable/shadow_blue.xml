@@ -149,7 +149,7 @@
     <!-- Background -->
     <item>
         <shape>
-            <solid android:color="@color/dashboard_card_default_background" />
+            <solid android:color="@android:color/transparent" />
 
             <corners android:radius="@dimen/shadow_radius" />
         </shape>
