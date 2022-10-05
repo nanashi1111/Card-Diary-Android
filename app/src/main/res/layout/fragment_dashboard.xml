@@ -113,6 +113,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_weather" />
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@id/ivWeather"
+            app:layout_constraintStart_toEndOf="@id/ivWeather"
+            app:layout_constraintBottom_toBottomOf="@id/ivWeather"
+            android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDay"
             android:layout_width="wrap_content"
@@ -122,20 +130,20 @@
             android:text="@string/today"
             android:textColor="@color/tint_white_background_icon"
             android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@id/ivWeather"
-            app:layout_constraintTop_toTopOf="@id/ivWeather" />
+            android:includeFontPadding="false" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDate"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:fontFamily="@font/oswald_semibold"
             android:text="Aug, 21/2018"
-            android:textColor="@color/bg_button_dashboard"
-            app:layout_constraintBottom_toBottomOf="@id/ivWeather"
-            app:layout_constraintStart_toEndOf="@id/ivWeather" />
+            android:textColor="@color/bg_button_dashboard" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -26,11 +26,7 @@ class CreateDiaryPostViewModel @Inject constructor(
   val selectedWeather = MutableStateFlow(WeatherType.SUNNY)
   val openningOptionMenu = MutableStateFlow(false)
 
-  var postId: Long
-
-  init {
-    postId = System.currentTimeMillis()
-  }
+  var postId: Long = 0L
 
   var focusedImagePosition = 0
     private set(value) {

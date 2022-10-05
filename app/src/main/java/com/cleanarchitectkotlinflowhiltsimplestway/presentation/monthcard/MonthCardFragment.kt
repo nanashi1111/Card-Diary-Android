@@ -38,6 +38,7 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
     viewBinding.vpMonthCard.apply {
       offscreenPageLimit = 3
       isUserInputEnabled = false
+      isSaveEnabled = false
       adapter = FlipMonthCardAdapter(this@MonthCardFragment)
       setPageTransformer(CardFlipPageTransformer2().apply {
         isScalable = false

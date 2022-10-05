@@ -9,6 +9,8 @@
     </data>
 
     <TextView
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:id="@+id/tvDateInMonth"
         android:gravity="center"
         android:textSize="17sp"

@@ -3,12 +3,15 @@ package com.cleanarchitectkotlinflowhiltsimplestway.presentation.create
 import android.app.Activity
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.net.Uri
+import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +31,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.W
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.WeatherSelectorDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmListener
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.bindWeather
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.dateTimeInCreateDiaryScreen
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigateUp
@@ -42,12 +46,15 @@ import com.github.drjacky.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 
 @AndroidEntryPoint
 class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBinding, CreateDiaryPostViewModel>(FragmentCreateDiaryPostBinding::inflate),
   PhotoSelectorListener, WeatherSelectedListener {
 
   override val viewModel: CreateDiaryPostViewModel by viewModels()
+
+  private val args: CreateDiaryPostFragmentArgs by navArgs()
 
   private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
     if (it.resultCode == Activity.RESULT_OK) {
@@ -64,6 +71,28 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
 
   private val selectedPhotoAdapter: SelectedPhotoAdapter by lazy {
     SelectedPhotoAdapter()
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    args.post?.let {
+      viewBinding.apply {
+        etTitle.setText(it.title)
+        etContent.setText(it.content)
+        ivWeather.bindWeather(it.weather)
+
+        if (it.images.isNotEmpty()) {
+          val adapter = SelectedPhotoAdapter(it.images.map { Uri.fromFile(File(it)) }.toMutableList())
+          rvSelectedImages.adapter = adapter
+          viewModel.focusImage(0)
+          ivAddPhoto.beGone()
+        }
+      }
+      viewModel.postId = it.date
+    } ?: run {
+      viewModel.postId = args.time
+    }
+
   }
 
   override fun initView() {

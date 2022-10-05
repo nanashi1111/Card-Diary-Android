@@ -20,7 +20,7 @@
             app:tint="@color/tool_bar_item_create" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvSave"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"

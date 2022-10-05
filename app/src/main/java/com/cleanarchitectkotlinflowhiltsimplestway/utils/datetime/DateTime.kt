@@ -8,11 +8,22 @@ fun currentYear() = Calendar.getInstance().get(Calendar.YEAR)
 
 fun currentMonth() = Calendar.getInstance().get(Calendar.MONTH) + 1
 
-fun monthInText(month: Int): String {
+fun monthInText(month: Int, fullMonthName: Boolean = false): String {
   val c = Calendar.getInstance()
   c.set(Calendar.MONTH, month)
-  val sdf = SimpleDateFormat("MMM")
+  val sdf = SimpleDateFormat(
+    if (fullMonthName) {
+      "MMMM"
+    } else {
+      "MMM"
+    }
+  )
   return sdf.format(c.time)
+}
+
+fun dateTimeInDashboard(): String {
+  val sdf = SimpleDateFormat("MMM, dd/yyyy")
+  return sdf.format(Date())
 }
 
 fun dateTimeInCreateDiaryScreen(d: Date? = null): String {
@@ -34,6 +45,12 @@ fun numberOfDayInMonth(month: Int, year: Int): Int {
   }
 }
 
+fun timeStamp(day: Int, month: Int, year: Int): Long {
+  val data = String.format("%02d-%02d-%04d", day, month, year)
+  val sdf = SimpleDateFormat("dd-MM-yyyy")
+  return sdf.parse(data).time
+}
+
 fun getDayTimeRange(day: Int, month: Int, year: Int): Pair<Long, Long> {
   val sdf = SimpleDateFormat("dd/MM/yyyy - HH:mm:ss")
   val startDateDataFormat = "%02d/%02d/%d - 00:00:00"
@@ -44,9 +61,6 @@ fun getDayTimeRange(day: Int, month: Int, year: Int): Pair<Long, Long> {
   val endDateData = String.format(endDateDataFormat, day, month, year)
   val endDate = sdf.parse(endDateData).time
 
-  /*val sD = Date(startDate)
-  val eD = Date(endDate)
-  Logger.d("getPostInMonth getDayTimeRange: ${sdf.format(sD)} --- ${sdf.format(eD)}")*/
   return Pair(startDate, endDate)
 }
 
@@ -60,8 +74,5 @@ fun getMonthTimeRange(month: Int, year: Int): Pair<Long, Long> {
   val endDateData = String.format(endDateDataFormat, numberOfDay, month, year)
   val endDate = sdf.parse(endDateData).time
 
-  /*val sD = Date(startDate)
-  val eD = Date(endDate)
-  Logger.d("getPostInMonth getMonthTimeRange: ${sdf.format(sD)} --- ${sdf.format(eD)}")*/
   return Pair(startDate, endDate)
 }

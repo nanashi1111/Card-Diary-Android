@@ -29,11 +29,11 @@ class GetPostInMonthUseCase @Inject constructor(private val diaryRepository: Dia
 
   private fun mapping(entity: DiaryPostData): DiaryPost {
     val date = Date(entity.date)
-    val dayOfMonth = SimpleDateFormat("mm").format(date)
+    val dayOfMonth = SimpleDateFormat("dd").format(date)
     val dayOfWeek = SimpleDateFormat("EEE").format(date)
     return DiaryPost(
       date = entity.date,
-      images = entity.images,
+      images = entity.images.filter { it.isNotEmpty() },
       title = entity.title,
       content = entity.content,
       weather = entity.weather,

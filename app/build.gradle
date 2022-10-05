@@ -109,6 +109,7 @@ dependencies {
     annotationProcessor dataDependencies.roomCompiler
     kapt dataDependencies.roomCompiler
 
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -13,7 +13,7 @@
     <color name="bg_button_dashboard">#373737</color>
     <color name="tint_dark_background_icon_dashboard">#B2B2B2</color>
     <color name="text_year_selector">#5B5B5B</color>
-    <color name="border_button_select_weather">#5B5B5B</color>
+    <color name="border_button_select_weather">#305B5B5B</color>
     <color name="dashboard_card_shadow">#DCDCDC</color>
     <color name="dashboard_card_default_background">#65dbff</color>
     <color name="text_component_dashboard">#ffffff</color>

@@ -64,8 +64,8 @@ class MonthCardFrontFragment : BaseViewBindingFragment<FragmentMonthCardFrontBin
     viewBinding.apply {
       tvMonthInNumber.text = "${1 + month}"
       tvMonthInText.text = monthInText(month)
-      root.setSafeOnClickListener {
-        (((requireParentFragment() as MonthCardFragment).requireParentFragment()) as DashboardFragment).showMonthPost(
+      clContent.setSafeOnClickListener {
+        ((requireParentFragment().requireParentFragment()) as DashboardFragment).showMonthPost(
           1 + month, requireArguments().getInt(KEY_YEAR)
         )
       }

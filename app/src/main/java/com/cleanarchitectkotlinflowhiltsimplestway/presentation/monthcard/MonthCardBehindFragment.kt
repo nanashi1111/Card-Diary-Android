@@ -9,7 +9,9 @@ import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentMonthCardBehindBinding
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.MonthDayData
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.DashboardFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.monthInText
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.timeStamp
 import com.dtv.starter.presenter.utils.extension.beVisibleIf
 import com.dtv.starter.presenter.utils.log.Logger
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +57,8 @@ class MonthCardBehindFragment: BaseViewBindingFragment<FragmentMonthCardBehindBi
               val data = it.data.daysData
               val adapter = MonthCardAdapter(data) {
                 Logger.d("SelectedDate: $it")
+                val timeStamp = timeStamp(it.day, it.month, it.year)
+                ((requireParentFragment().requireParentFragment()) as? DashboardFragment)?.showCreatePostScreen(timeStamp)
               }
               viewBinding.rvDateInMonth.adapter = adapter
 

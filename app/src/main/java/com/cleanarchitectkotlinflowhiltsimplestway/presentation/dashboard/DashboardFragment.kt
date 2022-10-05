@@ -16,16 +16,15 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBin
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardState
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardViewModel
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.OnYearSelected
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.YearPickerDialog
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.currentMonth
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.currentYear
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.*
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.viewpager.HorizontalMarginItemDecoration
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 import com.dtv.starter.presenter.utils.extension.tint
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -46,9 +45,25 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
         monthCardViewModel.toggleMonthCardState()
       }
       rlCreate.setSafeOnClickListener {
-        findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToCreateDiaryPostFragment())
+        showCreatePostScreen(System.currentTimeMillis())
       }
-      resetAndFocusCurrentMonth(currentYear(), currentMonth())
+
+      tvDate.text = dateTimeInDashboard()
+    }
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    viewModel.updateCurrentYearMonth()
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.currentYearMonth.collectLatest {
+          val currentMonth  = it.split("-").first().toInt()
+          val currentYear  = it.split("-")[1].toInt()
+          resetAndFocusCurrentMonth(currentYear, currentMonth)
+          viewBinding.tvYearSelector.text = "$currentYear"
+        }
+      }
     }
   }
 
@@ -68,6 +83,13 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
       R.dimen.viewpager_current_item_horizontal_margin
     )
     viewPager.addItemDecoration(itemDecoration)
+    viewPager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+      override fun onPageSelected(position: Int) {
+        val year = viewModel.currentYearMonth.value.split("-")[1].toInt()
+        val month = 1 + position
+        viewModel.updateTempYearMonth(year, month)
+      }
+    })
   }
 
   private fun showYearSelector() {
@@ -75,8 +97,7 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
       .apply {
         listener = object :OnYearSelected {
           override fun onYearSelected(year: Int) {
-            viewBinding.tvYearSelector.text = "$year"
-            resetAndFocusCurrentMonth(year, 1)
+            viewModel.updateCurrentYearMonth(year, 1)
           }
         }
         show(this@DashboardFragment.childFragmentManager, "Y")
@@ -115,8 +136,13 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
 
   private fun resetAndFocusCurrentMonth(year: Int, month: Int) {
     viewBinding.vpDashboard.apply {
-      adapter = DashBoardAdapter(this@DashboardFragment, year)
-      currentItem = month - 1
+      try {
+        adapter = DashBoardAdapter(this@DashboardFragment, year)
+        setCurrentItem(month - 1, false)
+      }catch (e: Exception) {
+        e.printStackTrace()
+      }
+
     }
   }
 
@@ -124,6 +150,10 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
 
   fun showMonthPost(month: Int, year: Int) {
     findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToMonthPostsFragment(month, year))
+  }
+
+  fun showCreatePostScreen(time: Long) {
+    findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToCreateDiaryPostFragment(time = time, post = null))
   }
 
 }

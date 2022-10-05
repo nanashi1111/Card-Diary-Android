@@ -88,29 +88,34 @@
                 android:fontFamily="@font/oswald_bold"
                 android:textAllCaps="true"
                 android:textColor="@color/create_diary_text_hint"
-                android:textSize="15sp"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/vAddImagePlaceHolder"
                 tools:text="Mon, July 10, 2022" />
 
             <EditText
+                android:layout_marginTop="@dimen/_10sdp"
                 android:id="@+id/etTitle"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_height="wrap_content"
                 android:background="@null"
                 android:fontFamily="@font/oswald_bold"
                 android:gravity="center"
                 android:hint="@string/title"
+                tools:text = "Write your day"
                 android:textColor="@color/create_diary_text_content"
                 android:textColorHint="@color/create_diary_text_hint"
+                android:inputType="textMultiLine"
+                android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/tvDate" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivWeather"
-                android:layout_width="@dimen/_30sdp"
+                android:layout_width="@dimen/_25sdp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:tint="@color/create_diary_text_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -118,12 +123,14 @@
                 app:srcCompat="@drawable/ic_weather" />
 
             <EditText
+                tools:text="Write your day"
                 android:id="@+id/etContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@null"
+                android:textSize="15sp"
                 android:fontFamily="@font/oswald_regular"
                 android:hint="@string/hint_write_diary_content"
                 android:inputType="textMultiLine"
@@ -137,6 +144,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/layout_create_post_actions" android:id="@+id/llOptions"/>
+    <include layout="@layout/layout_create_post_actions" android:id="@+id/llOptions" tools:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

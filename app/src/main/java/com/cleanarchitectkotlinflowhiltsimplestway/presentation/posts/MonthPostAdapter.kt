@@ -12,17 +12,20 @@ import com.cleanarchitectkotlinflowhiltsimplestway.databinding.ItemMonthPostBind
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.DiaryPost
 import com.dtv.starter.presenter.utils.extension.*
 
-class MonthPostAdapter (val posts: List<DiaryPost>): RecyclerView.Adapter<MonthPostAdapter.ViewHolder>() {
+class MonthPostAdapter(val posts: List<DiaryPost>, val onPostSelected: (DiaryPost) -> Unit) : RecyclerView.Adapter<MonthPostAdapter.ViewHolder>() {
 
-  class ViewHolder(val binding: ItemMonthPostBinding): RecyclerView.ViewHolder(binding.root)
+  class ViewHolder(val binding: ItemMonthPostBinding) : RecyclerView.ViewHolder(binding.root)
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    return MonthPostAdapter.ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_month_post, parent, false))
+    return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_month_post, parent, false))
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.binding.post = posts[position]
     holder.binding.executePendingBindings()
+    holder.binding.root.setSafeOnClickListener {
+      onPostSelected(posts[position])
+    }
   }
 
   override fun getItemCount() = posts.size
@@ -31,7 +34,7 @@ class MonthPostAdapter (val posts: List<DiaryPost>): RecyclerView.Adapter<MonthP
 @BindingAdapter("bindImages")
 fun ImageView.bindImages(images: List<String>) {
   if (images.isEmpty()) {
-    beInvisible()
+    beGone()
   } else {
     beVisible()
     loadImageFileFitToImageView(images.first())
@@ -47,6 +50,5 @@ fun ImageView.bindWeather(weather: WeatherType) {
     WeatherType.SNOWY -> setImageResource(R.drawable.ic_weather_snowy)
     WeatherType.LIGHTING -> setImageResource(R.drawable.ic_weather_thunder)
     WeatherType.STORMY -> setImageResource(R.drawable.ic_weather_tornado)
-    else -> {}
   }
 }

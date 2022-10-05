@@ -1,3 +1,8 @@
-- Thêm các font chữ cần thiết
-- Add room db
-- UI màn home
+- Thay list image trong màn create bằng viewpager
+- Fix lỗi không edit được post
+- Gắn crashlytics
+- Tạo keystore
+- Thay icon back
+- Thêm circle indicator
+- Màn hình setting
+- Thay image picker gắn kèm camera
