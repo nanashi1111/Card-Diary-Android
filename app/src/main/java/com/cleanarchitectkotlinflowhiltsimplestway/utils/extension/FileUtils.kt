@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import androidx.core.net.toFile
+import com.dtv.starter.presenter.utils.log.Logger
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -33,6 +34,51 @@ object FileUtils {
       folder.mkdirs()
     }
     return folder
+  }
+
+  fun copyFolderContent(sourceFolder: File, targetFolder: File) {
+    for (targetFolderFile in targetFolder.listFiles()) {
+      if (targetFolderFile.isFile) {
+        targetFolderFile.delete()
+      }
+    }
+
+    for (sourceFolderFile in sourceFolder.listFiles()) {
+      val fileName = sourceFolderFile.name
+      val targetFolderFile = File(targetFolder, fileName)
+      copySingleFile(sourceFolderFile, targetFolderFile)
+    }
+
+  }
+
+  private fun copySingleFile(sourceFile: File, destFile: File) {
+    Logger.d(
+      "COPY FILE: " + sourceFile.absolutePath
+          + " TO: " + destFile.absolutePath
+    )
+    if (!destFile.exists()) {
+      destFile.createNewFile()
+    }
+    var sourceChannel: FileChannel? = null
+    var destChannel: FileChannel? = null
+    try {
+      sourceChannel = FileInputStream(sourceFile).channel
+      destChannel = FileOutputStream(destFile).channel
+      sourceChannel.transferTo(0, sourceChannel.size(), destChannel)
+    } finally {
+      sourceChannel?.close()
+      destChannel?.close()
+    }
+  }
+
+  fun clearFolder(folder: File) {
+    folder.listFiles()?.let { listFile ->
+      for (file in listFile) {
+        if (file.isFile) {
+          file.delete()
+        }
+      }
+    }
   }
 
   private fun isExternalStorageReadOnly(): Boolean {

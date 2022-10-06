@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -24,12 +26,14 @@ android {
 
     buildTypes {
         release {
+            //applicationId "com.klmobile.carddiary"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'BASE_URL', '"https://api.unsplash.com/"'
             buildConfigField 'boolean', 'LOGGABLE', 'false'
         }
         debug {
+            //applicationId "com.dev.carddiary"
             testCoverageEnabled true
             debuggable true
             buildConfigField 'String', 'BASE_URL', '"https://api.unsplash.com/"'
@@ -52,6 +56,27 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'carddiary__11'
+            keyPassword '>>>>||<<<<??'
+            storeFile file("${rootProject.projectDir}/carddiary.jks")
+            storePassword '>>>>||<<<<??'
+        }
+    }
+
+    flavorDimensions "capabilities"
+    productFlavors {
+        develop {
+            applicationId "com.dev.carddiary"
+            signingConfig signingConfigs.release
+        }
+        product {
+            applicationId "com.klmobile.carddiary"
+            signingConfig signingConfigs.release
+        }
     }
 }
 
@@ -110,6 +135,10 @@ dependencies {
     kapt dataDependencies.roomCompiler
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -1,8 +1,9 @@
-- Thay list image trong màn create bằng viewpager
-- Fix lỗi không edit được post
-- Gắn crashlytics
-- Tạo keystore
-- Thay icon back
-- Thêm circle indicator
+// Thay list image trong màn create bằng viewpager
+// Fix lỗi không edit được post
+// Gắn crashlytics
+// Tạo keystore
+// Thay icon back
+// Thêm circle indicator
 - Màn hình setting
 - Thay image picker gắn kèm camera
+// Thêm empty dataset

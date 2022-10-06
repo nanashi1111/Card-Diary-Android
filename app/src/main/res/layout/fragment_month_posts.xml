@@ -16,7 +16,7 @@
             android:id="@+id/ivBack"
             style="@style/ToolBarIcon"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_undo"
+            app:srcCompat="@drawable/ic_diary_back"
             app:tint="@color/tool_bar_item_create" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -34,6 +34,8 @@
             android:textSize="18sp"
             tools:text="July / 2019" />
     </RelativeLayout>
+
+    <include layout="@layout/layout_empty_dataset" android:id="@+id/emptyDataset"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPosts"

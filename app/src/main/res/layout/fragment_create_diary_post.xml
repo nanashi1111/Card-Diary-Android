@@ -16,7 +16,7 @@
             android:id="@+id/ivBack"
             style="@style/ToolBarIcon"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_undo"
+            app:srcCompat="@drawable/ic_diary_back"
             app:tint="@color/tool_bar_item_create" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -55,14 +55,28 @@
                 app:layout_constraintDimensionRatio="W, 1:1"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSelectedImages"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpSelectedImages"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/vAddImagePlaceHolder"
                 app:layout_constraintEnd_toEndOf="@id/vAddImagePlaceHolder"
                 app:layout_constraintStart_toStartOf="@id/vAddImagePlaceHolder"
                 app:layout_constraintTop_toTopOf="@id/vAddImagePlaceHolder" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabPaddingStart="@dimen/indicator_padding"
+                app:tabPaddingEnd="@dimen/indicator_padding"
+                app:tabIndicatorHeight="0dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@id/vpSelectedImages"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/ivAddPhoto"

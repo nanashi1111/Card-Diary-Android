@@ -30,4 +30,5 @@
     <string name="save_diary_success">Save diary successfully</string>
     <string name="general_confirm">Are you sure?</string>
     <string name="please_confirm">Please confirm</string>
+    <string name="hint_write_first_card">Write a day on your card...</string>
 </resources>

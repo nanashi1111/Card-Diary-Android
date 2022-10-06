@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "628661876165",
+    "project_id": "card-diary-b5b84",
+    "storage_bucket": "card-diary-b5b84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628661876165:android:61d44bbe21421edc4ac7ac",
+        "android_client_info": {
+          "package_name": "com.dev.carddiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628661876165-9gpn2cgodusadt7ekepbsga26s3hcgl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4k56kVPRpXfbbr4FIjRCA9u4FeaQhEfk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628661876165-9gpn2cgodusadt7ekepbsga26s3hcgl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628661876165:android:f653532d8621ec8b4ac7ac",
+        "android_client_info": {
+          "package_name": "com.klmobile.carddiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628661876165-9gpn2cgodusadt7ekepbsga26s3hcgl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4k56kVPRpXfbbr4FIjRCA9u4FeaQhEfk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628661876165-9gpn2cgodusadt7ekepbsga26s3hcgl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

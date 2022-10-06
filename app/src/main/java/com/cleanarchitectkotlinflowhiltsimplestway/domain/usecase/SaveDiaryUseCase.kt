@@ -21,7 +21,7 @@ class SaveDiaryUseCase @Inject constructor(
   private val context: Context,
   private val diaryRepository: DiaryRepository): UseCase<Boolean, SaveDiaryUseCase.Params>() {
 
-  class Params(val id: Long, val images: List<Uri>, val title: String, val content: String, val weatherType: WeatherType)
+  class Params(val id: Long, val images: List<Uri>, val title: String, val content: String, val weatherType: WeatherType, val updateExisting: Boolean)
 
   override fun buildFlow(param: Params): Flow<State<Boolean>> {
     return flow {
@@ -31,17 +31,44 @@ class SaveDiaryUseCase @Inject constructor(
       if (error == null) {
         //Save file
         val folder = FileUtils.createDiaryFolderForDate(context, param.id)
-        val savedFiles = param.images.mapIndexed { index, uri ->
-          FileUtils.saveFile(uri, File(folder, "$index"))
+        //temp folder
+        val tempFolder = File(folder, "temp")
+        if (!tempFolder.exists()) {
+          tempFolder.mkdirs()
+        }
+        FileUtils.clearFolder(tempFolder)
+        param.images.mapIndexed { index, uri ->
+          FileUtils.saveFile(uri, File(tempFolder, "$index"))
+        }
+        //Copy
+        FileUtils.clearFolder(folder)
+        FileUtils.copyFolderContent(tempFolder, folder)
+        //Clear
+        FileUtils.clearFolder(tempFolder)
+
+        val images = folder.listFiles().filter { it.isFile }.map { it.absolutePath }
+
+        Logger.d("COPY FILE USE CASE: ${images}")
+
+        if (param.updateExisting) {
+          diaryRepository.updateDiaryPost(
+            id = param.id,
+            images = images,
+            title = param.title,
+            content = param.content,
+            weather = param.weatherType
+          )
+        } else {
+          diaryRepository.saveDiaryPost(
+            id = param.id,
+            images = images,
+            title = param.title,
+            content = param.content,
+            weather = param.weatherType
+          )
         }
 
-        diaryRepository.saveDiaryPost(
-          id = param.id,
-          images = savedFiles,
-          title = param.title,
-          content = param.content,
-          weather = param.weatherType
-        )
+
 
         val totalPosts = diaryRepository.getAll()
         Logger.d("TotalPost: ${totalPosts.size}")

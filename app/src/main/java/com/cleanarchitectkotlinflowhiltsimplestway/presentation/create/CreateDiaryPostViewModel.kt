@@ -33,11 +33,11 @@ class CreateDiaryPostViewModel @Inject constructor(
       field = value
     }
 
-  fun saveDiary(images: List<Uri>, title: String, content: String, weather: WeatherType) {
+  fun saveDiary(images: List<Uri>, title: String, content: String, weather: WeatherType, updateExisting: Boolean) {
     viewModelScope.launch {
       saveDiaryUseCase.invoke(
         SaveDiaryUseCase.Params(
-          postId, images, title, content, weather
+          postId, images, title, content, weather, updateExisting
         )
       ).collectLatest {
         _saveDiaryResultFlow.emit(it)

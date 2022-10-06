@@ -3,6 +3,7 @@ package com.cleanarchitectkotlinflowhiltsimplestway.data.room
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.DiaryPostData
 
 @Dao
@@ -16,5 +17,8 @@ interface DiaryDao {
 
   @Insert
   fun saveDiaryPost(post: DiaryPostData)
+
+  @Update(entity = DiaryPostData::class)
+  fun updateDiaryPost(post: DiaryPostData)
 
 }

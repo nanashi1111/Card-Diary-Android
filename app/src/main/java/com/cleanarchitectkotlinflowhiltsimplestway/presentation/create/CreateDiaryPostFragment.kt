@@ -12,9 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.WeatherType
@@ -37,19 +35,17 @@ import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFl
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigateUp
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.showErrorMessage
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.showSuccessMessage
-import com.dtv.starter.presenter.utils.extension.beGone
-import com.dtv.starter.presenter.utils.extension.beVisible
-import com.dtv.starter.presenter.utils.extension.beVisibleIf
-import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
+import com.dtv.starter.presenter.utils.extension.*
 import com.dtv.starter.presenter.utils.log.Logger
 import com.github.drjacky.imagepicker.ImagePicker
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
 @AndroidEntryPoint
-class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBinding, CreateDiaryPostViewModel>(FragmentCreateDiaryPostBinding::inflate),
+class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostBinding, CreateDiaryPostViewModel>(FragmentCreateDiaryPostBinding::inflate),
   PhotoSelectorListener, WeatherSelectedListener {
 
   override val viewModel: CreateDiaryPostViewModel by viewModels()
@@ -60,17 +56,25 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
     if (it.resultCode == Activity.RESULT_OK) {
       val uri = it.data?.data!!
       Logger.d("Selected: ${uri.encodedPath}")
-      selectedPhotoAdapter.append(uri)
+
+      val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
+      currentList.add(uri)
+      val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
+      viewBinding.vpSelectedImages.adapter = adapter
+      TabLayoutMediator(viewBinding.indicator, viewBinding.vpSelectedImages) { _, _ ->
+
+      }.attach()
+      viewBinding.ivAddPhoto.beVisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+      viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
       lifecycleScope.launch {
         delay(200)
-        viewBinding.rvSelectedImages.smoothScrollToPosition(selectedPhotoAdapter.itemCount - 1)
-        viewBinding.ivAddPhoto.beVisibleIf(selectedPhotoAdapter.itemCount == 0)
+        viewBinding.vpSelectedImages.adapter?.let {
+          if (it.itemCount > 0) {
+            viewBinding.vpSelectedImages.setCurrentItem(it.itemCount - 1, true)
+          }
+        }
       }
     }
-  }
-
-  private val selectedPhotoAdapter: SelectedPhotoAdapter by lazy {
-    SelectedPhotoAdapter()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,13 +84,21 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
         etTitle.setText(it.title)
         etContent.setText(it.content)
         ivWeather.bindWeather(it.weather)
-
         if (it.images.isNotEmpty()) {
-          val adapter = SelectedPhotoAdapter(it.images.map { Uri.fromFile(File(it)) }.toMutableList())
-          rvSelectedImages.adapter = adapter
+          val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, it.images.map {
+            imageFile ->
+            val f = File(imageFile)
+            Logger.d("Showing Image File: ${f.absolutePath} - ${f.exists()}")
+            Uri.fromFile(f)
+          }.toMutableList())
+          vpSelectedImages.adapter = adapter
+          TabLayoutMediator(indicator, viewBinding.vpSelectedImages) { _, _ ->
+
+          }.attach()
           viewModel.focusImage(0)
           ivAddPhoto.beGone()
         }
+        viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
       }
       viewModel.postId = it.date
     } ?: run {
@@ -99,7 +111,7 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
     viewBinding.apply {
       ivBack.setSafeOnClickListener {
         ConfirmDialog.getInstance().apply {
-          listener = object :ConfirmListener {
+          listener = object : ConfirmListener {
             override fun onConfirmed() {
               findNavController().safeNavigateUp()
             }
@@ -120,33 +132,29 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
       }
       tvDate.text = dateTimeInCreateDiaryScreen()
 
-      rvSelectedImages.apply {
-        val mLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        layoutManager = mLayoutManager
-        adapter = selectedPhotoAdapter
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(this)
-        addOnScrollListener(object :RecyclerView.OnScrollListener(){
-          override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (newState === RecyclerView.SCROLL_STATE_IDLE) {
-              val centerView: View? = snapHelper.findSnapView(mLayoutManager)
-              centerView?.let {
-                val pos: Int = mLayoutManager.getPosition(centerView)
-                Logger.d("Snapped Item Position: $pos")
-                viewModel.focusImage(pos)
-              }
-            }
+      vpSelectedImages.apply {
+        isSaveEnabled = false
+        adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, mutableListOf())
+        registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+          override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            viewModel.focusImage(position)
           }
         })
+
+        TabLayoutMediator(indicator, this) { _, _ ->
+
+        }.attach()
       }
+
 
       tvSave.setSafeOnClickListener {
         viewModel.saveDiary(
-          selectedPhotoAdapter.provideImages(),
+          (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris,
           viewBinding.etTitle.text.toString(),
           viewBinding.etContent.text.toString(),
-          WeatherType.SUNNY
+          WeatherType.SUNNY,
+          updateExisting = args.post != null
         )
       }
 
@@ -155,12 +163,19 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
       }
 
       llOptions.llRemoveImage.setSafeOnClickListener {
-        selectedPhotoAdapter.remove(viewModel.focusedImagePosition)
+
         viewModel.toggleOpeningOptionMenu()
-        viewBinding.ivAddPhoto.beVisibleIf(selectedPhotoAdapter.itemCount == 0)
-        if (selectedPhotoAdapter.itemCount > 0) {
-          viewBinding.rvSelectedImages.smoothScrollToPosition(0)
-          viewModel.focusImage(0)
+        val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
+        currentList.removeAt(viewModel.focusedImagePosition)
+        val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
+        viewBinding.vpSelectedImages.adapter = adapter
+        TabLayoutMediator(indicator, viewBinding.vpSelectedImages) { _, _ ->
+
+        }.attach()
+        viewBinding.ivAddPhoto.beVisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+        viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+        if (viewBinding.vpSelectedImages.adapter!!.itemCount > 0) {
+          viewBinding.vpSelectedImages.setCurrentItem(0, true)
         }
       }
 
@@ -207,12 +222,10 @@ class CreateDiaryPostFragment: BaseViewBindingFragment<FragmentCreateDiaryPostBi
         WeatherType.SNOWY -> viewBinding.ivWeather.setImageResource(R.drawable.ic_weather_snowy)
         WeatherType.LIGHTING -> viewBinding.ivWeather.setImageResource(R.drawable.ic_weather_thunder)
         WeatherType.STORMY -> viewBinding.ivWeather.setImageResource(R.drawable.ic_weather_tornado)
-        else -> {}
       }
     }
     // Toggle options menu
-    safeCollectFlow(viewModel.openningOptionMenu) {
-      opening ->
+    safeCollectFlow(viewModel.openningOptionMenu) { opening ->
       viewBinding.apply {
         if (opening) {
           llOptions.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.bg_create_post_options_layout_open))

@@ -10,6 +10,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBin
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.monthInText
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigateUp
+import com.dtv.starter.presenter.utils.extension.beVisibleIf
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -39,6 +40,7 @@ class MonthPostsFragment: BaseViewBindingFragment<FragmentMonthPostsBinding, Mon
           findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post =  post, time = 0L))
         }
         viewBinding.rvPosts.adapter = adapter
+        viewBinding.emptyDataset.root.beVisibleIf(data.isEmpty())
       }
     }
   }
