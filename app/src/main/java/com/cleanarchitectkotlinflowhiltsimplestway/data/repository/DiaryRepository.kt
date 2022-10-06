@@ -3,6 +3,7 @@ package com.cleanarchitectkotlinflowhiltsimplestway.data.repository
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.DiaryPostData
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.WeatherType
 import com.cleanarchitectkotlinflowhiltsimplestway.data.room.AppDatabase
+import com.dtv.starter.presenter.utils.log.Logger
 import java.util.*
 
 interface DiaryRepository {
@@ -32,6 +33,7 @@ class DiaryRepositoryImpl(private val appDatabase: AppDatabase): DiaryRepository
     val post = DiaryPostData(
       date = id, images = images, title = title, content = content, weather = weather
     )
+    Logger.d("saveDiaryPost: $post")
     appDatabase.diaryDao().saveDiaryPost(post)
     return true
   }
@@ -40,6 +42,7 @@ class DiaryRepositoryImpl(private val appDatabase: AppDatabase): DiaryRepository
     val post = DiaryPostData(
       date = id, images = images, title = title, content = content, weather = weather
     )
+    Logger.d("updateDiaryPost: $post")
     appDatabase.diaryDao().updateDiaryPost(post)
     return true
   }

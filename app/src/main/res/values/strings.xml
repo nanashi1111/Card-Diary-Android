@@ -31,4 +31,8 @@
     <string name="general_confirm">Are you sure?</string>
     <string name="please_confirm">Please confirm</string>
     <string name="hint_write_first_card">Write a day on your card...</string>
+    <string name="title_camera_permission_required">Camera permission is required</string>
+    <string name="message_camera_permission_required">To use this feature, you need to give the app camera permission. Do you want to grant permissions?</string>
+    <string name="label_ok_popup">OK</string>
+    <string name="image_picker_title">Select images</string>
 </resources>

@@ -1,12 +1,16 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.create
 
+import android.Manifest
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,9 +25,6 @@ import com.cleanarchitectkotlinflowhiltsimplestway.domain.exception.CONTENT_EMPT
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.exception.InvalidDiaryPostException
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.exception.TITLE_EMPTY
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
-import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.photo.PhotoSelectorDialog
-import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.photo.PhotoSelectorListener
-import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.photo.PhotoSelectorMethod
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.photo.SelectedPhotoAdapter
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.WeatherSelectedListener
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.WeatherSelectorDialog
@@ -37,16 +38,22 @@ import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.showErrorMess
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.showSuccessMessage
 import com.dtv.starter.presenter.utils.extension.*
 import com.dtv.starter.presenter.utils.log.Logger
-import com.github.drjacky.imagepicker.ImagePicker
 import com.google.android.material.tabs.TabLayoutMediator
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import dagger.hilt.android.AndroidEntryPoint
+import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
 @AndroidEntryPoint
 class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostBinding, CreateDiaryPostViewModel>(FragmentCreateDiaryPostBinding::inflate),
-  PhotoSelectorListener, WeatherSelectedListener {
+   WeatherSelectedListener {
 
   override val viewModel: CreateDiaryPostViewModel by viewModels()
 
@@ -77,9 +84,22 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
     }
   }
 
+  private var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    requestCameraPermissionLauncher =
+      registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted ->
+        if (isGranted.values.none { !it }) {
+          pickPhoto()
+        }
+      }
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     args.post?.let {
+      Logger.d("Input Post: $it")
       viewBinding.apply {
         etTitle.setText(it.title)
         etContent.setText(it.content)
@@ -88,7 +108,6 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
           val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, it.images.map {
             imageFile ->
             val f = File(imageFile)
-            Logger.d("Showing Image File: ${f.absolutePath} - ${f.exists()}")
             Uri.fromFile(f)
           }.toMutableList())
           vpSelectedImages.adapter = adapter
@@ -96,6 +115,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
 
           }.attach()
           viewModel.focusImage(0)
+          viewModel.selectedWeather.value = it.weather
           ivAddPhoto.beGone()
         }
         viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
@@ -105,6 +125,11 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
       viewModel.postId = args.time
     }
 
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    requestCameraPermissionLauncher?.unregister()
   }
 
   override fun initView() {
@@ -128,7 +153,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         }
       }
       ivAddPhoto.setSafeOnClickListener {
-        showPhotoPickerChooserDialog()
+        pickPhoto()
       }
       tvDate.text = dateTimeInCreateDiaryScreen()
 
@@ -153,7 +178,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
           (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris,
           viewBinding.etTitle.text.toString(),
           viewBinding.etContent.text.toString(),
-          WeatherType.SUNNY,
+          viewModel.selectedWeather.value,
           updateExisting = args.post != null
         )
       }
@@ -180,7 +205,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
       }
 
       llOptions.llAddImage.setSafeOnClickListener {
-        showPhotoPickerChooserDialog()
+        pickPhoto()
         viewModel.toggleOpeningOptionMenu()
       }
 
@@ -246,32 +271,83 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
     }
   }
 
-  private fun showPhotoPickerChooserDialog() {
-    PhotoSelectorDialog().apply {
-      listener = this@CreateDiaryPostFragment
-      show(this@CreateDiaryPostFragment.childFragmentManager, "PhotoPicker")
+  private fun pickPhoto() {
+    checkPermission {
+      TedImagePicker
+        .with(requireContext())
+        .title(R.string.image_picker_title)
+        .buttonText(R.string.ted_image_picker_done)
+        .dropDownAlbum()
+        .image()
+
+        .startMultiImage { uris ->
+          val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
+          currentList.addAll(uris)
+          val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
+          viewBinding.vpSelectedImages.adapter = adapter
+          TabLayoutMediator(viewBinding.indicator, viewBinding.vpSelectedImages) { _, _ ->
+
+          }.attach()
+          viewBinding.ivAddPhoto.beVisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+          viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+          lifecycleScope.launch {
+            delay(200)
+            viewBinding.vpSelectedImages.adapter?.let {
+              if (it.itemCount > 0) {
+                viewBinding.vpSelectedImages.setCurrentItem(it.itemCount - 1, true)
+              }
+            }
+          }
+        }
     }
   }
 
-  override fun onSelectPhotoPicker(picker: PhotoSelectorMethod) {
-    when (picker) {
-      PhotoSelectorMethod.CAMERA -> {
-        imagePickerLauncher.launch(
-          ImagePicker.with(requireActivity())
-            .cameraOnly()
-            .crop()
-            .createIntent()
+  private fun checkPermission(onGranted: () -> Unit) {
+    when {
+      requireContext().hasPermissions(
+        arrayOf(
+          Manifest.permission.CAMERA
         )
+      ) -> {
+        onGranted.invoke()
       }
-      PhotoSelectorMethod.GALLERY -> {
-        imagePickerLauncher.launch(
-          ImagePicker.with(requireActivity())
-            .galleryOnly()
-            .crop()
-            .createIntent()
-        )
+      else -> {
+        showDialogCamera {
+          Dexter.withContext(requireActivity()).withPermission(Manifest.permission.CAMERA)
+            .withListener(object : PermissionListener {
+              override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                onGranted.invoke()
+              }
+
+              override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+              }
+
+              override fun onPermissionRationaleShouldBeShown(
+                p0: PermissionRequest?,
+                p1: PermissionToken?
+              ) {
+              }
+
+            }).check()
+        }
       }
     }
+  }
+
+  private fun showDialogCamera(onPositive: () -> Unit) {
+    AlertDialog.Builder(requireContext()).setTitle(R.string.title_camera_permission_required)
+      .setMessage(R.string.message_camera_permission_required)
+      .setPositiveButton(R.string.label_ok_popup, object :DialogInterface.OnClickListener{
+        override fun onClick(p0: DialogInterface?, p1: Int) {
+          onPositive.invoke()
+        }
+      })
+      .setNegativeButton(R.string.cancel, object :DialogInterface.OnClickListener {
+        override fun onClick(p0: DialogInterface?, p1: Int) {
+        }
+      })
+      .show()
+
   }
 
   override fun onSelected(weather: WeatherType) {

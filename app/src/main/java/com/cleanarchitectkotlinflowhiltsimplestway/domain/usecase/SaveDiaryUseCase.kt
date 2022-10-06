@@ -38,7 +38,7 @@ class SaveDiaryUseCase @Inject constructor(
         }
         FileUtils.clearFolder(tempFolder)
         param.images.mapIndexed { index, uri ->
-          FileUtils.saveFile(uri, File(tempFolder, "$index"))
+          FileUtils.saveFile(context, uri, File(tempFolder, "$index"))
         }
         //Copy
         FileUtils.clearFolder(folder)
@@ -47,8 +47,7 @@ class SaveDiaryUseCase @Inject constructor(
         FileUtils.clearFolder(tempFolder)
 
         val images = folder.listFiles().filter { it.isFile }.map { it.absolutePath }
-
-        Logger.d("COPY FILE USE CASE: ${images}")
+        Logger.d("Saving Images: $images")
 
         if (param.updateExisting) {
           diaryRepository.updateDiaryPost(
@@ -67,12 +66,6 @@ class SaveDiaryUseCase @Inject constructor(
             weather = param.weatherType
           )
         }
-
-
-
-        val totalPosts = diaryRepository.getAll()
-        Logger.d("TotalPost: ${totalPosts.size}")
-
         emit(State.DataState(true))
       }
       else {

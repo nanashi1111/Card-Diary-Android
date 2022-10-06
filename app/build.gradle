@@ -8,6 +8,8 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+
+
 android {
     compileSdkVersion 32
     buildToolsVersion "30.0.3"
@@ -127,7 +129,6 @@ dependencies {
 
     implementation 'androidx.work:work-runtime-ktx:2.7.0'
     implementation 'com.wajahatkarim:easyflipviewpager:2.0.1'
-    implementation 'com.github.Drjacky:ImagePicker:2.1.16'
     implementation 'com.github.wangjiegulu:rfab:2.0.0'
 
     implementation dataDependencies.room
@@ -139,6 +140,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
+
+    implementation project(':tedimagepicker')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

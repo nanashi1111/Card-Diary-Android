@@ -1,2 +1,3 @@
 rootProject.name = "CardDiary"
 include ':app'
+include ':tedimagepicker'

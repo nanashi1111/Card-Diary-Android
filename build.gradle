@@ -2,6 +2,12 @@ apply from: 'buildsystem/dependencies.gradle'
 
 buildscript {
     ext.kotlin_version = "1.7.0"
+    ext.compileSdkVer = 32
+    ext.minSdkVer = 21
+    ext.targetSdkVer = 32
+    ext.glide_version = "4.11.0"
+    ext.appcompat_version = "1.3.0"
+
     repositories {
         google()
         mavenCentral()

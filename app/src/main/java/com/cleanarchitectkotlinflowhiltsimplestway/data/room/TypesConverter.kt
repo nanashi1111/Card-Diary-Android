@@ -2,7 +2,7 @@ package com.cleanarchitectkotlinflowhiltsimplestway.data.room
 
 import androidx.room.TypeConverter
 
-const val LIST_IMAGE_SEPERATOR = "|..__..|"
+private const val LIST_IMAGE_SEPERATOR = "|..__..|"
 
 class TypesConverter {
 
@@ -22,4 +22,24 @@ class TypesConverter {
     }
     return sb.toString()
   }
+
+  /*@TypeConverter
+  fun weatherTypeToString(weatherType: WeatherType): String = weatherType.name
+
+  @TypeConverter
+  fun stringToWeatherType(input: String): WeatherType {
+    return convertStringToWeatherType(input)
+  }*/
 }
+
+/*
+fun convertStringToWeatherType(input: String): WeatherType {
+  return when (input) {
+    WeatherType.CLOUDY.name -> WeatherType.CLOUDY
+    WeatherType.RAINY.name -> WeatherType.RAINY
+    WeatherType.SNOWY.name -> WeatherType.SNOWY
+    WeatherType.LIGHTING.name -> WeatherType.LIGHTING
+    WeatherType.STORMY.name -> WeatherType.STORMY
+    else -> WeatherType.SUNNY
+  }
+}*/

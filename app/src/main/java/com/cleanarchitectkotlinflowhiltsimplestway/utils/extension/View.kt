@@ -12,6 +12,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -114,9 +115,10 @@ fun ImageView.loadImageFileFitToImageView(
 ) {
     Glide.with(context).clear(this)
     val options = RequestOptions().centerCrop()
-    Glide.with(context).load(File(url)).apply(options)
+    Glide.with(context).load(File(url ?: "")).apply(options)
         .placeholder(placeholderId)
         .error(errorId)
+        .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
         .transition(DrawableTransitionOptions.withCrossFade()).into(this)
 }
 

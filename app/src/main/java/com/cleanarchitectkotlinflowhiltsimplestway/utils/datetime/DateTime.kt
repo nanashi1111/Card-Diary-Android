@@ -1,6 +1,5 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime
 
-import com.dtv.starter.presenter.utils.log.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,10 +45,16 @@ fun numberOfDayInMonth(month: Int, year: Int): Int {
 }
 
 fun timeStamp(day: Int, month: Int, year: Int): Long {
-  val data = String.format("%02d-%02d-%04d", day, month, year)
-  val sdf = SimpleDateFormat("dd-MM-yyyy")
+  val data = String.format("%02d-%02d-%04d", day, month, year) + " " + currentHour()
+  val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
   return sdf.parse(data).time
 }
+
+fun currentHour(): String {
+  val sdf = SimpleDateFormat("HH:mm:ss")
+  return sdf.format(Date())
+}
+
 
 fun getDayTimeRange(day: Int, month: Int, year: Int): Pair<Long, Long> {
   val sdf = SimpleDateFormat("dd/MM/yyyy - HH:mm:ss")

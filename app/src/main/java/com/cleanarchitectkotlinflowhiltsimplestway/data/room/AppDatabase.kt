@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.DiaryPostData
 
-@Database(entities = [DiaryPostData::class], version = 1)
+@Database(entities = [DiaryPostData::class], version = 3)
 @TypeConverters(TypesConverter::class)
 abstract class AppDatabase: RoomDatabase() {
   abstract fun diaryDao(): DiaryDao

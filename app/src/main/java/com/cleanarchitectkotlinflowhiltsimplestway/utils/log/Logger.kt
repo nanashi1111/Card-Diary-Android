@@ -6,7 +6,6 @@ import com.cleanarchitectkotlinflowhiltsimplestway.BuildConfig
 object Logger {
 
     private val LOG = BuildConfig.LOGGABLE
-    private val TAG = "TIMVIEC"
 
     /**
      * Log debug
