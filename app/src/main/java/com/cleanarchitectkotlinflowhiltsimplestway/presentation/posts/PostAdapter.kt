@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.WeatherType
@@ -12,7 +13,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.databinding.ItemMonthPostBind
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.DiaryPost
 import com.dtv.starter.presenter.utils.extension.*
 
-class MonthPostAdapter(val posts: List<DiaryPost>, val onPostSelected: (DiaryPost) -> Unit) : RecyclerView.Adapter<MonthPostAdapter.ViewHolder>() {
+class PostAdapter(val posts: MutableList<DiaryPost>, val onPostSelected: (DiaryPost) -> Unit) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
   class ViewHolder(val binding: ItemMonthPostBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -29,6 +30,28 @@ class MonthPostAdapter(val posts: List<DiaryPost>, val onPostSelected: (DiaryPos
   }
 
   override fun getItemCount() = posts.size
+
+  fun submit(newPost: List<DiaryPost>) {
+    val diffResult = DiffUtil.calculateDiff(PostDiffUtils(posts, newPost))
+    diffResult.dispatchUpdatesTo(this)
+    posts.clear()
+    posts.addAll(newPost)
+  }
+}
+
+class PostDiffUtils(val oldList: List<DiaryPost>, val newList: List<DiaryPost>): DiffUtil.Callback() {
+  override fun getOldListSize() = oldList.size
+
+  override fun getNewListSize() = newList.size
+
+  override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    return oldList[oldItemPosition].date == newList[newItemPosition].date
+  }
+
+  override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    return oldList[oldItemPosition].equal(newList[newItemPosition])
+  }
+
 }
 
 @BindingAdapter("bindImages")

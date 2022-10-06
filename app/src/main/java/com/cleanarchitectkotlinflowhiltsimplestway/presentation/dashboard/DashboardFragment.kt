@@ -47,6 +47,9 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
       rlCreate.setSafeOnClickListener {
         showCreatePostScreen(System.currentTimeMillis())
       }
+      ivSearch.setSafeOnClickListener {
+        findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToSearchFragment())
+      }
 
       tvDate.text = dateTimeInDashboard()
     }

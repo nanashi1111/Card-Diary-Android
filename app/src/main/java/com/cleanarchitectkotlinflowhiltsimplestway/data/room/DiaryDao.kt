@@ -21,4 +21,7 @@ interface DiaryDao {
   @Update(entity = DiaryPostData::class)
   fun updateDiaryPost(post: DiaryPostData)
 
+  @Query("select * from DiaryPostData where title like '%' || :query || '%' or content like '%' || :query || '%'")
+  fun searchPost(query: String): List<DiaryPostData>
+
 }

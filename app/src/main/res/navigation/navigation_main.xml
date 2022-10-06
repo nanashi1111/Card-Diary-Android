@@ -42,6 +42,13 @@
                 app:nullable="false" />
 
         </action>
+        <action
+            android:id="@+id/action_dashboardFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/default_enter_anim"
+            app:exitAnim="@anim/default_exit_anim"
+            app:popEnterAnim="@anim/default_pop_enter_anim"
+            app:popExitAnim="@anim/default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/createDiaryPostFragment"
@@ -72,6 +79,24 @@
             app:nullable="false" />
         <action
             android:id="@+id/action_monthPostsFragment_to_createDiaryPostFragment"
+            app:destination="@id/createDiaryPostFragment"
+            app:enterAnim="@anim/default_enter_anim"
+            app:exitAnim="@anim/default_exit_anim"
+            app:popEnterAnim="@anim/default_pop_enter_anim"
+            app:popExitAnim="@anim/default_pop_exit_anim">
+            <argument
+                android:name="post"
+                app:argType="com.cleanarchitectkotlinflowhiltsimplestway.domain.models.DiaryPost"
+                app:nullable="true" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.cleanarchitectkotlinflowhiltsimplestway.presentation.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_createDiaryPostFragment"
             app:destination="@id/createDiaryPostFragment"
             app:enterAnim="@anim/default_enter_anim"
             app:exitAnim="@anim/default_exit_anim"

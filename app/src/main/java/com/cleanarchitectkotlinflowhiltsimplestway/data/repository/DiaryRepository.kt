@@ -7,33 +7,22 @@ import com.dtv.starter.presenter.utils.log.Logger
 import java.util.*
 
 interface DiaryRepository {
-  fun saveDiaryPost(
-    id: Long,
-    images: List<String>,
-    title: String,
-    content: String,
-    weather: WeatherType
-  ): Boolean
+  fun saveDiaryPost(id: Long, images: List<String>, title: String, content: String, weather: WeatherType): Boolean
 
-  fun updateDiaryPost(
-    id: Long,
-    images: List<String>,
-    title: String,
-    content: String,
-    weather: WeatherType
-  ): Boolean
+  fun updateDiaryPost(id: Long, images: List<String>, title: String, content: String, weather: WeatherType): Boolean
 
   fun getDiaryPosts(startDate: Long, endDate: Long): List<DiaryPostData>
+
+  fun searchPost(query: String): List<DiaryPostData>
 
   fun getAll(): List<DiaryPostData>
 }
 
-class DiaryRepositoryImpl(private val appDatabase: AppDatabase): DiaryRepository {
+class DiaryRepositoryImpl(private val appDatabase: AppDatabase) : DiaryRepository {
   override fun saveDiaryPost(id: Long, images: List<String>, title: String, content: String, weather: WeatherType): Boolean {
     val post = DiaryPostData(
       date = id, images = images, title = title, content = content, weather = weather
     )
-    Logger.d("saveDiaryPost: $post")
     appDatabase.diaryDao().saveDiaryPost(post)
     return true
   }
@@ -42,15 +31,14 @@ class DiaryRepositoryImpl(private val appDatabase: AppDatabase): DiaryRepository
     val post = DiaryPostData(
       date = id, images = images, title = title, content = content, weather = weather
     )
-    Logger.d("updateDiaryPost: $post")
     appDatabase.diaryDao().updateDiaryPost(post)
     return true
   }
 
-  override fun getDiaryPosts(startDate: Long, endDate: Long)  = appDatabase.diaryDao().getDiaryPosts(startDate, endDate)
+  override fun getDiaryPosts(startDate: Long, endDate: Long) = appDatabase.diaryDao().getDiaryPosts(startDate, endDate)
 
-  override fun getAll(): List<DiaryPostData> {
-    return appDatabase.diaryDao().getDiaryPosts(0L, Date().time)
-  }
+  override fun searchPost(query: String): List<DiaryPostData> = appDatabase.diaryDao().searchPost(query)
+
+  override fun getAll() = appDatabase.diaryDao().getDiaryPosts(0L, Date().time)
 
 }

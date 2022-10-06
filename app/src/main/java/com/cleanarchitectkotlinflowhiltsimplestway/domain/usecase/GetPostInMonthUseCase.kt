@@ -4,6 +4,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.DiaryPostData
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.data.repository.DiaryRepository
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.DiaryPost
+import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.mapping
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.getMonthTimeRange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,18 +28,4 @@ class GetPostInMonthUseCase @Inject constructor(private val diaryRepository: Dia
     }
   }
 
-  private fun mapping(entity: DiaryPostData): DiaryPost {
-    val date = Date(entity.date)
-    val dayOfMonth = SimpleDateFormat("dd").format(date)
-    val dayOfWeek = SimpleDateFormat("EEE").format(date)
-    return DiaryPost(
-      date = entity.date,
-      images = entity.images.filter { it.isNotEmpty() },
-      title = entity.title,
-      content = entity.content,
-      weather = entity.weather,
-      dayOfMonth = dayOfMonth,
-      dayOfWeek = dayOfWeek
-    )
-  }
 }

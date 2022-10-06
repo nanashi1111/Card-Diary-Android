@@ -35,4 +35,5 @@
     <string name="message_camera_permission_required">To use this feature, you need to give the app camera permission. Do you want to grant permissions?</string>
     <string name="label_ok_popup">OK</string>
     <string name="image_picker_title">Select images</string>
+    <string name="search_your_post">Search your post</string>
 </resources>

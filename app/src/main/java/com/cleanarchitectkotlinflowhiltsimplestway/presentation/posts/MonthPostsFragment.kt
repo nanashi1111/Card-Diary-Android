@@ -21,10 +21,18 @@ class MonthPostsFragment: BaseViewBindingFragment<FragmentMonthPostsBinding, Mon
 
   private val args: MonthPostsFragmentArgs by navArgs()
 
+  private val adapter: PostAdapter by lazy {
+    PostAdapter(mutableListOf()) {
+        post ->
+      findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post =  post, time = 0L))
+    }
+  }
+
   override fun initView() {
 
     viewBinding.apply {
       rvPosts.layoutManager = LinearLayoutManager(requireContext())
+      rvPosts.adapter = adapter
       tvTitle.text = "${monthInText(args.month - 1, true)} / ${args.year}"
       ivBack.setSafeOnClickListener { findNavController().safeNavigateUp() }
     }
@@ -35,11 +43,7 @@ class MonthPostsFragment: BaseViewBindingFragment<FragmentMonthPostsBinding, Mon
     viewModel.post.collectLatest {
       if (it is State.DataState) {
         val data = it.data
-        val adapter = MonthPostAdapter(data) {
-          post ->
-          findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post =  post, time = 0L))
-        }
-        viewBinding.rvPosts.adapter = adapter
+        adapter.submit(data)
         viewBinding.emptyDataset.root.beVisibleIf(data.isEmpty())
       }
     }

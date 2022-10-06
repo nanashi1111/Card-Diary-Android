@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/layout/fragment_month_card_behind.xml" value="0.13489583333333333" />
         <entry key="app/src/main/res/layout/fragment_month_card_front.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_month_posts.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3109375" />
         <entry key="app/src/main/res/layout/fragment_selected_photo.xml" value="0.1515625" />
         <entry key="app/src/main/res/layout/item_day_in_month.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_month_post.xml" value="0.25" />
