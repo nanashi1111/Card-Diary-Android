@@ -36,4 +36,32 @@
     <string name="label_ok_popup">OK</string>
     <string name="image_picker_title">Select images</string>
     <string name="search_your_post">Search your post</string>
+    <string name="backup">Backup</string>
+    <string name="create_a_backup">Create a backup</string>
+    <string name="restore_a_backup">Restore a backup</string>
+    <string name="export">Export</string>
+    <string name="language">Language</string>
+    <string name="preference">Preference</string>
+    <string name="alarm">Alarm</string>
+    <string name="bug_report">Bug report</string>
+    <string name="give_a_feedback">Give a feedback</string>
+    <string name="feedback">Feedback</string>
+    <string name="clear_data">Clear data</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="privacy_and_policy">Privacy and policy</string>
+    <string name="delete_all_warning">You are deleting all of your diaries. This can not be undo. Are you sure want to do this?</string>
+    <string name="warning">Warning</string>
+    <string name="all_data_deleted">All data are deleted</string>
+    <string name="all_data_not_deleted">An error occured</string>
+    <string name="max_images_selected_warning">You can only select maximum 10 images</string>
+    <string name="mock_title">My Diary</string>
+    <string name="mock_content">A diary is a written or audiovisual record with discrete entries arranged by date reporting on what has happened over the course of a day or other period. Diaries have traditionally been handwritten but are now also often digital. A personal diary may include a 
+        persons experiences, thoughts, and/or feelings, excluding comments on current events outside the writers direct experience. Someone who keeps a diary is known as a diarist. Diaries undertaken for institutional purposes play a role in many aspects of human civilization, including government records (e.g. Hansard), business ledgers, and military records. In British English, the word may also denote a preprinted journal format Today the term is generally employed for personal diaries, normally intended to remain private or to have a limited circulation amongst friends or relatives. The word "journal" may be sometimes used for "diary," but generally a diary has (or intends to have) daily entries (from the Latin word for day), whereas journal-writing can be less frequent.[citation needed]
+
+Although a diary may provide information for a memoir, autobiography or biography, it is generally written not with the intention of being published as it stands, but for the authors own use. In recent years, however, there is internal evidence in some diaries (e.g. those of Ned Rorem, Alan Clark, Tony Benn or Simon Gray) that they are written with eventual publication in mind, with the intention of self-vindication (pre- or posthumous), or simply for profit.</string>
+    <string name="data">Data</string>
+    <string name="design_your_card">Design your card</string>
+    <string name="from_photo">From photo</string>
+    <string name="from_color">From color</string>
 </resources>

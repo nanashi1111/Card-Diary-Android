@@ -20,19 +20,19 @@ data class DiaryPost(
     return equalDate(other) && equalImages(other) && equalTitle(other) && equalContent(other)
   }
 
-  fun equalDate(other: DiaryPost): Boolean {
+  private fun equalDate(other: DiaryPost): Boolean {
     return other.date == date
   }
 
-  fun equalTitle(other: DiaryPost): Boolean {
+  private fun equalTitle(other: DiaryPost): Boolean {
     return other.title == title
   }
 
-  fun equalContent(other: DiaryPost): Boolean {
+  private fun equalContent(other: DiaryPost): Boolean {
     return other.content == content
   }
 
-  fun equalImages(other: DiaryPost): Boolean {
+  private fun equalImages(other: DiaryPost): Boolean {
     return "$images" == "${other.images}"
   }
 }

@@ -18,7 +18,11 @@ object FileUtils {
 
   fun saveFile(context: Context, sourceUri: Uri, destination: File): String {
     return try {
-      val source = getFile(context, sourceUri)
+      Logger.d("SaveFile Uri = ${sourceUri.path} ; authority = ${sourceUri.authority}")
+      val source = when (sourceUri.authority) {
+        "media" -> getFile(context, sourceUri)
+        else -> sourceUri.toFile()
+      }
       val src: FileChannel = FileInputStream(source).channel
       val des: FileChannel = FileOutputStream(destination).channel
       des.transferFrom(src, 0, src.size())
@@ -85,6 +89,24 @@ object FileUtils {
     }
   }
 
+  private fun forceClearFolder(folder: File) {
+    folder.listFiles()?.let {
+      for (file in it) {
+        if (file.isFile) {
+          Logger.d("Deleting: ${file.absolutePath}")
+          file.delete()
+        } else if (file.isDirectory){
+          forceClearFolder(file)
+        }
+      }
+    }
+  }
+
+  fun forceClearAllData(context: Context) {
+    val folder = context.filesDir
+    forceClearFolder(folder)
+  }
+
   private fun isExternalStorageReadOnly(): Boolean {
     val extStorageState = Environment.getExternalStorageState()
     return Environment.MEDIA_MOUNTED_READ_ONLY == extStorageState
@@ -95,7 +117,7 @@ object FileUtils {
     return Environment.MEDIA_MOUNTED == extStorageState
   }
 
-  fun getFile(context: Context, uri: Uri): File? {
+  private fun getFile(context: Context, uri: Uri): File {
     val destinationFilename = File(context.filesDir.path + File.separatorChar + queryName(context, uri))
     try {
       context.contentResolver.openInputStream(uri).use { ins ->

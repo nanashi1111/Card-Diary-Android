@@ -13,6 +13,12 @@ fun DialogFragment.adjustWidth() {
     val width = (requireActivity().getScreenWidth() * 0.9f).toInt()
     val height = ViewGroup.LayoutParams.WRAP_CONTENT
     dialog.window?.setLayout(width, height)
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+  }
+}
+
+fun DialogFragment.adjustWidth(width: Int, height: Int) {
+  val dialog: Dialog? = dialog
+  dialog?.let {
+    dialog.window?.setLayout(width, height)
   }
 }

@@ -12,7 +12,10 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseDialogF
 class ConfirmDialog: BaseDialogFragment() {
 
   lateinit var vb: DialogConfirmBinding
+
   var listener: ConfirmListener? = null
+
+  override val needAdjustWidth = true
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     vb = DataBindingUtil.inflate(inflater, R.layout.dialog_confirm, container, false)

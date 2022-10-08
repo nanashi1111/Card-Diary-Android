@@ -16,6 +16,8 @@ interface DiaryRepository {
   fun searchPost(query: String): List<DiaryPostData>
 
   fun getAll(): List<DiaryPostData>
+
+  fun deleteAll(): Int
 }
 
 class DiaryRepositoryImpl(private val appDatabase: AppDatabase) : DiaryRepository {
@@ -41,4 +43,5 @@ class DiaryRepositoryImpl(private val appDatabase: AppDatabase) : DiaryRepositor
 
   override fun getAll() = appDatabase.diaryDao().getDiaryPosts(0L, Date().time)
 
+  override fun deleteAll() = appDatabase.diaryDao().deleteAll()
 }

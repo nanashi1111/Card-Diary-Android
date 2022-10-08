@@ -84,6 +84,7 @@
                 app:layout_constraintStart_toStartOf="@id/pbProgress" />
 
             <ImageView
+                android:id="@+id/ivSetting"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"

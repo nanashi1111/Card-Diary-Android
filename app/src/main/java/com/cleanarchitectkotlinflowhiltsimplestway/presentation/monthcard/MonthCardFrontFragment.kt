@@ -1,18 +1,26 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard
 
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.cleanarchitectkotlinflowhiltsimplestway.R
-import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
+import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.*
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentMonthCardFrontBinding
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.DashboardFragment
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.design.CardDesignDialog
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.design.CardDesignListener
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.monthInText
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.coloredBackground
 import com.dtv.starter.presenter.utils.extension.beVisibleIf
+import com.dtv.starter.presenter.utils.extension.loadImageFileFitToImageView
 import com.dtv.starter.presenter.utils.extension.loadResource
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
+import com.dtv.starter.presenter.utils.log.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,6 +35,8 @@ class MonthCardFrontFragment : BaseViewBindingFragment<FragmentMonthCardFrontBin
   private val monthPostsViewModel: MonthPostViewModel by lazy {
     (requireParentFragment() as MonthCardFragment).monthPostsViewModel
   }
+
+  private val cardViewModel: FrontCardViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -53,8 +63,32 @@ class MonthCardFrontFragment : BaseViewBindingFragment<FragmentMonthCardFrontBin
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
         val month = 1 + requireArguments().getInt(KEY_MONTH)
         val year = requireArguments().getInt(KEY_YEAR)
-        viewBinding.ivBackground.loadResource(resourceId(month), resources.getDimensionPixelSize(R.dimen.background_image_radius))
+
         monthPostsViewModel.getPostInMonth(month, year)
+      }
+    }
+
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        cardViewModel.template.collectLatest {
+          if (it is State.DataState) {
+            val template = it.data
+            when (template.type) {
+              TEMPLATE_DEFAULT -> {
+                val month = 1 + requireArguments().getInt(KEY_MONTH)
+                viewBinding.ivBackground.loadResource(resourceId(month), resources.getDimensionPixelSize(R.dimen.background_image_radius))
+              }
+              TEMPLATE_COLOR -> {
+                val color = template.data
+                viewBinding.ivBackground.setImageBitmap(coloredBackground(color))
+              }
+              TEMPLATE_PHOTO -> {
+                val filePath = template.data
+                viewBinding.ivBackground.loadImageFileFitToImageView(filePath)
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -69,7 +103,26 @@ class MonthCardFrontFragment : BaseViewBindingFragment<FragmentMonthCardFrontBin
           1 + month, requireArguments().getInt(KEY_YEAR)
         )
       }
+      ivSetting.setSafeOnClickListener {
+        val month = 1 + requireArguments().getInt(KEY_MONTH)
+        val year = requireArguments().getInt(KEY_YEAR)
+        CardDesignDialog.getInstance(month, year, object :CardDesignListener{
+          override fun onSubmit(cardTemplate: CardTemplate) {
+            cardViewModel.updateCard(month, year, cardTemplate.type, cardTemplate.data, null)
+          }
+
+          override fun onSubmit(uri: Uri) {
+            cardViewModel.updateCard(month, year, TEMPLATE_PHOTO, "", uri)
+          }
+        }).show(this@MonthCardFrontFragment.childFragmentManager, "CardDesign")
+      }
     }
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    cardViewModel.getCardTemplate(1 + requireArguments().getInt(KEY_MONTH), requireArguments().getInt(KEY_YEAR))
   }
 
   override suspend fun subscribeData() {

@@ -32,6 +32,7 @@ class YearPickerDialog: BaseDialogFragment() {
       ""
     } else null
   }
+  override val needAdjustWidth = true
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     vb = DataBindingUtil.inflate(inflater, R.layout.dialog_year_picker, container, false)

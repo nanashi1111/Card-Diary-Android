@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import com.cleanarchitectkotlinflowhiltsimplestway.BuildConfig
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.WeatherType
@@ -30,12 +31,10 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.W
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.WeatherSelectorDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmListener
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.LoadingDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.bindWeather
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.dateTimeInCreateDiaryScreen
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigateUp
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.showErrorMessage
-import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.showSuccessMessage
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.*
 import com.dtv.starter.presenter.utils.extension.*
 import com.dtv.starter.presenter.utils.log.Logger
 import com.google.android.material.tabs.TabLayoutMediator
@@ -59,29 +58,8 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
 
   private val args: CreateDiaryPostFragmentArgs by navArgs()
 
-  private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-    if (it.resultCode == Activity.RESULT_OK) {
-      val uri = it.data?.data!!
-      Logger.d("Selected: ${uri.encodedPath}")
-
-      val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
-      currentList.add(uri)
-      val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
-      viewBinding.vpSelectedImages.adapter = adapter
-      TabLayoutMediator(viewBinding.indicator, viewBinding.vpSelectedImages) { _, _ ->
-
-      }.attach()
-      viewBinding.ivAddPhoto.beVisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
-      viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
-      lifecycleScope.launch {
-        delay(200)
-        viewBinding.vpSelectedImages.adapter?.let {
-          if (it.itemCount > 0) {
-            viewBinding.vpSelectedImages.setCurrentItem(it.itemCount - 1, true)
-          }
-        }
-      }
-    }
+  private val loadingDialog: LoadingDialog by lazy {
+    LoadingDialog()
   }
 
   private var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
@@ -133,6 +111,9 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
   }
 
   override fun initView() {
+
+    prepareMockDataIfNeeded()
+
     viewBinding.apply {
       ivBack.setSafeOnClickListener {
         ConfirmDialog.getInstance().apply {
@@ -217,10 +198,11 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
 
   override suspend fun subscribeData() {
     //Save diary
-    safeCollectFlow(viewModel.saveDiaryResultFlow) {
+    safeCollectLatestFlow(viewModel.saveDiaryResultFlow) {
       when (it) {
         is State.LoadingState -> {
-          Logger.d("Saving diary")
+          Logger.d("Saving ${viewBinding.etTitle.text.toString()}")
+          loadingDialog.display(this@CreateDiaryPostFragment)
         }
         is State.ErrorState -> {
           val error = it.exception
@@ -231,8 +213,10 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
             }
           }
           Logger.d("Saving diary error: ${it.exception}")
+          loadingDialog.hide()
         }
         is State.DataState -> {
+          loadingDialog.hide()
           showSuccessMessage(getString(R.string.save_diary_success))
           findNavController().safeNavigateUp()
         }
@@ -278,8 +262,8 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         .title(R.string.image_picker_title)
         .buttonText(R.string.ted_image_picker_done)
         .dropDownAlbum()
+        .max(10, getString(R.string.max_images_selected_warning))
         .image()
-
         .startMultiImage { uris ->
           val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
           currentList.addAll(uris)
@@ -348,6 +332,13 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
       })
       .show()
 
+  }
+
+  private fun prepareMockDataIfNeeded() {
+    if(BuildConfig.DEBUG) {
+      viewBinding.etTitle.setText(getString(R.string.mock_title))
+      viewBinding.etContent.setText(getString(R.string.mock_content))
+    }
   }
 
   override fun onSelected(weather: WeatherType) {

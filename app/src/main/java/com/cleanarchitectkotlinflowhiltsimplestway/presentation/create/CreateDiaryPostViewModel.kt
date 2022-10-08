@@ -8,10 +8,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.domain.usecase.SaveDiaryUseCa
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewModel
 import com.dtv.starter.presenter.utils.log.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +18,7 @@ class CreateDiaryPostViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val _saveDiaryResultFlow = MutableSharedFlow<State<Boolean>>()
-  val saveDiaryResultFlow: Flow<State<Boolean>> = _saveDiaryResultFlow
+  val saveDiaryResultFlow: Flow<State<Boolean>> = _saveDiaryResultFlow.distinctUntilChanged()
 
   val selectedWeather = MutableStateFlow(WeatherType.SUNNY)
   val openningOptionMenu = MutableStateFlow(false)

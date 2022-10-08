@@ -24,4 +24,6 @@ interface DiaryDao {
   @Query("select * from DiaryPostData where title like '%' || :query || '%' or content like '%' || :query || '%'")
   fun searchPost(query: String): List<DiaryPostData>
 
+  @Query("delete from DiaryPostData")
+  fun deleteAll(): Int
 }

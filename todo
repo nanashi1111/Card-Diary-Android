@@ -1,5 +1,9 @@
 - Màn hình setting
-// Thay image picker gắn kèm camera
-// Tìm kiếm
-- Setting card
-// Fix lỗi không xoá được ảnh
+ - Create backup
+ - Restore backup
+- Setting card (phase2)
+ - Color
+ - photo from template
+ - Photo from gallery
+
+- Optimize scroll card - cho phep select month year

@@ -20,6 +20,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             style="@style/ToolBarIcon"
+            android:id="@+id/ivSetting"
             android:layout_alignParentEnd="true"
             android:rotation="180"
             app:srcCompat="@drawable/ic_diary_menu" />
@@ -105,6 +106,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivWeather"
+
             android:layout_width="@dimen/_30sdp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"

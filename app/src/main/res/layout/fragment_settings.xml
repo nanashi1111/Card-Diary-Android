@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                style="@style/ToolBarIcon"
+                android:layout_alignParentStart="true"
+                app:srcCompat="@drawable/ic_diary_back"
+                app:tint="@color/tool_bar_item_create" />
+        </RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SettingHeader"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="@string/data" />
+
+                <TextView
+                    style="@style/SettingItem"
+                    android:text="@string/create_a_backup" />
+
+                <TextView
+                    style="@style/SettingItem"
+                    android:text="@string/restore_a_backup" />
+
+                <TextView
+                    style="@style/SettingItem"
+                    android:text="@string/export"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvClearData"
+                    style="@style/SettingItem"
+                    android:text="@string/clear_data" />
+
+                <View style="@style/SettingDivider" />
+
+                <TextView
+                    style="@style/SettingHeader"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="@string/preference"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/SettingItem"
+                    android:text="@string/language"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/SettingItem"
+                    android:text="@string/alarm"
+                    android:visibility="gone" />
+
+                <View
+                    style="@style/SettingDivider"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/SettingHeader"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="@string/feedback" />
+
+                <TextView
+                    android:id="@+id/ivGiveFeedback"
+                    style="@style/SettingItem"
+                    android:text="@string/give_a_feedback" />
+
+                <TextView
+                    android:id="@+id/ivBugReport"
+                    style="@style/SettingItem"
+                    android:text="@string/bug_report" />
+
+                <View style="@style/SettingDivider" />
+
+                <TextView
+                    style="@style/SettingHeader"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="@string/about" />
+
+                <TextView
+                    android:id="@+id/ivPolicy"
+                    style="@style/SettingItem"
+                    android:text="@string/privacy_and_policy" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/SettingItem"
+                        android:drawableEnd="@null"
+                        android:text="@string/version" />
+
+                    <TextView
+                        android:id="@+id/tvVersion"
+                        style="@style/SettingItem"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:alpha="0.3"
+                        android:drawableEnd="@null"
+                        android:gravity="end"
+                        android:textSize="14sp"
+                        tools:text="1.1.1" />
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/pbLoading"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

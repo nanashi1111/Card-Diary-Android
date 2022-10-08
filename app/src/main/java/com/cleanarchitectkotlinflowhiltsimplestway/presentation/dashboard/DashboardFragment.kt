@@ -41,7 +41,7 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
       tvYearSelector.setSafeOnClickListener {
         showYearSelector()
       }
-      rlCalendar.setSafeOnClickListener {
+      rlCalendar.setOnClickListener {
         monthCardViewModel.toggleMonthCardState()
       }
       rlCreate.setSafeOnClickListener {
@@ -49,6 +49,10 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
       }
       ivSearch.setSafeOnClickListener {
         findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToSearchFragment())
+      }
+
+      ivSetting.setSafeOnClickListener {
+        findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToNavigationSetting())
       }
 
       tvDate.text = dateTimeInDashboard()
