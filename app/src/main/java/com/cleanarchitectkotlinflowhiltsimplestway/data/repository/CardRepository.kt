@@ -16,7 +16,6 @@ class CardRepositoryImpl constructor(private val appDatabase: AppDatabase) : Car
   override fun getCardTemplate(month: Int, year: Int): CardTemplate {
     val time = String.format("%02d-%04d", month, year)
     val template = appDatabase.cardDao().getCard(time) ?: CardTemplate(time, TEMPLATE_DEFAULT)
-    Logger.d("CardTemplate: $time : $template")
     return template
   }
 

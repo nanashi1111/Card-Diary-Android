@@ -3,6 +3,7 @@ package com.cleanarchitectkotlinflowhiltsimplestway.data.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 const val TEMPLATE_DEFAULT = "default"
 const val TEMPLATE_PHOTO = "photo"
@@ -15,4 +16,4 @@ data class CardTemplate(
   @ColumnInfo(name = "type")
   val type: String,
   @ColumnInfo(name = "data")
-  val data: String = "")
+  val data: String = ""): Serializable

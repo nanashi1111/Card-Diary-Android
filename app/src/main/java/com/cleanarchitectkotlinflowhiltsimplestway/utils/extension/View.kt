@@ -3,6 +3,7 @@ package com.dtv.starter.presenter.utils.extension
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.res.Resources
+import android.net.Uri
 import android.os.SystemClock
 import android.view.View
 import android.widget.ImageView
@@ -176,3 +177,11 @@ fun ImageView.loadResource(@DrawableRes resId: Int, corner: Int) {
         .into(this)
 }
 
+fun ImageView.loadBackgroundFile(filePath: String, corner: Int) {
+    Glide.with(context)
+        .load(File(filePath))
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .transform(CenterCrop(),RoundedCorners(corner))
+        .override(width, height)
+        .into(this)
+}

@@ -32,80 +32,6 @@ class CardDesignDialog private constructor(): BaseBottomSheetFragment(R.layout.d
 
   var listener: CardDesignListener? = null
 
-  private var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    requestCameraPermissionLauncher =
-      registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted ->
-        if (isGranted.values.none { !it }) {
-          pickPhoto()
-        }
-      }
-  }
-
-  private fun pickPhoto() {
-    checkPermission {
-      TedImagePicker
-        .with(requireContext())
-        .title(R.string.image_picker_title)
-        .buttonText(R.string.ted_image_picker_done)
-        .dropDownAlbum()
-        .image()
-        .start {
-          listener?.onSubmit(it)
-        }
-    }
-  }
-
-  private fun checkPermission(onGranted: () -> Unit) {
-    when {
-      requireContext().hasPermissions(
-        arrayOf(
-          Manifest.permission.CAMERA
-        )
-      ) -> {
-        onGranted.invoke()
-      }
-      else -> {
-        showDialogCamera {
-          Dexter.withContext(requireActivity()).withPermission(Manifest.permission.CAMERA)
-            .withListener(object : PermissionListener {
-              override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-                onGranted.invoke()
-              }
-
-              override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-              }
-
-              override fun onPermissionRationaleShouldBeShown(
-                p0: PermissionRequest?,
-                p1: PermissionToken?
-              ) {
-              }
-
-            }).check()
-        }
-      }
-    }
-  }
-
-  private fun showDialogCamera(onPositive: () -> Unit) {
-    AlertDialog.Builder(requireContext()).setTitle(R.string.title_camera_permission_required)
-      .setMessage(R.string.message_camera_permission_required)
-      .setPositiveButton(R.string.label_ok_popup, object : DialogInterface.OnClickListener{
-        override fun onClick(p0: DialogInterface?, p1: Int) {
-          onPositive.invoke()
-        }
-      })
-      .setNegativeButton(R.string.cancel, object : DialogInterface.OnClickListener {
-        override fun onClick(p0: DialogInterface?, p1: Int) {
-        }
-      })
-      .show()
-
-  }
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     view.findViewById<RecyclerView>(R.id.rvColors).apply {
@@ -113,7 +39,7 @@ class CardDesignDialog private constructor(): BaseBottomSheetFragment(R.layout.d
       adapter = provideColorAdapter()
     }
     view.findViewById<View>(R.id.tvPickPhoto).setSafeOnClickListener {
-      pickPhoto()
+      listener?.onChooseBrowseGallery()
     }
     view.findViewById<View>(R.id.tvCancel).setOnClickListener {
       dismissAllowingStateLoss()
@@ -153,5 +79,5 @@ class CardDesignDialog private constructor(): BaseBottomSheetFragment(R.layout.d
 
 interface CardDesignListener {
   fun onSubmit(cardTemplate: CardTemplate)
-  fun onSubmit(uri: Uri)
+  fun onChooseBrowseGallery()
 }

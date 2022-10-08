@@ -61,7 +61,12 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.updateCurrentYearMonth()
+
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.updateCurrentYearMonth()
+      }
+    }
     lifecycleScope.launch {
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
         viewModel.currentYearMonth.collectLatest {
@@ -75,7 +80,7 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
   }
 
   private fun setupCarousel(viewPager:ViewPager2){
-    viewPager.offscreenPageLimit = 1
+    viewPager.offscreenPageLimit = 11
     val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
     val currentItemHorizontalMarginPx = resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
     val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
