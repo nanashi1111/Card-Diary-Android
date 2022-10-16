@@ -24,7 +24,7 @@ class MonthPostsFragment: BaseViewBindingFragment<FragmentMonthPostsBinding, Mon
   private val adapter: PostAdapter by lazy {
     PostAdapter(mutableListOf()) {
         post ->
-      findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post =  post, time = 0L))
+      findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post =  post.simpleObject(), time = 0L))
     }
   }
 

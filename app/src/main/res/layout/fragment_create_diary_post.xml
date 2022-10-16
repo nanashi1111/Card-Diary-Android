@@ -20,14 +20,14 @@
             app:tint="@color/tool_bar_item_create" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSave"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:id="@+id/tvSave"
             android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
             android:fontFamily="@font/oswald_bold"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:paddingHorizontal="@dimen/_10sdp"
             android:text="@string/save"
@@ -78,21 +78,56 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                android:id="@+id/ivAddPhoto"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:background="@color/bg_btn_add_image"
-                android:clickable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:padding="@dimen/_28sdp"
-                android:src="@drawable/ic_add_diary_image"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:id="@+id/llModifyImages"
+                android:gravity="center"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@id/vAddImagePlaceHolder"
                 app:layout_constraintEnd_toEndOf="@id/vAddImagePlaceHolder"
                 app:layout_constraintStart_toStartOf="@id/vAddImagePlaceHolder"
                 app:layout_constraintTop_toTopOf="@id/vAddImagePlaceHolder"
-                app:tint="@color/white" />
+                android:layout_height="0dp">
+
+                <ImageView
+                    tools:visibility="visible"
+                    android:visibility="gone"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:id="@+id/ivRemovePhoto"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@color/bg_btn_add_image"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="@dimen/_28sdp"
+                    android:src="@drawable/ic_remove_image"
+                    app:layout_constraintBottom_toBottomOf="@id/vAddImagePlaceHolder"
+                    app:layout_constraintEnd_toEndOf="@id/vAddImagePlaceHolder"
+                    app:layout_constraintStart_toStartOf="@id/vAddImagePlaceHolder"
+                    app:layout_constraintTop_toTopOf="@id/vAddImagePlaceHolder"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:id="@+id/ivAddPhoto"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@color/bg_btn_add_image"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="@dimen/_28sdp"
+                    android:src="@drawable/ic_add_diary_image"
+                    app:layout_constraintBottom_toBottomOf="@id/vAddImagePlaceHolder"
+                    app:layout_constraintEnd_toEndOf="@id/vAddImagePlaceHolder"
+                    app:layout_constraintStart_toStartOf="@id/vAddImagePlaceHolder"
+                    app:layout_constraintTop_toTopOf="@id/vAddImagePlaceHolder"
+                    app:tint="@color/white" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
             <TextView
                 android:id="@+id/tvDate"
@@ -148,7 +183,7 @@
                 android:fontFamily="@font/oswald_regular"
                 android:hint="@string/hint_write_diary_content"
                 android:inputType="textMultiLine"
-                android:textColor="@color/create_diary_text_hint"
+                android:textColor="@color/create_diary_text"
                 android:textColorHint="@color/create_diary_text_hint"
                 app:layout_constraintTop_toBottomOf="@id/ivWeather">
 
@@ -157,8 +192,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <include layout="@layout/layout_create_post_actions" android:id="@+id/llOptions" tools:visibility="gone"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

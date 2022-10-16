@@ -42,11 +42,13 @@
 
                 <TextView
                     style="@style/SettingItem"
-                    android:text="@string/create_a_backup" />
+                    android:text="@string/create_a_backup"
+                    android:visibility="gone" />
 
                 <TextView
                     style="@style/SettingItem"
-                    android:text="@string/restore_a_backup" />
+                    android:text="@string/restore_a_backup"
+                    android:visibility="gone" />
 
                 <TextView
                     style="@style/SettingItem"
@@ -93,7 +95,8 @@
                 <TextView
                     android:id="@+id/ivBugReport"
                     style="@style/SettingItem"
-                    android:text="@string/bug_report" />
+                    android:text="@string/bug_report"
+                    android:visibility="gone" />
 
                 <View style="@style/SettingDivider" />
 

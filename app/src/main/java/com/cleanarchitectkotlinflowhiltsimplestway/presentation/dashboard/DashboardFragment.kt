@@ -22,11 +22,14 @@ import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.viewpager.HorizontalMarginItemDecoration
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 import com.dtv.starter.presenter.utils.extension.tint
+import com.dtv.starter.presenter.utils.log.Logger
+import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
+
 
 @AndroidEntryPoint
 class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, DashboardViewModel>(FragmentDashboardBinding::inflate){
@@ -105,15 +108,30 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
   }
 
   private fun showYearSelector() {
-    YearPickerDialog()
-      .apply {
-        listener = object :OnYearSelected {
-          override fun onYearSelected(year: Int) {
-            viewModel.updateCurrentYearMonth(year, 1)
-          }
+//    YearPickerDialog()
+//      .apply {
+//        listener = object :OnYearSelected {
+//          override fun onYearSelected(year: Int) {
+//            viewModel.updateCurrentYearMonth(year, 1)
+//          }
+//        }
+//        show(this@DashboardFragment.childFragmentManager, "Y")
+//      }
+
+    val calendar: Calendar = Calendar.getInstance()
+    val yearSelected = calendar.get(Calendar.YEAR)
+    val monthSelected = calendar.get(Calendar.MONTH)
+
+    val dialogFragment = MonthYearPickerDialogFragment
+      .getInstance(monthSelected, yearSelected).apply {
+        setOnDateSetListener { year, monthOfYear ->
+          Logger.d("DateSetListener: $monthOfYear - $year")
+          viewModel.needSmoothScroll = true
+          viewModel.updateCurrentYearMonth(year, 1 + monthOfYear)
         }
-        show(this@DashboardFragment.childFragmentManager, "Y")
       }
+
+    dialogFragment.show(childFragmentManager, null)
   }
 
   override suspend fun subscribeData() {
@@ -150,7 +168,11 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
     viewBinding.vpDashboard.apply {
       try {
         adapter = DashBoardAdapter(this@DashboardFragment, year)
-        setCurrentItem(month - 1, false)
+        setCurrentItem(month - 1, viewModel.needSmoothScroll)
+        lifecycleScope.launch {
+          delay(500)
+          viewModel.needSmoothScroll = false
+        }
       }catch (e: Exception) {
         e.printStackTrace()
       }
@@ -170,7 +192,7 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
 
 }
 
-class DashBoardAdapter(val f: Fragment, val year: Int): FragmentStateAdapter(f) {
+class DashBoardAdapter(f: Fragment, val year: Int): FragmentStateAdapter(f) {
   override fun getItemCount() = 12
 
   override fun createFragment(position: Int) = MonthCardFragment.getInstance(position, year)

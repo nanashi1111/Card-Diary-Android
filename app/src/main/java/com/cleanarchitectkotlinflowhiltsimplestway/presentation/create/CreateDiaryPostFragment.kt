@@ -1,19 +1,16 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.create
 
 import android.Manifest
-import android.app.Activity
-import android.content.DialogInterface
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -49,10 +46,11 @@ import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
+import java.util.*
 
 @AndroidEntryPoint
 class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostBinding, CreateDiaryPostViewModel>(FragmentCreateDiaryPostBinding::inflate),
-   WeatherSelectedListener {
+  WeatherSelectedListener {
 
   override val viewModel: CreateDiaryPostViewModel by viewModels()
 
@@ -78,30 +76,75 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
     super.onViewCreated(view, savedInstanceState)
     args.post?.let {
       Logger.d("Input Post: $it")
-      viewBinding.apply {
-        etTitle.setText(it.title)
-        etContent.setText(it.content)
-        ivWeather.bindWeather(it.weather)
-        if (it.images.isNotEmpty()) {
-          val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, it.images.map {
-            imageFile ->
-            val f = File(imageFile)
-            Uri.fromFile(f)
-          }.toMutableList())
-          vpSelectedImages.adapter = adapter
-          TabLayoutMediator(indicator, viewBinding.vpSelectedImages) { _, _ ->
-
-          }.attach()
-          viewModel.focusImage(0)
-          viewModel.selectedWeather.value = it.weather
-          ivAddPhoto.beGone()
-        }
-        viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
-      }
+      viewModel.getDiaryPost(it.date)
       viewModel.postId = it.date
     } ?: run {
       viewModel.postId = args.time
+      viewModel.toggleToEditMode()
     }
+
+    viewBinding.tvDate.text = dateTimeInCreateDiaryScreen(d = Date(viewModel.postId))
+
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        safeCollectFlow(viewModel.diaryMode) { mode ->
+          when (mode) {
+            DiaryMode.VIEW -> viewBinding.apply {
+              llModifyImages.beGone()
+              tvSave.setText(R.string.edit)
+              etTitle.isEnabled = false
+              etContent.isEnabled = false
+            }
+
+            DiaryMode.EDIT -> viewBinding.apply {
+              llModifyImages.beVisible()
+              ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
+              tvSave.setText(R.string.save)
+              etTitle.isEnabled = true
+              etContent.isEnabled = true
+              etTitle.requestFocus()
+            }
+          }
+        }
+      }
+    }
+
+
+
+    lifecycleScope.launch {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        safeCollectFlow(viewModel.diaryPost) {
+          if (it is State.DataState) {
+            val post = it.data
+            viewBinding.apply {
+              etTitle.setText(post.title)
+              etContent.setText(post.content)
+              ivWeather.bindWeather(post.weather)
+              if (post.images.isNotEmpty()) {
+                val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, post.images.map { imageFile ->
+                  val f = File(imageFile)
+                  Uri.fromFile(f)
+                }.toMutableList())
+                vpSelectedImages.adapter = adapter
+                TabLayoutMediator(indicator, viewBinding.vpSelectedImages) { _, _ ->
+
+                }.attach()
+                viewModel.focusImage(0)
+                viewModel.selectedWeather.value = post.weather
+
+
+                viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
+              }
+              viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+            }
+            viewModel.postId = post.date
+
+          }
+        }
+      }
+    }
+
+
 
   }
 
@@ -126,6 +169,11 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         }
       }
       ivWeather.setSafeOnClickListener {
+
+        if (viewModel.diaryMode.value == DiaryMode.VIEW) {
+          return@setSafeOnClickListener
+        }
+
         WeatherSelectorDialog.newInstance(
           viewModel.selectedWeather.value.name
         ).apply {
@@ -134,9 +182,12 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         }
       }
       ivAddPhoto.setSafeOnClickListener {
+        if (viewModel.diaryMode.value == DiaryMode.VIEW) {
+          return@setSafeOnClickListener
+        }
         pickPhoto()
       }
-      tvDate.text = dateTimeInCreateDiaryScreen()
+
 
       vpSelectedImages.apply {
         isSaveEnabled = false
@@ -155,22 +206,28 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
 
 
       tvSave.setSafeOnClickListener {
-        viewModel.saveDiary(
-          (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris,
-          viewBinding.etTitle.text.toString(),
-          viewBinding.etContent.text.toString(),
-          viewModel.selectedWeather.value,
-          updateExisting = args.post != null
-        )
+
+        when (viewModel.diaryMode.value) {
+          DiaryMode.VIEW -> {
+            viewModel.toggleToEditMode()
+          }
+          DiaryMode.EDIT -> {
+            viewModel.saveDiary(
+              (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris,
+              viewBinding.etTitle.text.toString(),
+              viewBinding.etContent.text.toString(),
+              viewModel.selectedWeather.value,
+              updateExisting = args.post != null
+            )
+          }
+        }
+
       }
 
-      llOptions.btToggleOptions.setSafeOnClickListener {
-        viewModel.toggleOpeningOptionMenu()
-      }
+      viewBinding.ivRemovePhoto.setSafeOnClickListener {
 
-      llOptions.llRemoveImage.setSafeOnClickListener {
+        val currentFocused = viewModel.focusedImagePosition
 
-        viewModel.toggleOpeningOptionMenu()
         val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
         currentList.removeAt(viewModel.focusedImagePosition)
         val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
@@ -178,20 +235,11 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         TabLayoutMediator(indicator, viewBinding.vpSelectedImages) { _, _ ->
 
         }.attach()
-        viewBinding.ivAddPhoto.beVisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+        viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
         viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
-        if (viewBinding.vpSelectedImages.adapter!!.itemCount > 0) {
-          viewBinding.vpSelectedImages.setCurrentItem(0, true)
+        if (viewBinding.vpSelectedImages.adapter!!.itemCount > currentFocused) {
+          viewBinding.vpSelectedImages.setCurrentItem(currentFocused, true)
         }
-      }
-
-      llOptions.llAddImage.setSafeOnClickListener {
-        pickPhoto()
-        viewModel.toggleOpeningOptionMenu()
-      }
-
-      llOptions.vContainer.setSafeOnClickListener {
-        viewModel.toggleOpeningOptionMenu()
       }
     }
   }
@@ -201,7 +249,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
     safeCollectLatestFlow(viewModel.saveDiaryResultFlow) {
       when (it) {
         is State.LoadingState -> {
-          Logger.d("Saving ${viewBinding.etTitle.text.toString()}")
+          Logger.d("Saving ${viewBinding.etTitle.text}")
           loadingDialog.display(this@CreateDiaryPostFragment)
         }
         is State.ErrorState -> {
@@ -233,26 +281,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         WeatherType.STORMY -> viewBinding.ivWeather.setImageResource(R.drawable.ic_weather_tornado)
       }
     }
-    // Toggle options menu
-    safeCollectFlow(viewModel.openningOptionMenu) { opening ->
-      viewBinding.apply {
-        if (opening) {
-          llOptions.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.bg_create_post_options_layout_open))
-          llOptions.llAddImage.beVisible()
-          llOptions.llRemoveImage.beVisible()
-          llOptions.btToggleOptions.setImageResource(R.drawable.ic_cancel)
-          llOptions.btToggleOptions.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#65dbff"))
-          llOptions.vContainer.beVisible()
-        } else {
-          llOptions.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.bg_create_post_options_layout_close))
-          llOptions.llAddImage.beGone()
-          llOptions.llRemoveImage.beGone()
-          llOptions.btToggleOptions.setImageResource(R.drawable.ic_options_create_post)
-          llOptions.btToggleOptions.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#373737"))
-          llOptions.vContainer.beGone()
-        }
-      }
-    }
+
   }
 
   private fun pickPhoto() {
@@ -262,7 +291,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         .title(R.string.image_picker_title)
         .buttonText(R.string.ted_image_picker_done)
         .dropDownAlbum()
-        .max(10, getString(R.string.max_images_selected_warning))
+        .max(10 - (viewBinding.vpSelectedImages.adapter?.itemCount ?: 0), getString(R.string.max_images_selected_warning))
         .image()
         .startMultiImage { uris ->
           val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
@@ -272,7 +301,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
           TabLayoutMediator(viewBinding.indicator, viewBinding.vpSelectedImages) { _, _ ->
 
           }.attach()
-          viewBinding.ivAddPhoto.beVisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+          viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
           viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
           lifecycleScope.launch {
             delay(200)
@@ -321,21 +350,14 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
   private fun showDialogCamera(onPositive: () -> Unit) {
     AlertDialog.Builder(requireContext()).setTitle(R.string.title_camera_permission_required)
       .setMessage(R.string.message_camera_permission_required)
-      .setPositiveButton(R.string.label_ok_popup, object :DialogInterface.OnClickListener{
-        override fun onClick(p0: DialogInterface?, p1: Int) {
-          onPositive.invoke()
-        }
-      })
-      .setNegativeButton(R.string.cancel, object :DialogInterface.OnClickListener {
-        override fun onClick(p0: DialogInterface?, p1: Int) {
-        }
-      })
+      .setPositiveButton(R.string.label_ok_popup) { _, _ -> onPositive.invoke() }
+      .setNegativeButton(R.string.cancel) { _, _ -> }
       .show()
 
   }
 
   private fun prepareMockDataIfNeeded() {
-    if(BuildConfig.DEBUG) {
+    if (BuildConfig.DEBUG) {
       viewBinding.etTitle.setText(getString(R.string.mock_title))
       viewBinding.etContent.setText(getString(R.string.mock_content))
     }

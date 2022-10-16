@@ -2,17 +2,14 @@ package com.cleanarchitectkotlinflowhiltsimplestway.di
 
 
 import android.content.Context
-import com.cleanarchitectkotlinflowhiltsimplestway.BuildConfig
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.App
 import com.google.gson.GsonBuilder
-import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,7 +30,9 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).client(client)
+        return Retrofit.Builder()
+            //.baseUrl(BuildConfig.BASE_URL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
     }
@@ -46,7 +45,6 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        headerInterceptor: Interceptor,
         cache: Cache
     ): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient().newBuilder()
@@ -54,19 +52,7 @@ class NetworkModule {
         okHttpClientBuilder.readTimeout(READ_TIMEOUT.toLong(), TimeUnit.SECONDS)
         okHttpClientBuilder.writeTimeout(WRITE_TIMEOUT.toLong(), TimeUnit.SECONDS)
         okHttpClientBuilder.cache(cache)
-        okHttpClientBuilder.addInterceptor(headerInterceptor)
         return okHttpClientBuilder.build()
-    }
-
-
-    @Provides
-    @Singleton
-    fun provideHeaderInterceptor(): Interceptor {
-        return Interceptor {
-            val requestBuilder = it.request().newBuilder()
-            requestBuilder.addHeader("Authorization", BuildConfig.UNSPLASH_ACCESS_KEY)
-            it.proceed(requestBuilder.build())
-        }
     }
 
 
@@ -83,11 +69,5 @@ class NetworkModule {
     fun provideContext(application: App): Context {
         return application.applicationContext
     }
-
-    /*@Provides
-    @Singleton
-    fun provideApi(retrofit: Retrofit): Api {
-        return retrofit.create(Api::class.java)
-    }*/
 
 }

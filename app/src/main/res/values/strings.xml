@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Card Diary</string>
+    <string name="app_name">Max Diary</string>
     <string name="topics">Topics</string>
     <string name="today">Today</string>
     <string name="txt_year_picker_positive">OK</string>
@@ -23,6 +23,7 @@
     <string name="option_take_photo">Take photo from camera</string>
     <string name="option_select_photo">Choose from gallery</string>
     <string name="save">Save</string>
+    <string name="edit">Edit</string>
     <string name="error_empty_content">Please give some content</string>
     <string name="error_empty_title">Please give a title</string>
     <string name="option_remove_current_image">Remove current image</string>
@@ -56,10 +57,19 @@
     <string name="all_data_not_deleted">An error occured</string>
     <string name="max_images_selected_warning">You can only select maximum 10 images</string>
     <string name="mock_title">My Diary</string>
-    <string name="mock_content">A diary is a written or audiovisual record with discrete entries arranged by date reporting on what has happened over the course of a day or other period. Diaries have traditionally been handwritten but are now also often digital. A personal diary may include a 
-        persons experiences, thoughts, and/or feelings, excluding comments on current events outside the writers direct experience. Someone who keeps a diary is known as a diarist. Diaries undertaken for institutional purposes play a role in many aspects of human civilization, including government records (e.g. Hansard), business ledgers, and military records. In British English, the word may also denote a preprinted journal format Today the term is generally employed for personal diaries, normally intended to remain private or to have a limited circulation amongst friends or relatives. The word "journal" may be sometimes used for "diary," but generally a diary has (or intends to have) daily entries (from the Latin word for day), whereas journal-writing can be less frequent.[citation needed]
+    <string name="mock_content">
+        This post talks about what not to miss in Dubai. Find out the top places in Dubai and do not miss adding them to your bucket list.
 
-Although a diary may provide information for a memoir, autobiography or biography, it is generally written not with the intention of being published as it stands, but for the authors own use. In recent years, however, there is internal evidence in some diaries (e.g. those of Ned Rorem, Alan Clark, Tony Benn or Simon Gray) that they are written with eventual publication in mind, with the intention of self-vindication (pre- or posthumous), or simply for profit.</string>
+Dubai is known for its ability to draw visitors from all over the world. The grand atmosphere of Dubai is certain to make you feel like you are high above the list. The Emirate is famous for its high-end shopping, pulsating nightlife scene, and its architectural style. The architecture of Dubai will surely make you feel awestruck. There is a wide range of options in Dubai.
+
+Dubai is a city that offers many activities. The gardens of Dubai are no less beautiful. They are magical works of art. The gardeners who designed them that are an art by themselves. The stunning and unique view from the gardens is breathtaking. Dubai offers some of the best luxury experiences as well.
+
+        Dubai Miracle Garden is known as The most well-known gardening area in Dubai. Dubai Miracle Garden is often referred to as one of the most impressive natural flower gardens in the world. The park is home to over 100,000 flowers. They are utilized to make huge floral arrangements. It received three-time Guinness Book of World Records. The garden has become one of the most beautiful landscapes. It is truly something to behold. Moreover, it is a stunning spot in the city. There’s not a single chance of missing out on the opportunity to explore this beautiful natural setting with your family.
+
+   Dubai Frame, which captures the coral stone home in Old Dubai on one side and the city’s skyscrapers on the other is an iconic landmark in the UAE. However, the Dubai Frame can be described as the biggest frame construction in the world. It was designed for the World Expo 2021. In other words, it is the largest frame structure in the world. Dubai Frame has been constructed by using 2000 tonnes of steel and 970 square meters of glass that has been laminated.
+
+From Deira’s souks to its historical streets, and the Arabian desert’s immense dunes, as well as the striking waters of the Arabian Gulf and Dubai Marina’s towering buildings, you will get an amazing view of the tourist attractions that are Dubai through the Frame. Dubai Frame has a gallery located on the mezzanine floor that guides visitors through audio and audio-based presentations on Dubai’s historical roots. The exterior Wall that is part of Dubai Frame is adorned with a special kind of golden tiles, which make the structure captivating.
+    </string>
     <string name="data">Data</string>
     <string name="design_your_card">Design your card</string>
     <string name="from_photo">From photo</string>

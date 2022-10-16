@@ -25,6 +25,7 @@
     <color name="bg_btn_add_image">#40000000</color>
     <color name="create_diary_text_hint">#BEBEBE</color>
     <color name="create_diary_text_content">#666666</color>
+    <color name="create_diary_text">#A2A2A2</color>
     <color name="weather_selector">#333333</color>
     <color name="bg_create_post_options_layout_open">#80000000</color>
     <color name="bg_create_post_options_layout_close">#00000000</color>

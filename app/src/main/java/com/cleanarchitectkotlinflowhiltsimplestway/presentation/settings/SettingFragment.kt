@@ -52,6 +52,13 @@ class SettingFragment : BaseViewBindingFragment<FragmentSettingsBinding, Setting
         }
       }
 
+      ivPolicy.setSafeOnClickListener {
+        val url = "https://cungdev.com/max-diary-privacy-and-policy/"
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        startActivity(i)
+      }
+
       tvVersion.text = BuildConfig.VERSION_NAME
     }
   }

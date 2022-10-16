@@ -9,6 +9,8 @@ import java.util.*
 interface DiaryRepository {
   fun saveDiaryPost(id: Long, images: List<String>, title: String, content: String, weather: WeatherType): Boolean
 
+  fun getDiaryPost(id: Long): DiaryPostData
+
   fun updateDiaryPost(id: Long, images: List<String>, title: String, content: String, weather: WeatherType): Boolean
 
   fun getDiaryPosts(startDate: Long, endDate: Long): List<DiaryPostData>
@@ -28,6 +30,8 @@ class DiaryRepositoryImpl(private val appDatabase: AppDatabase) : DiaryRepositor
     appDatabase.diaryDao().saveDiaryPost(post)
     return true
   }
+
+  override fun getDiaryPost(id: Long) = appDatabase.diaryDao().getDiaryPost(id)
 
   override fun updateDiaryPost(id: Long, images: List<String>, title: String, content: String, weather: WeatherType): Boolean {
     val post = DiaryPostData(

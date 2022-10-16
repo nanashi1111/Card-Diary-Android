@@ -4,6 +4,8 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.WeatherType
+import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.DiaryPost
+import com.cleanarchitectkotlinflowhiltsimplestway.domain.usecase.GetDiaryPost
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.usecase.SaveDiaryUseCase
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewModel
 import com.dtv.starter.presenter.utils.log.Logger
@@ -14,14 +16,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateDiaryPostViewModel @Inject constructor(
-  private val saveDiaryUseCase: SaveDiaryUseCase
+  private val saveDiaryUseCase: SaveDiaryUseCase,
+  private val getDiaryPost: GetDiaryPost
 ) : BaseViewModel() {
 
   private val _saveDiaryResultFlow = MutableSharedFlow<State<Boolean>>()
   val saveDiaryResultFlow: Flow<State<Boolean>> = _saveDiaryResultFlow.distinctUntilChanged()
 
   val selectedWeather = MutableStateFlow(WeatherType.SUNNY)
-  val openningOptionMenu = MutableStateFlow(false)
+
+  private val _diaryPost = MutableSharedFlow<State<DiaryPost>>()
+  val diaryPost: SharedFlow<State<DiaryPost>> = _diaryPost
+
+  val diaryMode = MutableStateFlow(DiaryMode.VIEW)
 
   var postId: Long = 0L
 
@@ -29,6 +36,14 @@ class CreateDiaryPostViewModel @Inject constructor(
     private set(value) {
       field = value
     }
+
+  fun getDiaryPost(id: Long) {
+    viewModelScope.launch {
+      getDiaryPost.invoke(GetDiaryPost.Params(id)).collectLatest {
+        _diaryPost.emit(it)
+      }
+    }
+  }
 
   fun saveDiary(images: List<Uri>, title: String, content: String, weather: WeatherType, updateExisting: Boolean) {
     viewModelScope.launch {
@@ -42,12 +57,19 @@ class CreateDiaryPostViewModel @Inject constructor(
     }
   }
 
-  fun toggleOpeningOptionMenu() {
-    openningOptionMenu.value = !openningOptionMenu.value
-  }
-
   fun focusImage(position: Int) {
     focusedImagePosition = position
   }
 
+  fun toggleToEditMode() {
+    viewModelScope.launch {
+      diaryMode.emit(DiaryMode.EDIT)
+    }
+
+  }
+
+}
+
+enum class DiaryMode {
+  VIEW, EDIT
 }

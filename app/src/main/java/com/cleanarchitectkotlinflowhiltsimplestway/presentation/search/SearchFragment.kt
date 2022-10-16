@@ -29,7 +29,7 @@ class SearchFragment: BaseViewBindingFragment<FragmentSearchBinding, SearchViewM
     PostAdapter(mutableListOf()) {
         post ->
         findNavController().safeNavigate(
-          SearchFragmentDirections.actionSearchFragmentToCreateDiaryPostFragment(post, 0L)
+          SearchFragmentDirections.actionSearchFragmentToCreateDiaryPostFragment(post.simpleObject(), 0L)
         )
     }
   }

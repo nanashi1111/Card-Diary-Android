@@ -16,6 +16,8 @@ class DashboardViewModel @Inject constructor(): BaseViewModel() {
   private var tempYear = currentYear()
   private var tempMonth = currentMonth()
 
+  var needSmoothScroll = false
+
   fun updateCurrentYearMonth(year: Int, month: Int) {
     viewModelScope.launch {
       currentYearMonth.emit("$month-$year")

@@ -16,6 +16,10 @@ data class DiaryPost(
   val weather: WeatherType
 ) : Serializable {
 
+  fun simpleObject(): DiaryPost {
+    return DiaryPost(this.date, "", "", emptyList(), "", "", WeatherType.SUNNY)
+  }
+
   fun equal(other: DiaryPost): Boolean {
     return equalDate(other) && equalImages(other) && equalTitle(other) && equalContent(other)
   }

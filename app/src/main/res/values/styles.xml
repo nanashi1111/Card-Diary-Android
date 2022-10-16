@@ -109,7 +109,10 @@
         <item name="android:fontFamily">@font/oswald_bold</item>
         <item name="android:alpha">0.6</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:padding">@dimen/_10sdp</item>
+        <item name="android:paddingLeft">@dimen/_10sdp</item>
+        <item name="android:paddingRight">@dimen/_10sdp</item>
+        <item name="android:paddingTop">@dimen/_5sdp</item>
+        <item name="android:paddingBottom">@dimen/_5sdp</item>
         <item name="android:clickable">true</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:drawableEnd">@drawable/ic_setting_next</item>
