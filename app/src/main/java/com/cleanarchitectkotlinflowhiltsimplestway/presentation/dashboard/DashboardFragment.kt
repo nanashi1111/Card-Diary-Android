@@ -83,7 +83,7 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
   }
 
   private fun setupCarousel(viewPager:ViewPager2){
-    viewPager.offscreenPageLimit = 11
+    viewPager.offscreenPageLimit = 3
     val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
     val currentItemHorizontalMarginPx = resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
     val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
