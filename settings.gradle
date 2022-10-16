@@ -1,0 +1,4 @@
+rootProject.name = "CardDiary"
+include ':app'
+include ':tedimagepicker'
+include ':month-year-picker'

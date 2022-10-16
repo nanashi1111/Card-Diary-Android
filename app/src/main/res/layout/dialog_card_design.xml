@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/_10sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:fontFamily="@font/oswald_bold"
+            android:text="@string/design_your_card"
+            android:textColor="@color/create_diary_text_hint" />
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/oswald_bold"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:text="@string/cancel"
+            android:textColor="@color/create_diary_text_content"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <View style="@style/Divider" />
+
+    <TextView
+        android:id="@+id/tvPickPhoto"
+        style="@style/SettingItem"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:text="@string/from_photo"
+        android:textSize="15sp" />
+
+    <View style="@style/Divider" />
+
+    <TextView
+        style="@style/SettingItem"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:drawableEnd="@null"
+        android:text="@string/from_color"
+        android:textSize="15sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvColors"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Max Diary</string>
+    <string name="topics">Topics</string>
+    <string name="today">Today</string>
+    <string name="txt_year_picker_positive">OK</string>
+    <string name="txt_year_picker_negative">Cancel</string>
+    <string name="msg_invalid_year_empty">Please select a year</string>
+    <string name="msg_invalid_year_invalid">Please input a valid year</string>
+    <string name="title_year_selector_dialog">Select a year</string>
+    <string name="hint_year_selector_dialog">Please input a year</string>
+    <string name="hint_write_diary">Select a date to write</string>
+    <string name="title">Title</string>
+    <string name="hint_write_diary_content">Write your today</string>
+    <string name="select_weather">Select weather</string>
+    <string name="weather_sunny">Sunny</string>
+    <string name="weather_cloudy">Cloudy</string>
+    <string name="weather_rainy">Rainy</string>
+    <string name="weather_snowy">Snowy</string>
+    <string name="weather_lighting">Lighting</string>
+    <string name="weather_stormy">Stormy</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_dialog_choose_photo_picker">Choose one method...</string>
+    <string name="option_take_photo">Take photo from camera</string>
+    <string name="option_select_photo">Choose from gallery</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="error_empty_content">Please give some content</string>
+    <string name="error_empty_title">Please give a title</string>
+    <string name="option_remove_current_image">Remove current image</string>
+    <string name="option_add_new_image">Add new image</string>
+    <string name="save_diary_success">Save diary successfully</string>
+    <string name="general_confirm">Are you sure?</string>
+    <string name="please_confirm">Please confirm</string>
+    <string name="hint_write_first_card">Write a day on your card...</string>
+    <string name="title_camera_permission_required">Camera permission is required</string>
+    <string name="message_camera_permission_required">To use this feature, you need to give the app camera permission. Do you want to grant permissions?</string>
+    <string name="label_ok_popup">OK</string>
+    <string name="image_picker_title">Select images</string>
+    <string name="search_your_post">Search your post</string>
+    <string name="backup">Backup</string>
+    <string name="create_a_backup">Create a backup</string>
+    <string name="restore_a_backup">Restore a backup</string>
+    <string name="export">Export</string>
+    <string name="language">Language</string>
+    <string name="preference">Preference</string>
+    <string name="alarm">Alarm</string>
+    <string name="bug_report">Bug report</string>
+    <string name="give_a_feedback">Give a feedback</string>
+    <string name="feedback">Feedback</string>
+    <string name="clear_data">Clear data</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="privacy_and_policy">Privacy and policy</string>
+    <string name="delete_all_warning">You are deleting all of your diaries. This can not be undo. Are you sure want to do this?</string>
+    <string name="warning">Warning</string>
+    <string name="all_data_deleted">All data are deleted</string>
+    <string name="all_data_not_deleted">An error occured</string>
+    <string name="max_images_selected_warning">You can only select maximum 10 images</string>
+    <string name="mock_title">My Diary</string>
+    <string name="mock_content">
+        This post talks about what not to miss in Dubai. Find out the top places in Dubai and do not miss adding them to your bucket list.
+
+Dubai is known for its ability to draw visitors from all over the world. The grand atmosphere of Dubai is certain to make you feel like you are high above the list. The Emirate is famous for its high-end shopping, pulsating nightlife scene, and its architectural style. The architecture of Dubai will surely make you feel awestruck. There is a wide range of options in Dubai.
+
+Dubai is a city that offers many activities. The gardens of Dubai are no less beautiful. They are magical works of art. The gardeners who designed them that are an art by themselves. The stunning and unique view from the gardens is breathtaking. Dubai offers some of the best luxury experiences as well.
+
+        Dubai Miracle Garden is known as The most well-known gardening area in Dubai. Dubai Miracle Garden is often referred to as one of the most impressive natural flower gardens in the world. The park is home to over 100,000 flowers. They are utilized to make huge floral arrangements. It received three-time Guinness Book of World Records. The garden has become one of the most beautiful landscapes. It is truly something to behold. Moreover, it is a stunning spot in the city. There’s not a single chance of missing out on the opportunity to explore this beautiful natural setting with your family.
+
+   Dubai Frame, which captures the coral stone home in Old Dubai on one side and the city’s skyscrapers on the other is an iconic landmark in the UAE. However, the Dubai Frame can be described as the biggest frame construction in the world. It was designed for the World Expo 2021. In other words, it is the largest frame structure in the world. Dubai Frame has been constructed by using 2000 tonnes of steel and 970 square meters of glass that has been laminated.
+
+From Deira’s souks to its historical streets, and the Arabian desert’s immense dunes, as well as the striking waters of the Arabian Gulf and Dubai Marina’s towering buildings, you will get an amazing view of the tourist attractions that are Dubai through the Frame. Dubai Frame has a gallery located on the mezzanine floor that guides visitors through audio and audio-based presentations on Dubai’s historical roots. The exterior Wall that is part of Dubai Frame is adorned with a special kind of golden tiles, which make the structure captivating.
+    </string>
+    <string name="data">Data</string>
+    <string name="design_your_card">Design your card</string>
+    <string name="from_photo">From photo</string>
+    <string name="from_color">From color</string>
+</resources>

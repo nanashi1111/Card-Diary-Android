@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="post"
+            type="com.cleanarchitectkotlinflowhiltsimplestway.domain.models.DiaryPost" />
+    </data>
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_8sdp"
+        app:cardElevation="20sp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/vStart"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="1dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clSummary"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="W, 119:164"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/vStart"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <ImageView
+                    android:id="@+id/ivOpenQuote"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:adjustViewBounds="true"
+                    android:alpha="0.3"
+                    android:src="@drawable/ic_quote"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivCloseQuote"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:adjustViewBounds="true"
+                    android:alpha="0.3"
+                    android:rotation="180"
+                    android:src="@drawable/ic_quote"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llSummary"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="@dimen/_18sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    app:layout_constraintBottom_toTopOf="@id/ivCloseQuote"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivOpenQuote">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:maxLines="1"
+                        android:text="@{post.title}"
+                        android:textSize="25sp"
+                        tools:text="I love you" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:maxLines="3"
+                        android:text="@{post.content}"
+                        android:textSize="13sp"
+                        tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <ImageView
+                    android:id="@+id/ivBackground"
+                    bindImages="@{post.images}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/clSummary"
+                app:layout_constraintEnd_toStartOf="@id/clSummary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:text="@{post.dayOfMonth}"
+                    android:id="@+id/tvDate"
+                    android:fontFamily="@font/oswald_bold"
+                    android:alpha="0.7"
+                    android:textColor="@color/black"
+                    tools:text="14"
+                    android:includeFontPadding="false"
+                    android:textSize="40sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="@{post.dayOfWeek}"
+                    android:id="@+id/tvWeekDay"
+                    android:fontFamily="@font/oswald_bold"
+                    android:alpha="0.7"
+                    android:textColor="@color/black"
+                    tools:text="MON"
+                    android:textAllCaps="true"
+                    android:includeFontPadding="false"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivWeather"
+                    bindWeather="@{post.weather}"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:tint="@color/create_diary_text_hint"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etTitle"
+                    app:srcCompat="@drawable/ic_weather" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:alpha="0.1"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/clSummary"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

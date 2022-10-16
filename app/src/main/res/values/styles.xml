@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ToolBarIcon">
+        <item name="android:layout_width">?attr/actionBarSize</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:tint">@color/tint_white_background_icon</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+    </style>
+
+    <style name="DialogButton">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:alpha">0.1</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="SettingDivider" parent="Divider">
+        <item name="android:layout_marginLeft">@dimen/_10sdp</item>
+        <item name="android:layout_marginRight">@dimen/_10sdp</item>
+        <item name="android:layout_marginTop">@dimen/_10sdp</item>
+    </style>
+
+    <style name="WeatherSelectorContainer">
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">@dimen/_15sdp</item>
+    </style>
+
+    <style name="WeatherSelectorIcon">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/_20sdp</item>
+        <item name="tint">@color/weather_selector</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="WeatherSelectorText">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">@dimen/_35sdp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textColor">@color/weather_selector</item>
+    </style>
+
+    <style name="WeatherSelectorCheck">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_height">@dimen/_15sdp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_check</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="CreatePostOptionText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingStart">@dimen/_10sdp</item>
+        <item name="android:paddingEnd">@dimen/_10sdp</item>
+        <item name="android:paddingTop">@dimen/_5sdp</item>
+        <item name="android:paddingBottom">@dimen/_5sdp</item>
+        <item name="android:background">@drawable/bg_create_post_option_title</item>
+        <item name="android:layout_marginStart">@dimen/_10sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+    </style>
+
+    <style name="CreatePostOptionButton">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:clipChildren">false</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:tint">@color/white</item>
+        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
+        <item name="android:layout_marginTop">@dimen/_5sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_5sdp</item>
+    </style>
+
+    <style name="SettingHeader">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/oswald_medium</item>
+        <item name="android:alpha">0.25</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginStart">@dimen/_10sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
+    </style>
+
+    <style name="SettingItem">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/oswald_bold</item>
+        <item name="android:alpha">0.6</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingLeft">@dimen/_10sdp</item>
+        <item name="android:paddingRight">@dimen/_10sdp</item>
+        <item name="android:paddingTop">@dimen/_5sdp</item>
+        <item name="android:paddingBottom">@dimen/_5sdp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:drawableEnd">@drawable/ic_setting_next</item>
+    </style>
+
+
+</resources>
