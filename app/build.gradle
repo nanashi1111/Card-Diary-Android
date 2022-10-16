@@ -138,7 +138,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
 
     implementation project(':tedimagepicker')
-    implementation project(':month-year-picker')
+    implementation 'com.gu.android:toolargetool:0.3.0'
+    implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
