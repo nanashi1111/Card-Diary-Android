@@ -125,7 +125,6 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
     val dialogFragment = MonthYearPickerDialogFragment
       .getInstance(monthSelected, yearSelected).apply {
         setOnDateSetListener { year, monthOfYear ->
-          Logger.d("DateSetListener: $monthOfYear - $year")
           viewModel.needSmoothScroll = true
           viewModel.updateCurrentYearMonth(year, 1 + monthOfYear)
         }

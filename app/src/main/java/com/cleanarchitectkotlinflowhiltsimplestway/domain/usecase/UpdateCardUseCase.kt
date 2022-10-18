@@ -21,7 +21,6 @@ class UpdateCardUseCase @Inject constructor(
 
   override fun buildFlow(param: Params): Flow<State<CardTemplate>> {
     return flow {
-      Logger.d("UpdateCardUseCase: $param")
       emit(State.LoadingState)
       val time = String.format("%02d-%04d", param.month, param.year)
       when (param.type) {
