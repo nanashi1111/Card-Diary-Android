@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--BEHIND VIEW-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/behindView"
+        android:visibility="invisible"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/shadow_view_back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="@drawable/shadow_white"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvMonthInNumberBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:fontFamily="@font/quicksand_regular"
+                    android:includeFontPadding="false"
+                    android:textSize="65sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="7" />
+
+                <TextView
+                    android:textAllCaps="true"
+                    android:id="@+id/tvMonthInTextBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:includeFontPadding="false"
+                    android:textSize="25sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvMonthInNumberBack"
+                    tools:text="Jul" />
+
+                <TextView
+                    android:id="@+id/tvHint"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:text="@string/hint_write_diary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/_20sdp"
+                    app:layout_constraintBottom_toTopOf="@id/tvHint"
+                    app:layout_constraintTop_toBottomOf="@id/tvMonthInTextBack"
+                    android:layout_height="0dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:id="@+id/rvDateInMonth"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--FRONT VIEW-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/frontView"
+
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/shadow_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:background="@drawable/shadow_blue"
+            android:padding="@dimen/_20sdp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/ivBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:riv_corner_radius="@dimen/background_image_radius" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_image_overlay" />
+
+                <TextView
+                    android:id="@+id/tvMonthInNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:fontFamily="@font/quicksand_regular"
+                    android:includeFontPadding="false"
+                    android:text="7"
+                    android:textColor="@color/text_component_dashboard"
+                    android:textSize="65sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvMonthInText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:includeFontPadding="false"
+                    android:text="Jul"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_component_dashboard"
+                    android:textSize="25sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvMonthInNumber" />
+
+                <ProgressBar
+                    android:id="@+id/pbProgress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:progress="50"
+                    android:progressBackgroundTint="@color/white"
+                    android:progressTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvPostData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:text="21/31"
+                    android:textColor="@color/text_component_dashboard"
+                    app:layout_constraintBottom_toTopOf="@id/pbProgress"
+                    app:layout_constraintStart_toStartOf="@id/pbProgress" />
+
+                <ImageView
+                    android:id="@+id/ivSetting"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:padding="@dimen/_7sdp"
+                    android:src="@drawable/ic_three_dots"
+                    app:layout_constraintBottom_toBottomOf="@id/pbProgress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tint="@color/text_component_dashboard" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:indeterminateTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,6 +40,7 @@
         <entry key="app/src/main/res/layout/layout_app_toolbar.xml" value="0.1359375" />
         <entry key="app/src/main/res/layout/layout_create_post_actions.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_empty_dataset.xml" value="0.15052083333333333" />
+        <entry key="app/src/main/res/layout/view_flip_month.xml" value="0.175" />
       </map>
     </option>
   </component>

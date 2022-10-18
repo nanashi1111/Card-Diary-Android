@@ -47,7 +47,6 @@ class SaveDiaryUseCase @Inject constructor(
         FileUtils.clearFolder(tempFolder)
 
         val images = folder.listFiles().filter { it.isFile }.map { it.absolutePath }
-        Logger.d("Saving Images: $images")
 
         if (param.updateExisting) {
           diaryRepository.updateDiaryPost(

@@ -75,7 +75,6 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     args.post?.let {
-      Logger.d("Input Post: $it")
       viewModel.getDiaryPost(it.date)
       viewModel.postId = it.date
     } ?: run {
@@ -249,7 +248,6 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
     safeCollectLatestFlow(viewModel.saveDiaryResultFlow) {
       when (it) {
         is State.LoadingState -> {
-          Logger.d("Saving ${viewBinding.etTitle.text}")
           loadingDialog.display(this@CreateDiaryPostFragment)
         }
         is State.ErrorState -> {
@@ -260,7 +258,6 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
               TITLE_EMPTY -> showErrorMessage(getString(R.string.error_empty_title))
             }
           }
-          Logger.d("Saving diary error: ${it.exception}")
           loadingDialog.hide()
         }
         is State.DataState -> {
