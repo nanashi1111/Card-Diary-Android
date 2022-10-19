@@ -41,6 +41,16 @@
         <entry key="app/src/main/res/layout/layout_create_post_actions.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_empty_dataset.xml" value="0.15052083333333333" />
         <entry key="app/src/main/res/layout/view_flip_month.xml" value="0.175" />
+        <entry key="filepicker/src/main/res/drawable/file_list_divider.xml" value="0.184" />
+        <entry key="filepicker/src/main/res/drawable/ic_file.xml" value="0.184" />
+        <entry key="filepicker/src/main/res/drawable/ic_folder.xml" value="0.184" />
+        <entry key="filepicker/src/main/res/drawable/ic_folder_opened.xml" value="0.184" />
+        <entry key="filepicker/src/main/res/layout-v21/dialog_file_list_item.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_file_list.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_file_list_item.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_footer.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_header.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_main.xml" value="0.375" />
       </map>
     </option>
   </component>

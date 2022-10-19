@@ -107,12 +107,12 @@ object FileUtils {
     forceClearFolder(folder)
   }
 
-  private fun isExternalStorageReadOnly(): Boolean {
+   fun isExternalStorageReadOnly(): Boolean {
     val extStorageState = Environment.getExternalStorageState()
     return Environment.MEDIA_MOUNTED_READ_ONLY == extStorageState
   }
 
-  private fun isExternalStorageAvailable(): Boolean {
+   fun isExternalStorageAvailable(): Boolean {
     val extStorageState = Environment.getExternalStorageState()
     return Environment.MEDIA_MOUNTED == extStorageState
   }

@@ -1,9 +1,18 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.data.repository
 
+import android.content.Context
+import android.os.Environment
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.DiaryPostData
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.WeatherType
 import com.cleanarchitectkotlinflowhiltsimplestway.data.room.AppDatabase
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.FileUtils
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.FileUtils.isExternalStorageAvailable
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.FileUtils.isExternalStorageReadOnly
 import com.dtv.starter.presenter.utils.log.Logger
+import com.google.gson.Gson
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
 import java.util.*
 
 interface DiaryRepository {
@@ -20,9 +29,11 @@ interface DiaryRepository {
   fun getAll(): List<DiaryPostData>
 
   fun deleteAll(): Int
+
+  fun exportDbToTextFile(parentFolder: String):String?
 }
 
-class DiaryRepositoryImpl(private val appDatabase: AppDatabase) : DiaryRepository {
+class DiaryRepositoryImpl(private val context: Context, private val appDatabase: AppDatabase, private val gson: Gson) : DiaryRepository {
   override fun saveDiaryPost(id: Long, images: List<String>, title: String, content: String, weather: WeatherType): Boolean {
     val post = DiaryPostData(
       date = id, images = images, title = title, content = content, weather = weather
@@ -48,4 +59,19 @@ class DiaryRepositoryImpl(private val appDatabase: AppDatabase) : DiaryRepositor
   override fun getAll() = appDatabase.diaryDao().getDiaryPosts(0L, Date().time)
 
   override fun deleteAll() = appDatabase.diaryDao().deleteAll()
+
+  override fun exportDbToTextFile(parentFolder: String): String? {
+    if (isExternalStorageAvailable() && !isExternalStorageReadOnly()) {
+      val allPosts = getAll()
+      val allPostsData = gson.toJson(allPosts)
+      val fileName = "${SimpleDateFormat("MMddyyyy_HHmmss").format(Date())}.txt"
+      //val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
+      val file = File("$parentFolder/$fileName")
+      val fos = FileOutputStream(file)
+      fos.write(allPostsData.toByteArray())
+      fos.close()
+      return file.absolutePath
+    }
+    return null
+  }
 }

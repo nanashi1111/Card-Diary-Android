@@ -28,7 +28,6 @@ import com.cleanarchitectkotlinflowhiltsimplestway.utils.FlipMonthViewCallback
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectLatestFlow
 import com.dtv.starter.presenter.utils.extension.hasPermissions
-import com.dtv.starter.presenter.utils.log.Logger
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -58,22 +57,8 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
 
   private var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
 
-  fun uiInformation() = viewBinding.flipMonthView.uiInformation()
-
   private val cardDesignChangedBroadcast = object: BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {
-      /*p1?.let {
-        val month = it.getIntExtra(KEY_MONTH, 1)
-        val year = it.getIntExtra(KEY_YEAR, 1)
-
-        Logger.d("Prepare_BindTemplateFromBroadCast: ${month}/${year}")
-
-        if (month == 1 + this@MonthCardFragment.month && year == this@MonthCardFragment.year) {
-          val template = it.getSerializableExtra(MonthCardFrontFragment.KEY_CARD_DESIGN) as CardTemplate
-          Logger.d("BindTemplateFromBroadCast: ${this@MonthCardFragment.month + 1}/${this@MonthCardFragment.year} : $template ; uiInfo: ${uiInformation()}")
-          viewBinding.flipMonthView.bindCardTemplate(template)
-        }
-      }*/
       monthPostsViewModel.getCardTemplate(month, year)
     }
   }
@@ -90,6 +75,7 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
           pickPhoto()
         }
       }
+
   }
 
   override fun initView() {

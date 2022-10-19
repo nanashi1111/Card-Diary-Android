@@ -51,6 +51,7 @@
                     android:visibility="gone" />
 
                 <TextView
+                    android:id="@+id/tvExport"
                     style="@style/SettingItem"
                     android:text="@string/export"
                     android:visibility="visible" />
