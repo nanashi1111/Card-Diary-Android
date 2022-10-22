@@ -7,14 +7,41 @@ import android.os.Environment
 import android.provider.OpenableColumns
 import androidx.core.net.toFile
 import com.dtv.starter.presenter.utils.log.Logger
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStream
+import java.io.*
 import java.nio.channels.FileChannel
 
 
 object FileUtils {
+
+  const val PARENT_FOLDER = "CardDiary"
+  const val EXPORTED_DATA_FOLDER = "Exported"
+
+  fun printFolderContent(folder: File) {
+    Logger.d("Printing folder: ${folder.absolutePath}")
+    folder.listFiles()?.forEach {
+      if (it.isFile) {
+        Logger.d("Printing file: ${it.absolutePath}")
+      } else {
+        printFolderContent(it)
+      }
+    }
+  }
+
+  fun getExportedFolder(context: Context) : File{
+    val f = File(context.filesDir, EXPORTED_DATA_FOLDER)
+    if (!f.exists()) {
+      f.mkdirs()
+    }
+    return f
+  }
+
+  fun getParentFolder(context: Context): File {
+    val f = File(context.filesDir, PARENT_FOLDER)
+    if (!f.exists()) {
+      f.mkdirs()
+    }
+    return f
+  }
 
   fun saveFile(context: Context, sourceUri: Uri, destination: File): String {
     return try {
@@ -37,14 +64,14 @@ object FileUtils {
 
   fun createDiaryFolderForDate(context: Context, timestamp: Long): File {
     val folderName = "$timestamp"
-    val folder = File(context.filesDir, folderName)
+    val folder = File(getParentFolder(context),"$folderName")
     if (!folder.exists()) {
       folder.mkdirs()
     }
     return folder
   }
 
-  fun copyFolderContent(sourceFolder: File, targetFolder: File) {
+  fun copyFolderContent(sourceFolder: File, targetFolder: File, prefix: String) {
     for (targetFolderFile in targetFolder.listFiles()) {
       if (targetFolderFile.isFile) {
         targetFolderFile.delete()
@@ -52,14 +79,14 @@ object FileUtils {
     }
 
     for (sourceFolderFile in sourceFolder.listFiles()) {
-      val fileName = sourceFolderFile.name
+      val fileName = "${prefix}_${sourceFolderFile.name}"
       val targetFolderFile = File(targetFolder, fileName)
       copySingleFile(sourceFolderFile, targetFolderFile)
     }
 
   }
 
-  private fun copySingleFile(sourceFile: File, destFile: File) {
+  fun copySingleFile(sourceFile: File, destFile: File) {
     Logger.d(
       "COPY FILE: " + sourceFile.absolutePath
           + " TO: " + destFile.absolutePath
@@ -89,7 +116,7 @@ object FileUtils {
     }
   }
 
-  private fun forceClearFolder(folder: File) {
+  fun forceClearFolder(folder: File) {
     folder.listFiles()?.let {
       for (file in it) {
         if (file.isFile) {
@@ -107,17 +134,17 @@ object FileUtils {
     forceClearFolder(folder)
   }
 
-  private fun isExternalStorageReadOnly(): Boolean {
+   fun isExternalStorageReadOnly(): Boolean {
     val extStorageState = Environment.getExternalStorageState()
     return Environment.MEDIA_MOUNTED_READ_ONLY == extStorageState
   }
 
-  private fun isExternalStorageAvailable(): Boolean {
+   fun isExternalStorageAvailable(): Boolean {
     val extStorageState = Environment.getExternalStorageState()
     return Environment.MEDIA_MOUNTED == extStorageState
   }
 
-  private fun getFile(context: Context, uri: Uri): File {
+  fun getFile(context: Context, uri: Uri): File {
     val destinationFilename = File(context.filesDir.path + File.separatorChar + queryName(context, uri))
     try {
       context.contentResolver.openInputStream(uri).use { ins ->

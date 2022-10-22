@@ -18,8 +18,8 @@ android {
         applicationId "com.klmobile.carddiary"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.1.0"
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -138,7 +138,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
 
     implementation project(':tedimagepicker')
-    implementation project(':month-year-picker')
+    implementation 'com.gu.android:toolargetool:0.3.0'
+    implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
+    implementation 'net.lingala.zip4j:zip4j:2.11.2'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

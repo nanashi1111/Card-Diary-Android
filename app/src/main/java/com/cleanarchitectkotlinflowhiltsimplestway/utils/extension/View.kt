@@ -172,12 +172,14 @@ fun View.setSafeOnClickListener(delay: Int? = null, block: (View) -> Unit) {
 }
 
 fun ImageView.loadResource(@DrawableRes resId: Int, corner: Int) {
+    Glide.with(context).clear(this)
     Glide.with(context).load(resId).transform(CenterCrop(),RoundedCorners(corner))
         .override(width, height)
         .into(this)
 }
 
 fun ImageView.loadBackgroundFile(filePath: String, corner: Int) {
+    Glide.with(context).clear(this)
     Glide.with(context)
         .load(File(filePath))
         .diskCacheStrategy(DiskCacheStrategy.NONE)

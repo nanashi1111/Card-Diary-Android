@@ -21,7 +21,6 @@ class UpdateCardUseCase @Inject constructor(
 
   override fun buildFlow(param: Params): Flow<State<CardTemplate>> {
     return flow {
-      Logger.d("UpdateCardUseCase: $param")
       emit(State.LoadingState)
       val time = String.format("%02d-%04d", param.month, param.year)
       when (param.type) {
@@ -32,7 +31,7 @@ class UpdateCardUseCase @Inject constructor(
           param.uri?.let {
             uri ->
             //Save file
-            val targetFile = File(context.filesDir, "card-$time-${System.currentTimeMillis()}")
+            val targetFile = File(FileUtils.getParentFolder(context), "card-$time-${System.currentTimeMillis()}")
             if (targetFile.exists()) {
               targetFile.delete()
             }
