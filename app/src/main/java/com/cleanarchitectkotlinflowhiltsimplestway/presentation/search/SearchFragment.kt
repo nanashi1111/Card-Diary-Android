@@ -9,12 +9,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentSearchBinding
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.PostAdapter
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigateUp
+import com.dtv.starter.presenter.utils.extension.beVisibleIf
 import com.dtv.starter.presenter.utils.extension.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -46,7 +48,6 @@ class SearchFragment: BaseViewBindingFragment<FragmentSearchBinding, SearchViewM
       ivBack.setOnClickListener {
         findNavController().safeNavigateUp()
       }
-
     }
   }
 
@@ -58,6 +59,10 @@ class SearchFragment: BaseViewBindingFragment<FragmentSearchBinding, SearchViewM
           if (it is State.DataState) {
             val data = it.data
             adapter.submit(data)
+            viewBinding.emptyDataset.apply {
+              root.beVisibleIf(data.isEmpty())
+              tvMessage.text = getString(R.string.message_no_result)
+            }
           }
         }
       }
