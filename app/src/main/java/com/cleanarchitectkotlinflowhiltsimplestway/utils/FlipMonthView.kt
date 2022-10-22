@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.CardTemplate
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.TEMPLATE_COLOR
@@ -25,6 +26,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.monthInText
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.timeStamp
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.coloredBackground
 import com.dtv.starter.presenter.utils.extension.*
+import com.dtv.starter.presenter.utils.log.Logger
 
 class FlipMonthView(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
 
@@ -82,15 +84,19 @@ class FlipMonthView(context: Context, attrs: AttributeSet?) : ConstraintLayout(c
   fun bindCardTemplate(template: CardTemplate) {
     when (template.type) {
       TEMPLATE_DEFAULT -> {
+        Logger.d("bindCardTemplate: ${vb.tvMonthInNumber.text}")
         val month = 1 + this@FlipMonthView.month
         vb.ivBackground.loadResource(resourceId(month), resources.getDimensionPixelSize(R.dimen.background_image_radius))
       }
       TEMPLATE_COLOR -> {
         val color = template.data
+        Logger.d("bindCardTemplate: ${vb.tvMonthInNumber.text}: $color")
+        Glide.with(context).clear(vb.ivBackground)
         vb.ivBackground.setImageBitmap(coloredBackground(color))
       }
       TEMPLATE_PHOTO -> {
         val filePath = template.data
+        Logger.d("bindCardTemplate: ${vb.tvMonthInNumber.text}: $filePath")
         vb.ivBackground.loadBackgroundFile(filePath, resources.getDimensionPixelSize(R.dimen.background_image_radius))
       }
     }
@@ -118,6 +124,7 @@ class FlipMonthView(context: Context, attrs: AttributeSet?) : ConstraintLayout(c
   }
 
   fun showLoading(visible: Boolean) {
+    return
     vb.pbLoading.beVisibleIf(visible)
   }
 

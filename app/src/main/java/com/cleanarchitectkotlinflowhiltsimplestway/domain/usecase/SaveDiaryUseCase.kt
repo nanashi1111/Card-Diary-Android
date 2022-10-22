@@ -2,6 +2,7 @@ package com.cleanarchitectkotlinflowhiltsimplestway.domain.usecase
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.WeatherType
 import com.cleanarchitectkotlinflowhiltsimplestway.data.repository.DiaryRepository
@@ -42,12 +43,12 @@ class SaveDiaryUseCase @Inject constructor(
         }
         //Copy
         FileUtils.clearFolder(folder)
-        FileUtils.copyFolderContent(tempFolder, folder)
+        FileUtils.copyFolderContent(tempFolder, folder, prefix = "${param.id}")
         //Clear
         FileUtils.clearFolder(tempFolder)
 
         val images = folder.listFiles().filter { it.isFile }.map { it.absolutePath }
-
+        Logger.d("SavingImages: $images")
         if (param.updateExisting) {
           diaryRepository.updateDiaryPost(
             id = param.id,

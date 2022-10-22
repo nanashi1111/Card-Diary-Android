@@ -28,7 +28,6 @@ import com.cleanarchitectkotlinflowhiltsimplestway.utils.FlipMonthViewCallback
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectLatestFlow
 import com.dtv.starter.presenter.utils.extension.hasPermissions
-import com.dtv.starter.presenter.utils.log.Logger
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -37,10 +36,12 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedimagepicker.builder.TedImagePicker
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, MonthCardViewModel>(FragmentMonthCardBinding::inflate), FlipMonthViewCallback {
+class MonthCardFragment : BaseViewBindingFragment<FragmentMonthCardBinding, MonthCardViewModel>(FragmentMonthCardBinding::inflate), FlipMonthViewCallback {
 
   override val viewModel: MonthCardViewModel by lazy {
     (requireParentFragment() as DashboardFragment).monthCardViewModel
@@ -58,22 +59,8 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
 
   private var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
 
-  fun uiInformation() = viewBinding.flipMonthView.uiInformation()
-
-  private val cardDesignChangedBroadcast = object: BroadcastReceiver() {
+  private val cardDesignChangedBroadcast = object : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {
-      /*p1?.let {
-        val month = it.getIntExtra(KEY_MONTH, 1)
-        val year = it.getIntExtra(KEY_YEAR, 1)
-
-        Logger.d("Prepare_BindTemplateFromBroadCast: ${month}/${year}")
-
-        if (month == 1 + this@MonthCardFragment.month && year == this@MonthCardFragment.year) {
-          val template = it.getSerializableExtra(MonthCardFrontFragment.KEY_CARD_DESIGN) as CardTemplate
-          Logger.d("BindTemplateFromBroadCast: ${this@MonthCardFragment.month + 1}/${this@MonthCardFragment.year} : $template ; uiInfo: ${uiInformation()}")
-          viewBinding.flipMonthView.bindCardTemplate(template)
-        }
-      }*/
       monthPostsViewModel.getCardTemplate(month, year)
     }
   }
@@ -90,6 +77,7 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
           pickPhoto()
         }
       }
+
   }
 
   override fun initView() {
@@ -105,8 +93,6 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(cardDesignChangedBroadcast, cardDesignChangedIntentFilter)
-    /*monthPostsViewModel.getPostInMonth(month + 1, year)
-    monthPostsViewModel.getCardTemplate(month, year)*/
 
     lifecycleScope.launch {
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -124,7 +110,8 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
             if (time != template.time) {
               return@safeCollectLatestFlow
             }
-            viewBinding.flipMonthView.bindCardTemplate(template)
+            withContext(Dispatchers.Main) { viewBinding.flipMonthView.bindCardTemplate(template) }
+
           }
         }
       }
@@ -146,7 +133,10 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
         safeCollectLatestFlow(monthPostsViewModel.monthData) {
           when (it) {
             is State.LoadingState -> viewBinding.flipMonthView.showLoading(true)
-            is State.ErrorState -> viewBinding.flipMonthView.showLoading(false)
+            is State.ErrorState -> {
+              viewBinding.flipMonthView.showLoading(false)
+              it.exception.printStackTrace()
+            }
             is State.DataState -> {
               viewBinding.flipMonthView.showLoading(false)
               //Behind

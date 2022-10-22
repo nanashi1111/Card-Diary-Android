@@ -35,19 +35,26 @@ class MonthPostViewModel @Inject constructor(
 
   fun getPostInMonth(month: Int, year: Int) {
     viewModelScope.launch {
+      Logger.d("getPostInMonth $month/$year : ${System.currentTimeMillis()} ; instance: ${hashCode()}")
       getPostInMonthUseCase.invoke(GetPostCountInMonthUseCase.Params(month, year)).collectLatest { _monthData.emit(it) }
     }
   }
 
-  private val _template = MutableSharedFlow<State<CardTemplate>>()
+  private val _template = MutableSharedFlow<State<CardTemplate>>(replay = Int.MAX_VALUE)
   val template: SharedFlow<State<CardTemplate>> = _template
 
   fun getCardTemplate(month: Int, year: Int) {
     viewModelScope.launch {
+      Logger.d("getCardTemplate $month/$year : ${System.currentTimeMillis()} ; instance: ${hashCode()}")
       getCardTemplateUseCase.invoke(GetCardTemplateUseCase.Params(month, year)).collectLatest {
         _template.emit(it)
       }
     }
+  }
+
+  override fun onCleared() {
+    Logger.d("getCardTemplate onCleared : ${System.currentTimeMillis()} ; instance: ${hashCode()}")
+    super.onCleared()
   }
 
   fun updateCard(month: Int, year: Int, type: String, data: String, uri: Uri?) {

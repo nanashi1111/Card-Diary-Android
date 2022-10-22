@@ -31,7 +31,7 @@ class UpdateCardUseCase @Inject constructor(
           param.uri?.let {
             uri ->
             //Save file
-            val targetFile = File(context.filesDir, "card-$time-${System.currentTimeMillis()}")
+            val targetFile = File(FileUtils.getParentFolder(context), "card-$time-${System.currentTimeMillis()}")
             if (targetFile.exists()) {
               targetFile.delete()
             }

@@ -9,13 +9,13 @@ data class DiaryPostData(
   @PrimaryKey
   val date: Long = System.currentTimeMillis(),
   @ColumnInfo(name = "images")
-  val images: List<String> = emptyList(),
+  val images: List<String>? = emptyList(),
   @ColumnInfo(name = "title")
-  val title: String = "",
+  val title: String? = "",
   @ColumnInfo(name = "content")
-  val content: String = "",
+  val content: String? = "",
   @ColumnInfo(name = "weather")
-  val weather: WeatherType = WeatherType.SUNNY
+  val weather: WeatherType? = WeatherType.SUNNY
 )
 
 enum class WeatherType {

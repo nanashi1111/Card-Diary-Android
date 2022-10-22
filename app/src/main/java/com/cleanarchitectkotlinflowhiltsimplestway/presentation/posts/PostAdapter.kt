@@ -39,7 +39,8 @@ class PostAdapter(val posts: MutableList<DiaryPost>, val onPostSelected: (DiaryP
   }
 }
 
-class PostDiffUtils(val oldList: List<DiaryPost>, val newList: List<DiaryPost>): DiffUtil.Callback() {
+class PostDiffUtils(private val oldList: List<DiaryPost>, private val newList: List<DiaryPost>): DiffUtil.Callback() {
+
   override fun getOldListSize() = oldList.size
 
   override fun getNewListSize() = newList.size

@@ -1,12 +1,9 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.utils.extension
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import com.cleanarchitectkotlinflowhiltsimplestway.R
-
 
 fun coloredCircle(backgroundColor: String): GradientDrawable {
   val shape = GradientDrawable()

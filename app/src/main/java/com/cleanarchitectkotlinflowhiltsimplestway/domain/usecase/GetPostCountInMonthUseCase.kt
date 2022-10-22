@@ -21,7 +21,7 @@ class GetPostCountInMonthUseCase @Inject constructor (private val diaryRepositor
     return flow {
       emit(State.LoadingState)
       val timeRange = getMonthTimeRange(param.month, param.year)
-      val data = diaryRepository.getDiaryPosts(timeRange.first, timeRange.second)
+      val data = diaryRepository.getDiaryPosts(startDate = timeRange.first, endDate = timeRange.second, fullData = false)
       val numberOfDayInMonth = numberOfDayInMonth(param.month, param.year)
       val daysData = mutableListOf<DayData>()
       for (i in 1..numberOfDayInMonth) {

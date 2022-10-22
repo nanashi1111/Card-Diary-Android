@@ -74,4 +74,13 @@ From Deira’s souks to its historical streets, and the Arabian desert’s immen
     <string name="design_your_card">Design your card</string>
     <string name="from_photo">From photo</string>
     <string name="from_color">From color</string>
+    <string name="data_exported">Data exported</string>
+    <string name="data_imported">Data imported</string>
+    <string name="title_dialog_pick_folder">Pick a folder</string>
+    <string name="title_dialog_pick_file">Pick a file</string>
+    <string name="error_permission_not_grant">Manage External Storage Permission is denied</string>
+    <string name="exported_files">Exported files</string>
+    <string name="exported_file_description">Created at %s</string>
+    <string name="view_files">View files</string>
+    <string name="backup_files">Backup files</string>
 </resources>

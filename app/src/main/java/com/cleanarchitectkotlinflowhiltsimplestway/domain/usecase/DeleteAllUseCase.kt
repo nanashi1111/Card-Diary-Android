@@ -20,7 +20,7 @@ class DeleteAllUseCase @Inject constructor(
       emit(State.LoadingState)
       diaryRepository.deleteAll()
       cardRepository.deleteAll()
-      FileUtils.forceClearAllData(context)
+
       emit(State.DataState(true))
     }
   }

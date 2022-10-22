@@ -17,7 +17,7 @@ class GetPostInMonthUseCase @Inject constructor(private val diaryRepository: Dia
     return flow {
       emit(State.LoadingState)
       val timeRange = getMonthTimeRange(param.month, param.year)
-      val data = diaryRepository.getDiaryPosts(timeRange.first, timeRange.second)
+      val data = diaryRepository.getDiaryPosts(timeRange.first, timeRange.second, fullData = true)
         .map {
           mapping(it)
         }

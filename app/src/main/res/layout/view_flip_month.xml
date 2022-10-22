@@ -192,6 +192,7 @@
 
 
     <ProgressBar
+        android:visibility="gone"
         android:id="@+id/pbLoading"
         android:indeterminateTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

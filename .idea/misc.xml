@@ -26,7 +26,8 @@
         <entry key="app/src/main/res/layout/dialog_year_picker.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_create_diary_post.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_month_card.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_exported_file.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_month_card.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_month_card_behind.xml" value="0.13489583333333333" />
         <entry key="app/src/main/res/layout/fragment_month_card_front.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_month_posts.xml" value="0.25" />
@@ -35,12 +36,24 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_color_template.xml" value="0.13125" />
         <entry key="app/src/main/res/layout/item_day_in_month.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/item_exported_file.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_month_post.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_selected_photo.xml" value="0.12083333333333333" />
         <entry key="app/src/main/res/layout/layout_app_toolbar.xml" value="0.1359375" />
         <entry key="app/src/main/res/layout/layout_create_post_actions.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_empty_dataset.xml" value="0.15052083333333333" />
-        <entry key="app/src/main/res/layout/view_flip_month.xml" value="0.175" />
+        <entry key="app/src/main/res/layout/view_flip_month.xml" value="0.1" />
+        <entry key="app/src/main/res/xml/file_paths.xml" value="0.1609375" />
+        <entry key="filepicker/src/main/res/drawable/file_list_divider.xml" value="0.184" />
+        <entry key="filepicker/src/main/res/drawable/ic_file.xml" value="0.184" />
+        <entry key="filepicker/src/main/res/drawable/ic_folder.xml" value="0.184" />
+        <entry key="filepicker/src/main/res/drawable/ic_folder_opened.xml" value="0.184" />
+        <entry key="filepicker/src/main/res/layout-v21/dialog_file_list_item.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_file_list.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_file_list_item.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_footer.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_header.xml" value="0.17135416666666667" />
+        <entry key="filepicker/src/main/res/layout/dialog_main.xml" value="0.375" />
       </map>
     </option>
   </component>
