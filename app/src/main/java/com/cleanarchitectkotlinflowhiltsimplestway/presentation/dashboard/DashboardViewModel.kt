@@ -1,10 +1,12 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewModel
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.currentMonth
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.currentYear
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,21 +14,23 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(): BaseViewModel() {
 
-  val currentYearMonth = MutableStateFlow("${currentMonth()}-${currentYear()}")
   private var tempYear = currentYear()
   private var tempMonth = currentMonth()
+  val currentYearMonth = MutableLiveData<String>().apply {
+    postValue("${currentMonth()}-${currentYear()}")
+  }
 
   var needSmoothScroll = false
 
   fun updateCurrentYearMonth(year: Int, month: Int) {
     viewModelScope.launch {
-      currentYearMonth.emit("$month-$year")
+      currentYearMonth.postValue("$month-$year")
     }
   }
 
   fun updateCurrentYearMonth() {
     viewModelScope.launch {
-      currentYearMonth.emit("$tempMonth-$tempYear")
+      currentYearMonth.postValue("$tempMonth-$tempYear")
     }
   }
 
@@ -34,6 +38,5 @@ class DashboardViewModel @Inject constructor(): BaseViewModel() {
     tempYear = year
     tempMonth = month
   }
-
 
 }

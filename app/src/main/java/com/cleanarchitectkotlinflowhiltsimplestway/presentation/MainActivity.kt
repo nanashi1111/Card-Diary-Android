@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.DashboardFragment
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.FileUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.system.exitProcess
 
@@ -17,15 +18,16 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     setLightStatusBar()
+    FileUtils.printFolderContent(filesDir)
   }
 
   private fun setLightStatusBar() {
-    val decorView = window.decorView
-    val wic = WindowInsetsControllerCompat(window, decorView)
-    wic.isAppearanceLightStatusBars = true
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      window.statusBarColor = Color.WHITE
-    }
+//    val decorView = window.decorView
+//    val wic = WindowInsetsControllerCompat(window, decorView)
+//    wic?.isAppearanceLightStatusBars = true
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//      window.statusBarColor = Color.WHITE
+//    }
   }
 
   override fun onBackPressed() {

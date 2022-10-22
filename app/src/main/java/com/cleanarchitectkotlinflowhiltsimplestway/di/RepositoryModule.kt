@@ -28,5 +28,5 @@ class RepositoryModule {
 
   @Provides
   @Singleton
-  fun provideCardRepository(appDatabase: AppDatabase): CardRepository = CardRepositoryImpl(appDatabase)
+  fun provideCardRepository(@ApplicationContext context: Context, appDatabase: AppDatabase): CardRepository = CardRepositoryImpl(context, appDatabase)
 }

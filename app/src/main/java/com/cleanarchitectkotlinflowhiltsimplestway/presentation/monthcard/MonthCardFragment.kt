@@ -36,10 +36,12 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedimagepicker.builder.TedImagePicker
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, MonthCardViewModel>(FragmentMonthCardBinding::inflate), FlipMonthViewCallback {
+class MonthCardFragment : BaseViewBindingFragment<FragmentMonthCardBinding, MonthCardViewModel>(FragmentMonthCardBinding::inflate), FlipMonthViewCallback {
 
   override val viewModel: MonthCardViewModel by lazy {
     (requireParentFragment() as DashboardFragment).monthCardViewModel
@@ -57,7 +59,7 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
 
   private var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
 
-  private val cardDesignChangedBroadcast = object: BroadcastReceiver() {
+  private val cardDesignChangedBroadcast = object : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {
       monthPostsViewModel.getCardTemplate(month, year)
     }
@@ -91,8 +93,6 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(cardDesignChangedBroadcast, cardDesignChangedIntentFilter)
-    /*monthPostsViewModel.getPostInMonth(month + 1, year)
-    monthPostsViewModel.getCardTemplate(month, year)*/
 
     lifecycleScope.launch {
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -110,7 +110,8 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
             if (time != template.time) {
               return@safeCollectLatestFlow
             }
-            viewBinding.flipMonthView.bindCardTemplate(template)
+            withContext(Dispatchers.Main) { viewBinding.flipMonthView.bindCardTemplate(template) }
+
           }
         }
       }
@@ -132,7 +133,10 @@ class MonthCardFragment: BaseViewBindingFragment<FragmentMonthCardBinding, Month
         safeCollectLatestFlow(monthPostsViewModel.monthData) {
           when (it) {
             is State.LoadingState -> viewBinding.flipMonthView.showLoading(true)
-            is State.ErrorState -> viewBinding.flipMonthView.showLoading(false)
+            is State.ErrorState -> {
+              viewBinding.flipMonthView.showLoading(false)
+              it.exception.printStackTrace()
+            }
             is State.DataState -> {
               viewBinding.flipMonthView.showLoading(false)
               //Behind

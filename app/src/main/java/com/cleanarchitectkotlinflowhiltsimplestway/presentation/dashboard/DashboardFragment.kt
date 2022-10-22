@@ -18,6 +18,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthC
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardViewModel
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.*
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectLatestFlow
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.viewpager.HorizontalMarginItemDecoration
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
@@ -25,11 +26,12 @@ import com.dtv.starter.presenter.utils.extension.tint
 import com.dtv.starter.presenter.utils.log.Logger
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
-
 
 @AndroidEntryPoint
 class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, DashboardViewModel>(FragmentDashboardBinding::inflate){
@@ -70,20 +72,19 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
         viewModel.updateCurrentYearMonth()
       }
     }
-    lifecycleScope.launch {
-      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.currentYearMonth.collectLatest {
-          val currentMonth  = it.split("-").first().toInt()
-          val currentYear  = it.split("-")[1].toInt()
-          resetAndFocusCurrentMonth(currentYear, currentMonth)
-          viewBinding.tvYearSelector.text = "$currentYear"
-        }
-      }
+
+    viewModel.currentYearMonth.observe(viewLifecycleOwner) {
+      val currentMonth  = it.split("-").first().toInt()
+      val currentYear  = it.split("-")[1].toInt()
+      Logger.d("SettingDate: $currentMonth / $currentYear")
+      resetAndFocusCurrentMonth(currentYear, currentMonth)
+      viewBinding.tvYearSelector.text = "$currentYear"
     }
+
   }
 
   private fun setupCarousel(viewPager:ViewPager2){
-    viewPager.offscreenPageLimit = 3
+    viewPager.offscreenPageLimit = 1
     val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
     val currentItemHorizontalMarginPx = resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
     val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
@@ -100,7 +101,7 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
     viewPager.addItemDecoration(itemDecoration)
     viewPager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
       override fun onPageSelected(position: Int) {
-        val year = viewModel.currentYearMonth.value.split("-")[1].toInt()
+        val year = viewModel.currentYearMonth.value!!.split("-")[1].toInt()
         val month = 1 + position
         viewModel.updateTempYearMonth(year, month)
       }
@@ -108,16 +109,6 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
   }
 
   private fun showYearSelector() {
-//    YearPickerDialog()
-//      .apply {
-//        listener = object :OnYearSelected {
-//          override fun onYearSelected(year: Int) {
-//            viewModel.updateCurrentYearMonth(year, 1)
-//          }
-//        }
-//        show(this@DashboardFragment.childFragmentManager, "Y")
-//      }
-
     val calendar: Calendar = Calendar.getInstance()
     val yearSelected = calendar.get(Calendar.YEAR)
     val monthSelected = calendar.get(Calendar.MONTH)
@@ -142,22 +133,25 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
     lifecycleScope.launch {
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
         safeCollectFlow(monthCardViewModel.monthCardStateFlow) {
-          when (it) {
-            MonthCardState.FRONT -> {
-              viewBinding.apply {
-                rlCalendar.setBackgroundResource(R.drawable.bg_circled_dark_button)
-                ivToggleCalendar.setImageResource(R.drawable.ic_diary_calendar)
-                ivToggleCalendar.tint(R.color.tint_dark_background_icon_dashboard)
+          withContext(Dispatchers.Main) {
+            when (it) {
+              MonthCardState.FRONT -> {
+                viewBinding.apply {
+                  rlCalendar.setBackgroundResource(R.drawable.bg_circled_dark_button)
+                  ivToggleCalendar.setImageResource(R.drawable.ic_diary_calendar)
+                  ivToggleCalendar.tint(R.color.tint_dark_background_icon_dashboard)
+                }
               }
-            }
-            else -> {
-              viewBinding.apply {
-                rlCalendar.setBackgroundResource(R.drawable.bg_circled_main_blue_button)
-                ivToggleCalendar.setImageResource(R.drawable.ic_undo)
-                ivToggleCalendar.tint(R.color.white)
+              else -> {
+                viewBinding.apply {
+                  rlCalendar.setBackgroundResource(R.drawable.bg_circled_main_blue_button)
+                  ivToggleCalendar.setImageResource(R.drawable.ic_undo)
+                  ivToggleCalendar.tint(R.color.white)
+                }
               }
             }
           }
+
         }
       }
     }
@@ -166,6 +160,9 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
   private fun resetAndFocusCurrentMonth(year: Int, month: Int) {
     viewBinding.vpDashboard.apply {
       try {
+//        if (adapter == null || viewBinding.tvYearSelector.text.toString().toInt() != year) {
+//          adapter = DashBoardAdapter(this@DashboardFragment, year)
+//        }
         adapter = DashBoardAdapter(this@DashboardFragment, year)
         setCurrentItem(month - 1, viewModel.needSmoothScroll)
         lifecycleScope.launch {
@@ -176,10 +173,9 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
         e.printStackTrace()
       }
 
+
     }
   }
-
-  fun currentItem() = viewBinding.vpDashboard.currentItem
 
   fun showMonthPost(month: Int, year: Int) {
     findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToMonthPostsFragment(month, year))

@@ -47,10 +47,10 @@ fun mapping(entity: DiaryPostData): DiaryPost {
   val dayOfWeek = SimpleDateFormat("EEE").format(date)
   return DiaryPost(
     date = entity.date,
-    images = entity.images.filter { it.isNotEmpty() },
-    title = entity.title,
-    content = entity.content,
-    weather = entity.weather,
+    images = entity.images?.filter { it.isNotEmpty() } ?: emptyList(),
+    title = entity.title ?: "",
+    content = entity.content ?: "",
+    weather = entity.weather ?: WeatherType.SUNNY,
     dayOfMonth = dayOfMonth,
     dayOfWeek = dayOfWeek
   )

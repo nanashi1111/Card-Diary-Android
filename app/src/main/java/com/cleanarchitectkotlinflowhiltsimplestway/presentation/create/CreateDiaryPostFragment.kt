@@ -28,12 +28,10 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.W
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.WeatherSelectorDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmListener
-import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.LoadingDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.bindWeather
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.dateTimeInCreateDiaryScreen
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.*
 import com.dtv.starter.presenter.utils.extension.*
-import com.dtv.starter.presenter.utils.log.Logger
 import com.google.android.material.tabs.TabLayoutMediator
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -56,9 +54,6 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
 
   private val args: CreateDiaryPostFragmentArgs by navArgs()
 
-  private val loadingDialog: LoadingDialog by lazy {
-    LoadingDialog()
-  }
 
   private var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
 
@@ -84,62 +79,52 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
 
     viewBinding.tvDate.text = dateTimeInCreateDiaryScreen(d = Date(viewModel.postId))
 
-    lifecycleScope.launch {
-      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        safeCollectFlow(viewModel.diaryMode) { mode ->
-          when (mode) {
-            DiaryMode.VIEW -> viewBinding.apply {
-              llModifyImages.beGone()
-              tvSave.setText(R.string.edit)
-              etTitle.isEnabled = false
-              etContent.isEnabled = false
-            }
+    safeCollectFlow(viewModel.diaryMode) { mode ->
+      when (mode) {
+        DiaryMode.VIEW -> viewBinding.apply {
+          llModifyImages.beGone()
+          tvSave.setText(R.string.edit)
+          etTitle.isEnabled = false
+          etContent.isEnabled = false
+        }
 
-            DiaryMode.EDIT -> viewBinding.apply {
-              llModifyImages.beVisible()
-              ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
-              tvSave.setText(R.string.save)
-              etTitle.isEnabled = true
-              etContent.isEnabled = true
-              etTitle.requestFocus()
-            }
-          }
+        DiaryMode.EDIT -> viewBinding.apply {
+          llModifyImages.beVisible()
+          ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
+          tvSave.setText(R.string.save)
+          etTitle.isEnabled = true
+          etContent.isEnabled = true
+          etTitle.requestFocus()
         }
       }
     }
 
+    safeCollectFlow(viewModel.diaryPost) {
+      if (it is State.DataState) {
+        val post = it.data
+        viewBinding.apply {
+          etTitle.setText(post.title)
+          etContent.setText(post.content)
+          ivWeather.bindWeather(post.weather)
+          if (post.images.isNotEmpty()) {
+            val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, post.images.map { imageFile ->
+              val f = File(imageFile)
+              Uri.fromFile(f)
+            }.toMutableList())
+            vpSelectedImages.adapter = adapter
+            TabLayoutMediator(indicator, viewBinding.vpSelectedImages) { _, _ ->
+
+            }.attach()
+            viewModel.focusImage(0)
+            viewModel.selectedWeather.value = post.weather
 
 
-    lifecycleScope.launch {
-      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        safeCollectFlow(viewModel.diaryPost) {
-          if (it is State.DataState) {
-            val post = it.data
-            viewBinding.apply {
-              etTitle.setText(post.title)
-              etContent.setText(post.content)
-              ivWeather.bindWeather(post.weather)
-              if (post.images.isNotEmpty()) {
-                val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, post.images.map { imageFile ->
-                  val f = File(imageFile)
-                  Uri.fromFile(f)
-                }.toMutableList())
-                vpSelectedImages.adapter = adapter
-                TabLayoutMediator(indicator, viewBinding.vpSelectedImages) { _, _ ->
-
-                }.attach()
-                viewModel.focusImage(0)
-                viewModel.selectedWeather.value = post.weather
-
-
-                viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
-              }
-              viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
-            }
-            viewModel.postId = post.date
-
+            viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
           }
+          viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
         }
+        viewModel.postId = post.date
+
       }
     }
 
@@ -248,7 +233,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
     safeCollectLatestFlow(viewModel.saveDiaryResultFlow) {
       when (it) {
         is State.LoadingState -> {
-          loadingDialog.display(this@CreateDiaryPostFragment)
+          displayLoadingDialog(true)
         }
         is State.ErrorState -> {
           val error = it.exception
@@ -258,10 +243,10 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
               TITLE_EMPTY -> showErrorMessage(getString(R.string.error_empty_title))
             }
           }
-          loadingDialog.hide()
+          displayLoadingDialog(false)
         }
         is State.DataState -> {
-          loadingDialog.hide()
+          displayLoadingDialog(false)
           showSuccessMessage(getString(R.string.save_diary_success))
           findNavController().safeNavigateUp()
         }

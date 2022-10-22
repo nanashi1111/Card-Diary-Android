@@ -10,11 +10,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.LoadingDialog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 abstract class BaseViewBindingFragment<T : ViewBinding, VM : BaseViewModel>(private val initVb: (LayoutInflater, ViewGroup?, Boolean) -> T) :
   Fragment() {
+
+  protected var loadingDialog: LoadingDialog? = null
 
   private var _viewBinding: T? = null
   val viewBinding: T
@@ -39,13 +42,14 @@ abstract class BaseViewBindingFragment<T : ViewBinding, VM : BaseViewModel>(priv
         subscribeData()
       }
     }*/
-    lifecycleScope.launchWhenStarted {
+    /*lifecycleScope.launchWhenStarted {
       subscribeData()
-    }
+    }*/
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    lifecycleScope.launch { subscribeData() }
     initView()
   }
 
@@ -56,5 +60,16 @@ abstract class BaseViewBindingFragment<T : ViewBinding, VM : BaseViewModel>(priv
 
   abstract fun initView()
   abstract suspend fun subscribeData()
+
+  protected fun displayLoadingDialog(show: Boolean) {
+    if (show) {
+      loadingDialog?.hide()
+      loadingDialog = LoadingDialog()
+      loadingDialog?.display(this)
+    } else {
+      loadingDialog?.hide()
+      loadingDialog = null
+    }
+  }
 
 }

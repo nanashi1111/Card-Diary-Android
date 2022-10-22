@@ -39,6 +39,7 @@ class CardDesignDialog private constructor(): BaseBottomSheetFragment(R.layout.d
       adapter = provideColorAdapter()
     }
     view.findViewById<View>(R.id.tvPickPhoto).setSafeOnClickListener {
+      dismissAllowingStateLoss()
       listener?.onChooseBrowseGallery()
     }
     view.findViewById<View>(R.id.tvCancel).setOnClickListener {

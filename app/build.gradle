@@ -138,12 +138,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
 
     implementation project(':tedimagepicker')
-    implementation project(':filepicker')
     implementation 'com.gu.android:toolargetool:0.3.0'
     implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
-    //implementation 'com.github.Ru95Gasol:File-Picker:1.0'
+    implementation 'net.lingala.zip4j:zip4j:2.11.2'
 
-    //implementation 'com.github.salehyarahmadi:FileAndFolderPicker:1.0.4'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
