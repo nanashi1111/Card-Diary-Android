@@ -15,7 +15,7 @@ interface DiaryDao {
   @Query("select * from DiaryPostData where date = :date")
   fun getDiaryPost(date: Long): DiaryPostData
 
-  @Insert
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun saveDiaryPost(post: DiaryPostData)
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -237,6 +237,7 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         }
         is State.ErrorState -> {
           val error = it.exception
+          error.printStackTrace()
           if (error is InvalidDiaryPostException) {
             when (error.errorCode) {
               CONTENT_EMPTY -> showErrorMessage(getString(R.string.error_empty_content))

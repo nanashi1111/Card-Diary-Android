@@ -83,4 +83,6 @@ From Deira’s souks to its historical streets, and the Arabian desert’s immen
     <string name="exported_file_description">Created at %s</string>
     <string name="view_files">View files</string>
     <string name="backup_files">Backup files</string>
+    <string name="message_no_result">No result found</string>
+    <string name="title_dialog_select_date">Select a date to write</string>
 </resources>
