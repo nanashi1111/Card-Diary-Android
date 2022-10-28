@@ -17,14 +17,16 @@ jobs:
       - name: Generate Release APK
         run: ./gradlew assembleRelease
       # 3
-      - name: Build Signed APK
-          uses: victorbnl/build-signed-apk@main
-          id: sign_app
-          with:
-            keystore_b64: ${{ secrets.SIGNING_KEY }}
-            keystore_password: ${{ secrets.KEY_STORE_PASSWORD }}
-            key_alias: ${{ secrets.ALIAS }}
-            key_password: ${{ secrets.KEY_PASSWORD }}
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
       # 4
       - uses: actions/upload-artifact@master
         with:
