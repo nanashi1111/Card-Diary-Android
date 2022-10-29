@@ -15,14 +15,14 @@ jobs:
         uses: actions/checkout@v2
       # 2
       - name: Generate Release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew bundleRelease
       # 3
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1
         # ID used to access action output
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/apk/product/release
+          releaseDirectory: app/build/outputs/bundle/productRelease
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
