@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_20sdp">
+
+        <ImageView
+            android:id="@+id/ivCancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_cancel"
+            android:adjustViewBounds="true"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/oswald_bold"
+            android:gravity="center"
+            tools:text="Select a pattern to open app"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivCancel"/>
+
+        <com.itsxtt.patternlock.PatternLockView
+            android:id="@+id/pattern_lock_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="W, 1:1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:plv_regularDotRadiusRatio="0.15"
+            app:plv_selectedDotColor="@color/pattern_normal_color"
+            app:plv_errorDotColor="@color/pattern_incorrect_color"
+            app:plv_regularLineColor="@color/pattern_normal_color"
+            app:plv_regularDotColor="@color/pattern_normal_color"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

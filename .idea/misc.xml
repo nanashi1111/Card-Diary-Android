@@ -24,6 +24,7 @@
         <entry key="app/src/main/res/layout/dialog_select_date_to_write.xml" value="0.209375" />
         <entry key="app/src/main/res/layout/dialog_select_photo_chooser.xml" value="0.121875" />
         <entry key="app/src/main/res/layout/dialog_select_weather.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/dialog_unlock.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/dialog_year_picker.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_create_diary_post.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.335" />

@@ -18,21 +18,19 @@ android {
         applicationId "com.klmobile.carddiary"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 3
-        versionName "1.1.0"
+        versionCode 5
+        versionName "1.1.1"
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            //applicationId "com.klmobile.carddiary"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'LOGGABLE', 'false'
         }
         debug {
-            //applicationId "com.dev.carddiary"
             testCoverageEnabled true
             debuggable true
             buildConfigField 'boolean', 'LOGGABLE', 'true'
@@ -56,24 +54,15 @@ android {
         jvmTarget = '1.8'
     }
 
-    signingConfigs {
-        release {
-            keyAlias 'carddiary__11'
-            keyPassword '>>>>||<<<<??'
-            storeFile file("${rootProject.projectDir}/carddiary.jks")
-            storePassword '>>>>||<<<<??'
-        }
-    }
-
     flavorDimensions "capabilities"
     productFlavors {
         develop {
             applicationId "com.dev.carddiary"
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
         product {
             applicationId "com.klmobile.carddiary"
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
     }
 }
@@ -141,7 +130,7 @@ dependencies {
     implementation 'com.gu.android:toolargetool:0.3.0'
     implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
     implementation 'net.lingala.zip4j:zip4j:2.11.2'
-
+    implementation 'io.github.itsxtt:pattern-lock:0.2.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

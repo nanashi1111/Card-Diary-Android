@@ -73,16 +73,6 @@ class YearPickerDialog: BaseDialogFragment() {
     }
   }
 
-  /*override fun onStart() {
-    super.onStart()
-    val dialog: Dialog? = dialog
-    dialog?.let {
-      val width = (requireActivity().getScreenWidth() * 0.9f).toInt()
-      val height = ViewGroup.LayoutParams.WRAP_CONTENT
-      dialog.window?.setLayout(width, height)
-      dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-  }*/
 }
 
 interface OnYearSelected {

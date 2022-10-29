@@ -85,4 +85,15 @@ From Deira’s souks to its historical streets, and the Arabian desert’s immen
     <string name="backup_files">Backup files</string>
     <string name="message_no_result">No result found</string>
     <string name="title_dialog_select_date">Select a date to write</string>
+    <string name="privacy">Privacy</string>
+    <string name="setup_unlock_pattern">Setup unlock pattern</string>
+    <string name="txt_pattern_draw">Draw your pattern</string>
+    <string name="txt_pattern_redraw">Redraw your pattern</string>
+    <string name="txt_pattern_require_draw">Draw your pattern to unlock</string>
+    <string name="txt_setting_saved">Setting is saved</string>
+    <string name="txt_wrong_pattern_setup">Please enter the same pattern</string>
+    <string name="txt_wrong_pattern_unlock">Please enter correct pattern</string>
+    <string name="text_fingerprint">Use fingerprint</string>
+    <string name="text_pattern">Use pattern</string>
+    <string name="txt_finger_failed">Please try again later</string>
 </resources>

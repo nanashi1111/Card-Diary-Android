@@ -14,6 +14,8 @@ import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentSettingsBinding
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.unlock.PatternData
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.unlock.UnlockDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.FileUtils
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectLatestFlow
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
@@ -77,6 +79,12 @@ class SettingFragment : BaseViewBindingFragment<FragmentSettingsBinding, Setting
       }
 
       tvVersion.text = BuildConfig.VERSION_NAME
+
+      ivSetupPassword.setSafeOnClickListener {
+        UnlockDialog.newInstance(PatternData.default()).apply {
+          show(this@SettingFragment.childFragmentManager, "Setup")
+        }
+      }
     }
   }
 
