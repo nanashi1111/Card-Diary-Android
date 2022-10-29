@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - main
-      - develop
 
 ## 2
 jobs:
