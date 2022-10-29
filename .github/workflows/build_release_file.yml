@@ -4,6 +4,9 @@ name: Build
 ## Actions that will be executed when you push code currently none
 on:
   push:
+    branches:
+      - main
+      - develop
 
 ## 2
 jobs:

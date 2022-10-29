@@ -1,34 +1,48 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
 import com.cleanarchitectkotlinflowhiltsimplestway.R
+import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.DashboardFragment
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.unlock.*
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.FileUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+  private val vm: UnlockViewModel by viewModels()
+
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    setLightStatusBar()
     FileUtils.printFolderContent(filesDir)
+    vm.checkPatternSetup()
+    lifecycleScope.launch {
+      vm.patternSetup.collectLatest {
+        if (it is State.DataState) {
+          if (it.data) {
+            showAuthenticationDialog()
+          }
+        }
+      }
+    }
   }
 
-  private fun setLightStatusBar() {
-//    val decorView = window.decorView
-//    val wic = WindowInsetsControllerCompat(window, decorView)
-//    wic?.isAppearanceLightStatusBars = true
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//      window.statusBarColor = Color.WHITE
-//    }
+
+  private fun showAuthenticationDialog() {
+    UnlockDialog.newInstance(PatternData(PatternPurpose.UNLOCK, PatternStep.CONFIRM)).apply {
+      show(supportFragmentManager, "Unlock")
+    }
   }
+
 
   override fun onBackPressed() {
     super.onBackPressed()
@@ -39,4 +53,6 @@ class MainActivity : AppCompatActivity() {
       }
     }
   }
+
+
 }

@@ -32,4 +32,8 @@
     <color name="item_add_image">#283492</color>
     <color name="item_remove_image">#d74214</color>
     <color name="overlay_image">#30000000</color>
+
+    <color name="pattern_normal_color">#373737</color>
+    <color name="pattern_correct_color">#283492</color>
+    <color name="pattern_incorrect_color">#d74214</color>
 </resources>
