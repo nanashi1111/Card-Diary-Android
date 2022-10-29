@@ -22,17 +22,14 @@ jobs:
         # ID used to access action output
         id: sign_app
         with:
+          releaseDirectory: app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
       # 4
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v2
         with:
-          name: release.apk
+          name: Signed app bundle
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
-      # 5
-      - uses: actions/upload-artifact@main
-        with:
-          name: mapping.txt
-          path: app/build/outputs/mapping/release/mapping.txt
+      
