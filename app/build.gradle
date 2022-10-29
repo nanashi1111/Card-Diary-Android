@@ -18,7 +18,7 @@ android {
         applicationId "com.klmobile.carddiary"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 3
+        versionCode 4
         versionName "1.1.0"
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,13 +26,11 @@ android {
 
     buildTypes {
         release {
-            //applicationId "com.klmobile.carddiary"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'LOGGABLE', 'false'
         }
         debug {
-            //applicationId "com.dev.carddiary"
             testCoverageEnabled true
             debuggable true
             buildConfigField 'boolean', 'LOGGABLE', 'true'
@@ -56,24 +54,15 @@ android {
         jvmTarget = '1.8'
     }
 
-    signingConfigs {
-        release {
-            keyAlias 'carddiary__11'
-            keyPassword '>>>>||<<<<??'
-            storeFile file("${rootProject.projectDir}/carddiary.jks")
-            storePassword '>>>>||<<<<??'
-        }
-    }
-
     flavorDimensions "capabilities"
     productFlavors {
         develop {
             applicationId "com.dev.carddiary"
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
         product {
             applicationId "com.klmobile.carddiary"
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
     }
 }
