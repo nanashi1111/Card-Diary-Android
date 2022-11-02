@@ -23,4 +23,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Upload Debug App
-          path: ${{steps.build_app.outputs.signedReleaseFile}}
+          path: build/outputs/apk/develop/debug/app-develop-debug.apk
