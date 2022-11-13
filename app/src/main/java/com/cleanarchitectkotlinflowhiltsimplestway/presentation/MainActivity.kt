@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         }
       }
     }
-    Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show()
   }
 
 

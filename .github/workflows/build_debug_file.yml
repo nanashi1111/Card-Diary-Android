@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       # 2
-      - name: Generate Release APK
+      - name: Generate Debug APK
         run: ./gradlew assembleDebug
         id: build_app
       # 3
