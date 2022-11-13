@@ -3,9 +3,9 @@ name: Build
 
 ## Actions that will be executed when you push code currently none
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - develop
 
 ## 2
 jobs:
@@ -16,21 +16,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       # 2
-      - name: Generate Release APK
-        run: ./gradlew bundleRelease
-      # 3
+      - name: Generate Debug APK
+        run: ./gradlew assembleDebug
+         # 3
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1
         # ID used to access action output
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/bundle/productRelease
+          releaseDirectory: app/build/outputs/apk/develop/debug
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
-      # 4
+      # 3
       - uses: actions/upload-artifact@v2
         with:
-          name: Signed app bundle
+          name: Upload Debug App
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
