@@ -18,9 +18,19 @@ jobs:
       # 2
       - name: Generate Debug APK
         run: ./gradlew assembleDebug
-        id: build_app
+         # 3
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/develop/debug
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
       # 3
       - uses: actions/upload-artifact@v2
         with:
           name: Upload Debug App
-          path: ${{steps.build_app.outputs.signedReleaseFile}}
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
