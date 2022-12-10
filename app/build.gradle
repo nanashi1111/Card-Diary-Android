@@ -18,8 +18,8 @@ android {
         applicationId "com.klmobile.carddiary"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 6
-        versionName "1.1.2"
+        versionCode 7
+        versionName "1.1.3"
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
