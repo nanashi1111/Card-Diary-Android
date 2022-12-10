@@ -29,4 +29,7 @@ class RepositoryModule {
 
   @Provides @Singleton
   fun providePatternRepository(@ApplicationContext context: Context, gson: Gson): PatternRepository = PatternRepositoryImpl(context, gson)
+
+  @Provides @Singleton
+  fun provideAppPreferenceRepository(@ApplicationContext context: Context): AppPreferenceRepository = AppPreferenceRepositoryImpl(context)
 }

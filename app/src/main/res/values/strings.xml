@@ -96,4 +96,7 @@ From Deira’s souks to its historical streets, and the Arabian desert’s immen
     <string name="text_fingerprint">Use fingerprint</string>
     <string name="text_pattern">Use pattern</string>
     <string name="txt_finger_failed">Please try again later</string>
+    <string name="do_something_with_your_post">Do something with your post</string>
+    <string name="view">View</string>
+    <string name="delete">Delete</string>
 </resources>
