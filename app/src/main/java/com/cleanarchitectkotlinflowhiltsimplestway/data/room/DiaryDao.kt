@@ -29,4 +29,7 @@ interface DiaryDao {
 
   @Query("delete from DiaryPostData")
   fun deleteAll(): Int
+
+  @Query("delete from DiaryPostData where date = :id")
+  fun deletePost(id: Long)
 }
