@@ -13,7 +13,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.databinding.ItemMonthPostBind
 import com.cleanarchitectkotlinflowhiltsimplestway.domain.models.DiaryPost
 import com.dtv.starter.presenter.utils.extension.*
 
-class PostAdapter(val posts: MutableList<DiaryPost>, val onPostSelected: (DiaryPost) -> Unit) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+class PostAdapter(val posts: MutableList<DiaryPost>,val onPostOptionSelected: (DiaryPost) -> Unit, val onPostSelected: (DiaryPost) -> Unit) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
   class ViewHolder(val binding: ItemMonthPostBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -27,6 +27,10 @@ class PostAdapter(val posts: MutableList<DiaryPost>, val onPostSelected: (DiaryP
     holder.binding.root.setSafeOnClickListener {
       onPostSelected(posts[position])
     }
+    holder.binding.root.setOnLongClickListener {
+      onPostOptionSelected(posts[position])
+      true
+    }
   }
 
   override fun getItemCount() = posts.size
@@ -36,6 +40,15 @@ class PostAdapter(val posts: MutableList<DiaryPost>, val onPostSelected: (DiaryP
     diffResult.dispatchUpdatesTo(this)
     posts.clear()
     posts.addAll(newPost)
+  }
+
+  fun removePost(id: Long) {
+    val post = posts.firstOrNull { it.date == id }
+    post?.let {
+      val position = posts.indexOf(it)
+      posts.removeAt(position)
+      notifyDataSetChanged()
+    }
   }
 }
 

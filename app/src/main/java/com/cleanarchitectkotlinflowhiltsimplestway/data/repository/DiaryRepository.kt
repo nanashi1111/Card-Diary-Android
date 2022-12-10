@@ -33,6 +33,8 @@ interface DiaryRepository {
   fun importDbFromZipFile(path: String): Boolean
 
   fun getExportedFiles(): List<File>
+
+  fun deletePost(id: Long)
 }
 
 class DiaryRepositoryImpl(private val context: Context, private val appDatabase: AppDatabase, private val gson: Gson) : DiaryRepository {
@@ -186,4 +188,6 @@ class DiaryRepositoryImpl(private val context: Context, private val appDatabase:
     val exportedFolder = FileUtils.getExportedFolder(context)
     return exportedFolder.listFiles()?.filter { it.isFile && it.name.endsWith("zip") } ?: emptyList()
   }
+
+  override fun deletePost(id: Long) = appDatabase.diaryDao().deletePost(id)
 }
