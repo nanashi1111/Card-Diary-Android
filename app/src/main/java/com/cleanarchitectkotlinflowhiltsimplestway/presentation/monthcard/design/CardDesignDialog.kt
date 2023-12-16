@@ -1,13 +1,7 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.design
 
-import android.Manifest
-import android.content.DialogInterface
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cleanarchitectkotlinflowhiltsimplestway.R
@@ -16,17 +10,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.TEMPLATE_COLOR
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseBottomSheetFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.KEY_MONTH
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.KEY_YEAR
-import com.dtv.starter.presenter.utils.extension.hasPermissions
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
-import gun0912.tedimagepicker.builder.TedImagePicker
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class CardDesignDialog private constructor(): BaseBottomSheetFragment(R.layout.dialog_card_design) {
 

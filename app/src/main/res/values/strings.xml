@@ -99,4 +99,7 @@ From Deira’s souks to its historical streets, and the Arabian desert’s immen
     <string name="do_something_with_your_post">Do something with your post</string>
     <string name="view">View</string>
     <string name="delete">Delete</string>
+    <string name="add_image_title">Please choose one action</string>
+    <string name="add_image_from_camera">Take photo</string>
+    <string name="add_image_from_gallery">Select from gallery</string>
 </resources>

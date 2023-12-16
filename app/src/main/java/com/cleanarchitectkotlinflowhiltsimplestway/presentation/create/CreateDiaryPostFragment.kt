@@ -29,6 +29,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.W
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmListener
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.bindWeather
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.GlideEngine
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.ads.AdsManager
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.dateTimeInCreateDiaryScreen
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.*
@@ -41,8 +42,12 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
+import com.luck.picture.lib.config.SelectModeConfig
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import dagger.hilt.android.AndroidEntryPoint
-import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
@@ -61,6 +66,19 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
 
   @Inject
   lateinit var adsManager: AdsManager
+
+  private val onResultCallbackListener = object : OnResultCallbackListener<LocalMedia> {
+    override fun onResult(result: ArrayList<LocalMedia?>?) {
+      if (result.isNullOrEmpty()) {
+        return
+      }
+      val uris = result.map { Uri.fromFile(File(it?.realPath ?: "")) }
+      onSelectedProfileImage(uris)
+    }
+
+    override fun onCancel() {
+    }
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -274,33 +292,71 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
   }
 
   private fun pickPhoto() {
-    checkPermission {
-      TedImagePicker
-        .with(requireContext())
-        .title(R.string.image_picker_title)
-        .buttonText(R.string.ted_image_picker_done)
-        .dropDownAlbum()
-        .max(10 - (viewBinding.vpSelectedImages.adapter?.itemCount ?: 0), getString(R.string.max_images_selected_warning))
-        .image()
-        .startMultiImage { uris ->
-          val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
-          currentList.addAll(uris)
-          val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
-          viewBinding.vpSelectedImages.adapter = adapter
-          TabLayoutMediator(viewBinding.indicator, viewBinding.vpSelectedImages) { _, _ ->
 
-          }.attach()
-          viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
-          viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
-          lifecycleScope.launch {
-            delay(200)
-            viewBinding.vpSelectedImages.adapter?.let {
-              if (it.itemCount > 0) {
-                viewBinding.vpSelectedImages.setCurrentItem(it.itemCount - 1, true)
-              }
-            }
-          }
+    AddImageOptionsDialog.newInstance(object :AddImageCallback {
+      override fun onCamera() {
+        PictureSelector.create(this@CreateDiaryPostFragment)
+          .openCamera(SelectMimeType.ofImage())
+          .forResultActivity(onResultCallbackListener)
+      }
+
+      override fun onGallery() {
+        PictureSelector.create(this@CreateDiaryPostFragment)
+          .openGallery(SelectMimeType.ofImage())
+          .setSelectionMode(SelectModeConfig.MULTIPLE)
+          .setMaxSelectNum(10 - (viewBinding.vpSelectedImages.adapter?.itemCount ?: 0))
+          .setImageEngine(GlideEngine.createGlideEngine())
+          .forResult(onResultCallbackListener)
+      }
+    }).show(childFragmentManager, "AddImage")
+
+//    checkPermission {
+//      TedImagePicker
+//        .with(requireContext())
+//        .title(R.string.image_picker_title)
+//        .buttonText(R.string.ted_image_picker_done)
+//        .dropDownAlbum()
+//        .max(10 - (viewBinding.vpSelectedImages.adapter?.itemCount ?: 0), getString(R.string.max_images_selected_warning))
+//        .image()
+//        .startMultiImage { uris ->
+//          val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
+//          currentList.addAll(uris)
+//          val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
+//          viewBinding.vpSelectedImages.adapter = adapter
+//          TabLayoutMediator(viewBinding.indicator, viewBinding.vpSelectedImages) { _, _ ->
+//
+//          }.attach()
+//          viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
+//          viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+//          lifecycleScope.launch {
+//            delay(200)
+//            viewBinding.vpSelectedImages.adapter?.let {
+//              if (it.itemCount > 0) {
+//                viewBinding.vpSelectedImages.setCurrentItem(it.itemCount - 1, true)
+//              }
+//            }
+//          }
+//        }
+//    }
+  }
+
+  private fun onSelectedProfileImage(uris: List<Uri>) {
+    val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
+    currentList.addAll(uris)
+    val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
+    viewBinding.vpSelectedImages.adapter = adapter
+    TabLayoutMediator(viewBinding.indicator, viewBinding.vpSelectedImages) { _, _ ->
+
+    }.attach()
+    viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
+    viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
+    lifecycleScope.launch {
+      delay(200)
+      viewBinding.vpSelectedImages.adapter?.let {
+        if (it.itemCount > 0) {
+          viewBinding.vpSelectedImages.setCurrentItem(it.itemCount - 1, true)
         }
+      }
     }
   }
 

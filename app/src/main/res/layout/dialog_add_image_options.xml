@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:fontFamily="@font/oswald_bold"
+            android:text="@string/add_image_title"
+            android:textColor="@color/create_diary_text_hint" />
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/oswald_bold"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:text="@string/cancel"
+            android:textColor="@color/create_diary_text_content"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <View style="@style/Divider" />
+
+    <RelativeLayout
+        android:id="@+id/rlCamera"
+        style="@style/WeatherSelectorContainer">
+
+        <ImageView
+            style="@style/WeatherSelectorIcon"
+            android:src="@drawable/ic_show_post" />
+
+        <TextView
+            style="@style/WeatherSelectorText"
+            android:text="@string/add_image_from_camera" />
+
+
+    </RelativeLayout>
+
+    <View style="@style/Divider" />
+
+    <RelativeLayout
+        android:id="@+id/rlGallery"
+        style="@style/WeatherSelectorContainer">
+
+        <ImageView
+            style="@style/WeatherSelectorIcon"
+            android:src="@drawable/ic_delete_post"/>
+
+        <TextView
+            style="@style/WeatherSelectorText"
+            android:text="@string/add_image_from_gallery" />
+
+    </RelativeLayout>
+
+    <View style="@style/Divider" />
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

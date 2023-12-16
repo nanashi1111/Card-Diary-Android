@@ -26,7 +26,7 @@ class AdsManager @Inject constructor(private val appPreferenceRepository: AppPre
   var openAdLoadResult = false
 
   companion object {
-    private const val MIN_INTERVAL_SHOW_POPUP = 60 * 3 * 1L
+    private const val MIN_INTERVAL_SHOW_POPUP = 60 * 3 * 1000L
   }
 
   fun bindActivity(activity: Activity) {

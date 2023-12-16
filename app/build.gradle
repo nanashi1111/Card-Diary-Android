@@ -11,13 +11,13 @@ plugins {
 
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.klmobile.carddiary"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 7
         versionName "1.1.3"
         multiDexEnabled = true
@@ -29,11 +29,19 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'LOGGABLE', 'false'
+
+            resValue "string", "ads_banner", "ca-app-pub-9211831291242531/8361843779"
+            resValue "string", "ads_popup", "ca-app-pub-9211831291242531/9529762938"
+            resValue "string", "ads_open", "ca-app-pub-9211831291242531/5638589465"
         }
         debug {
             testCoverageEnabled true
             debuggable true
             buildConfigField 'boolean', 'LOGGABLE', 'true'
+
+            resValue "string", "ads_banner", "ca-app-pub-3940256099942544/6300978111"
+            resValue "string", "ads_popup", "ca-app-pub-3940256099942544/1033173712"
+            resValue "string", "ads_open", "ca-app-pub-3940256099942544/9257395921"
         }
     }
 
@@ -126,11 +134,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
 
-    implementation project(':tedimagepicker')
     implementation 'com.gu.android:toolargetool:0.3.0'
     implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
     implementation 'net.lingala.zip4j:zip4j:2.11.2'
     implementation 'io.github.itsxtt:pattern-lock:0.2.0'
+
+    implementation 'com.google.android.gms:play-services-ads:22.5.0'
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+
+    implementation 'io.github.lucksiege:pictureselector:v3.11.1'
+    implementation 'io.github.lucksiege:compress:v3.11.1'
+    implementation 'io.github.lucksiege:camerax:v3.11.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

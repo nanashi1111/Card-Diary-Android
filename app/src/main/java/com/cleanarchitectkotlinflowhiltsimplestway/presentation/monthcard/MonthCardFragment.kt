@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
@@ -25,6 +26,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.Dashbo
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.design.CardDesignDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.design.CardDesignListener
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.FlipMonthViewCallback
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.GlideEngine
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectFlow
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeCollectLatestFlow
 import com.dtv.starter.presenter.utils.extension.hasPermissions
@@ -34,11 +36,17 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
+import com.luck.picture.lib.config.SelectModeConfig
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import dagger.hilt.android.AndroidEntryPoint
-import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.util.ArrayList
 
 @AndroidEntryPoint
 class MonthCardFragment : BaseViewBindingFragment<FragmentMonthCardBinding, MonthCardViewModel>(FragmentMonthCardBinding::inflate), FlipMonthViewCallback {
@@ -186,19 +194,28 @@ class MonthCardFragment : BaseViewBindingFragment<FragmentMonthCardBinding, Mont
     }).show(childFragmentManager, "CardDesign")
   }
 
-  private fun pickPhoto() {
-    checkPermission {
-      TedImagePicker
-        .with(requireContext())
-        .title(R.string.image_picker_title)
-        .buttonText(R.string.ted_image_picker_done)
-        .dropDownAlbum()
-        .max(10, getString(R.string.max_images_selected_warning))
-        .image()
-        .start {
-          monthPostsViewModel.updateCard(month, year, TEMPLATE_PHOTO, "", it)
-        }
+  private val onResultCallbackListener = object : OnResultCallbackListener<LocalMedia> {
+    override fun onResult(result: ArrayList<LocalMedia?>?) {
+      if (result.isNullOrEmpty()) {
+        return
+      }
+      val uri = result.map { Uri.fromFile(File(it?.realPath ?: "")) }.firstOrNull()
+      uri?.let {
+        monthPostsViewModel.updateCard(month, year, TEMPLATE_PHOTO, "", it)
+
+      }
     }
+
+    override fun onCancel() {
+    }
+  }
+
+  private fun pickPhoto() {
+    PictureSelector.create(this@MonthCardFragment)
+      .openGallery(SelectMimeType.ofImage())
+      .setSelectionMode(SelectModeConfig.SINGLE)
+      .setImageEngine(GlideEngine.createGlideEngine())
+      .forResult(onResultCallbackListener)
   }
 
   private fun checkPermission(onGranted: () -> Unit) {
