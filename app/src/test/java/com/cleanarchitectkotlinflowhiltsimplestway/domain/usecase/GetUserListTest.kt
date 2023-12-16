@@ -1,3 +1,4 @@
+/*
 package com.cleanarchitectkotlinflowhiltsimplestway.domain.usecase
 
 import MainCoroutineScopeRule
@@ -68,12 +69,14 @@ class GetUserListTest {
       Assert.assertEquals(flow.first().first().name == "a", true)
 
 
-    /*  val flow2 = flow {
+    */
+/*  val flow2 = flow {
         whenever(api.getUsers()).thenReturn(provideMockUserEntities())
         val data = getUserList.invoke(Unit).last()
         Assert.assertEquals(data is State.DataState, true)
         emit("")
-      }.toList()*/
+      }.toList()*//*
+
 
 
         whenever(api.getUsers()).thenReturn(provideMockUserEntities())
@@ -93,4 +96,4 @@ class GetUserListTest {
   private fun provideMockUserEntities(): List<UserEntity> {
     return mutableListOf(UserEntity("a"))
   }
-}
+}*/

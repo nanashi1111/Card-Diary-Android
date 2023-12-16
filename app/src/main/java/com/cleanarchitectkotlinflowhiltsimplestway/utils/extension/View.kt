@@ -44,42 +44,43 @@ fun View.beGone() {
 fun View.beGoneWithAnimation() {
     animate().translationX(-width.toFloat()).alpha(0f).setDuration(300)
         .setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 beGone()
             }
+
         })
 }
 
 fun View.disappear(duration: Long) {
     animate().alpha(0f).setDuration(duration).setListener(object : Animator.AnimatorListener {
-        override fun onAnimationRepeat(p0: Animator?) {
+        override fun onAnimationRepeat(p0: Animator) {
         }
 
-        override fun onAnimationEnd(p0: Animator?) {
+        override fun onAnimationEnd(p0: Animator) {
             beGone()
         }
 
-        override fun onAnimationCancel(p0: Animator?) {
+        override fun onAnimationCancel(p0: Animator) {
         }
 
-        override fun onAnimationStart(p0: Animator?) {
+        override fun onAnimationStart(p0: Animator) {
         }
     })
 }
 
 fun View.appear(duration: Long) {
     animate().alpha(1f).setDuration(duration).setListener(object : Animator.AnimatorListener {
-        override fun onAnimationRepeat(p0: Animator?) {
+        override fun onAnimationRepeat(p0: Animator) {
         }
 
-        override fun onAnimationEnd(p0: Animator?) {
+        override fun onAnimationEnd(p0: Animator) {
 
         }
 
-        override fun onAnimationCancel(p0: Animator?) {
+        override fun onAnimationCancel(p0: Animator) {
         }
 
-        override fun onAnimationStart(p0: Animator?) {
+        override fun onAnimationStart(p0: Animator) {
             beVisible()
         }
     })

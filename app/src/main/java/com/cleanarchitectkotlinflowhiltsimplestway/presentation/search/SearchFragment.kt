@@ -20,23 +20,29 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.MonthPosts
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.PostAdapter
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.PostOptionCallback
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.PostOptionsDialog
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.ads.AdsManager
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigateUp
 import com.dtv.starter.presenter.utils.extension.beVisibleIf
+import com.dtv.starter.presenter.utils.extension.hideKeyboard
 import com.dtv.starter.presenter.utils.extension.showKeyboard
 import com.dtv.starter.presenter.utils.log.Logger
+import com.google.android.gms.ads.AdRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment: BaseViewBindingFragment<FragmentSearchBinding, SearchViewModel>(FragmentSearchBinding::inflate) {
+class SearchFragment : BaseViewBindingFragment<FragmentSearchBinding, SearchViewModel>(FragmentSearchBinding::inflate) {
 
   override val viewModel: SearchViewModel by viewModels()
 
+  @Inject
+  lateinit var adsManager: AdsManager
+
   private val adapter: PostAdapter by lazy {
-    PostAdapter(mutableListOf(), onPostOptionSelected = {
-      post ->
+    PostAdapter(mutableListOf(), onPostOptionSelected = { post ->
       PostOptionsDialog.newInstance(post, callback = object : PostOptionCallback {
         override fun onRemove(post: DiaryPost) {
           Logger.d("Removing: ${post.title}")
@@ -51,15 +57,18 @@ class SearchFragment: BaseViewBindingFragment<FragmentSearchBinding, SearchViewM
         }
 
         override fun onView(post: DiaryPost) {
-          Logger.d("View: ${post.title}")
-          findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post = post.simpleObject(), time = 0L))
+          adsManager.displayPopupAds {
+            Logger.d("View: ${post.title}")
+            findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post = post.simpleObject(), time = 0L))
+          }
         }
       }).show(childFragmentManager, "Options")
-    }) {
-        post ->
+    }) { post ->
+      adsManager.displayPopupAds {
         findNavController().safeNavigate(
           SearchFragmentDirections.actionSearchFragmentToCreateDiaryPostFragment(post.simpleObject(), 0L)
         )
+      }
     }
   }
 
@@ -71,8 +80,10 @@ class SearchFragment: BaseViewBindingFragment<FragmentSearchBinding, SearchViewM
         viewModel.query.value = it.toString()
       }
       etSearch.requestFocus()
+      adView.loadAd(AdRequest.Builder().build())
       requireActivity().showKeyboard(etSearch)
       ivBack.setOnClickListener {
+        activity?.hideKeyboard()
         findNavController().safeNavigateUp()
       }
     }

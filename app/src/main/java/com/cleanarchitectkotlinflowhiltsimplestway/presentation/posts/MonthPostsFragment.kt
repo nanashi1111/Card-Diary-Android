@@ -17,6 +17,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmDi
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmListener
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.dateselection.OnSelectDateToWrite
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.dateselection.SelectDateToWriteDialog
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.ads.AdsManager
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.monthInText
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigate
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.safeNavigateUp
@@ -25,20 +26,27 @@ import com.dtv.starter.presenter.utils.extension.beVisible
 import com.dtv.starter.presenter.utils.extension.beVisibleIf
 import com.dtv.starter.presenter.utils.extension.setSafeOnClickListener
 import com.dtv.starter.presenter.utils.log.Logger
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MonthPostsFragment : BaseViewBindingFragment<FragmentMonthPostsBinding, MonthPostsViewModel>(FragmentMonthPostsBinding::inflate) {
+
   override val viewModel: MonthPostsViewModel by viewModels()
+
+  @Inject
+  lateinit var adsManager: AdsManager
 
   private val args: MonthPostsFragmentArgs by navArgs()
 
   private val adapter: PostAdapter by lazy {
     PostAdapter(mutableListOf(), onPostOptionSelected = { post ->
-
       PostOptionsDialog.newInstance(post, callback = object :PostOptionCallback {
         override fun onRemove(post: DiaryPost) {
           Logger.d("Removing: ${post.title}")
@@ -54,12 +62,16 @@ class MonthPostsFragment : BaseViewBindingFragment<FragmentMonthPostsBinding, Mo
         }
 
         override fun onView(post: DiaryPost) {
-          Logger.d("View: ${post.title}")
-          findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post = post.simpleObject(), time = 0L))
+          adsManager.displayPopupAds {
+            Logger.d("View: ${post.title}")
+            findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post = post.simpleObject(), time = 0L))
+          }
         }
       }).show(childFragmentManager, "Options")
     }, onPostSelected = { post ->
-      findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post = post.simpleObject(), time = 0L))
+      adsManager.displayPopupAds {
+        findNavController().safeNavigate(MonthPostsFragmentDirections.actionMonthPostsFragmentToCreateDiaryPostFragment(post = post.simpleObject(), time = 0L))
+      }
     })
   }
 
@@ -72,6 +84,9 @@ class MonthPostsFragment : BaseViewBindingFragment<FragmentMonthPostsBinding, Mo
       ivWritePost.setSafeOnClickListener { createPost() }
       llCloseTutorial.setOnClickListener { hideTutorial() }
       clTutorial.setOnClickListener { hideTutorial() }
+      adView.loadAd(
+        AdRequest.Builder().build()
+      )
     }
     viewModel.getPosts(args.month, args.year)
   }

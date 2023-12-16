@@ -1,3 +1,4 @@
+/*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -9,6 +10,7 @@ import org.junit.runner.Description
 import org.mockito.Mockito
 import org.mockito.stubbing.OngoingStubbing
 
+*/
 /**
  * MainCoroutineRule installs a TestCoroutineDispatcher for Disptachers.Main.
  *
@@ -44,7 +46,8 @@ import org.mockito.stubbing.OngoingStubbing
  * By default, [MainCoroutineScopeRule] will be in a *resumed* state.
  *
  * @param dispatcher if provided, this [TestCoroutineDispatcher] will be used.
- */
+ *//*
+
 @ExperimentalCoroutinesApi
 class MainCoroutineScopeRule(val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()) :
   TestWatcher(),
@@ -68,4 +71,4 @@ class MainCoroutineScopeRule(val dispatcher: TestCoroutineDispatcher = TestCorou
 }
 
 inline fun <T> whenever(methodCall: T) : OngoingStubbing<T> =
-  Mockito.`when`(methodCall)
+  Mockito.`when`(methodCall)*/

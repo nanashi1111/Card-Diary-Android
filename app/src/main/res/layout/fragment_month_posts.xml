@@ -51,11 +51,22 @@
         android:id="@+id/rvPosts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/adView"
+        android:layout_marginBottom="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:itemCount="10"
         tools:listitem="@layout/item_month_post" />
 
+    <com.google.android.gms.ads.AdView
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="@string/ads_banner"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clTutorial"
@@ -63,7 +74,7 @@
         android:layout_height="match_parent"
         android:background="#80000000"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <View
             android:id="@+id/fakeToolBar"
@@ -281,6 +292,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

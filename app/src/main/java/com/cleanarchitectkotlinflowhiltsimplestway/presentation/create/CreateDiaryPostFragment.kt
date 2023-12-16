@@ -29,9 +29,11 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.create.weather.W
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmDialog
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dialog.ConfirmListener
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.posts.bindWeather
+import com.cleanarchitectkotlinflowhiltsimplestway.utils.ads.AdsManager
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.dateTimeInCreateDiaryScreen
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.*
 import com.dtv.starter.presenter.utils.extension.*
+import com.dtv.starter.presenter.utils.log.Logger
 import com.google.android.material.tabs.TabLayoutMediator
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -45,6 +47,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostBinding, CreateDiaryPostViewModel>(FragmentCreateDiaryPostBinding::inflate),
@@ -54,8 +57,10 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
 
   private val args: CreateDiaryPostFragmentArgs by navArgs()
 
-
   private var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
+
+  @Inject
+  lateinit var adsManager: AdsManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -196,16 +201,17 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
             viewModel.toggleToEditMode()
           }
           DiaryMode.EDIT -> {
-            viewModel.saveDiary(
-              (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris,
-              viewBinding.etTitle.text.toString(),
-              viewBinding.etContent.text.toString(),
-              viewModel.selectedWeather.value,
-              updateExisting = args.post != null
-            )
+            adsManager.displayPopupAds {
+              viewModel.saveDiary(
+                (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris,
+                viewBinding.etTitle.text.toString(),
+                viewBinding.etContent.text.toString(),
+                viewModel.selectedWeather.value,
+                updateExisting = args.post != null
+              )
+            }
           }
         }
-
       }
 
       viewBinding.ivRemovePhoto.setSafeOnClickListener {

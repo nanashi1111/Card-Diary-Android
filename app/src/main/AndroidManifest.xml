@@ -2,8 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cleanarchitectkotlinflowhiltsimplestway">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
 
     <application
         android:name=".presentation.App"
@@ -13,7 +19,7 @@
         android:roundIcon="@drawable/circle"
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
-        android:theme="@style/Theme.CleanArchitectKotlinFlowHiltSimplestway">
+        android:theme="@style/AppSplash">
 
         <activity android:name=".presentation.MainActivity"
             android:exported="true">
@@ -23,6 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9211831291242531~3729845183"/>
+
 
     </application>
 
