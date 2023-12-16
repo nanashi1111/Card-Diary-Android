@@ -1,16 +1,12 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.create
 
-import android.Manifest
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -34,14 +30,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.utils.ads.AdsManager
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.datetime.dateTimeInCreateDiaryScreen
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.*
 import com.dtv.starter.presenter.utils.extension.*
-import com.dtv.starter.presenter.utils.log.Logger
 import com.google.android.material.tabs.TabLayoutMediator
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.config.SelectModeConfig
@@ -309,35 +298,6 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
           .forResult(onResultCallbackListener)
       }
     }).show(childFragmentManager, "AddImage")
-
-//    checkPermission {
-//      TedImagePicker
-//        .with(requireContext())
-//        .title(R.string.image_picker_title)
-//        .buttonText(R.string.ted_image_picker_done)
-//        .dropDownAlbum()
-//        .max(10 - (viewBinding.vpSelectedImages.adapter?.itemCount ?: 0), getString(R.string.max_images_selected_warning))
-//        .image()
-//        .startMultiImage { uris ->
-//          val currentList = (viewBinding.vpSelectedImages.adapter as SelectedPhotoAdapter).uris
-//          currentList.addAll(uris)
-//          val adapter = SelectedPhotoAdapter(this@CreateDiaryPostFragment, currentList)
-//          viewBinding.vpSelectedImages.adapter = adapter
-//          TabLayoutMediator(viewBinding.indicator, viewBinding.vpSelectedImages) { _, _ ->
-//
-//          }.attach()
-//          viewBinding.ivRemovePhoto.beVisibleIf((viewBinding.vpSelectedImages.adapter?.itemCount ?: 0) > 0)
-//          viewBinding.indicator.beInvisibleIf(viewBinding.vpSelectedImages.adapter?.itemCount == 0)
-//          lifecycleScope.launch {
-//            delay(200)
-//            viewBinding.vpSelectedImages.adapter?.let {
-//              if (it.itemCount > 0) {
-//                viewBinding.vpSelectedImages.setCurrentItem(it.itemCount - 1, true)
-//              }
-//            }
-//          }
-//        }
-//    }
   }
 
   private fun onSelectedProfileImage(uris: List<Uri>) {
@@ -358,47 +318,6 @@ class CreateDiaryPostFragment : BaseViewBindingFragment<FragmentCreateDiaryPostB
         }
       }
     }
-  }
-
-  private fun checkPermission(onGranted: () -> Unit) {
-    when {
-      requireContext().hasPermissions(
-        arrayOf(
-          Manifest.permission.CAMERA
-        )
-      ) -> {
-        onGranted.invoke()
-      }
-      else -> {
-        showDialogCamera {
-          Dexter.withContext(requireActivity()).withPermission(Manifest.permission.CAMERA)
-            .withListener(object : PermissionListener {
-              override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-                onGranted.invoke()
-              }
-
-              override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-              }
-
-              override fun onPermissionRationaleShouldBeShown(
-                p0: PermissionRequest?,
-                p1: PermissionToken?
-              ) {
-              }
-
-            }).check()
-        }
-      }
-    }
-  }
-
-  private fun showDialogCamera(onPositive: () -> Unit) {
-    AlertDialog.Builder(requireContext()).setTitle(R.string.title_camera_permission_required)
-      .setMessage(R.string.message_camera_permission_required)
-      .setPositiveButton(R.string.label_ok_popup) { _, _ -> onPositive.invoke() }
-      .setNegativeButton(R.string.cancel) { _, _ -> }
-      .show()
-
   }
 
   private fun prepareMockDataIfNeeded() {

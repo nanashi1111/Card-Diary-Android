@@ -1,20 +1,18 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation
 
 import android.os.Bundle
-import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.splashscreen.SplashScreenViewProvider
 import androidx.lifecycle.lifecycleScope
+import com.cleanarchitectkotlinflowhiltsimplestway.BuildConfig
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.data.entity.State
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.DashboardFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.unlock.*
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.ads.AdsManager
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.FileUtils
-import com.dtv.starter.presenter.utils.extension.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -45,7 +43,14 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
     adsManager.bindActivity(this)
     waitAndDisplayOpenAds()
-    FileUtils.printFolderContent(filesDir)
+    showAuthenticationDialogIfNeeded()
+    registerBackDispatcher()
+    if (BuildConfig.DEBUG) {
+      FileUtils.printFolderContent(filesDir)
+    }
+  }
+
+  private fun showAuthenticationDialogIfNeeded() {
     vm.checkPatternSetup()
     lifecycleScope.launch {
       vm.patternSetup.collectLatest {
@@ -53,6 +58,17 @@ class MainActivity : AppCompatActivity() {
           if (it.data) {
             showAuthenticationDialog()
           }
+        }
+      }
+    }
+  }
+
+  private fun registerBackDispatcher() {
+    onBackPressedDispatcher.addCallback {
+      val currentFragment = supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment)?.childFragmentManager?.fragments?.first()
+      currentFragment?.let {
+        if (it is DashboardFragment) {
+          exitProcess(0)
         }
       }
     }
@@ -78,15 +94,5 @@ class MainActivity : AppCompatActivity() {
   override fun onDestroy() {
     super.onDestroy()
     adsManager.destroy()
-  }
-
-  override fun onBackPressed() {
-    super.onBackPressed()
-    val currentFragment = supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment)?.childFragmentManager?.fragments?.first()
-    currentFragment?.let {
-      if (it is DashboardFragment) {
-        exitProcess(0)
-      }
-    }
   }
 }

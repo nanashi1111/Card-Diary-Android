@@ -40,6 +40,7 @@
         style="@style/SettingItem"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:text="@string/from_photo"
+        android:paddingVertical="@dimen/_15sdp"
         android:textSize="15sp" />
 
     <View style="@style/Divider" />
@@ -48,6 +49,7 @@
         style="@style/SettingItem"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:drawableEnd="@null"
+        android:paddingVertical="@dimen/_15sdp"
         android:text="@string/from_color"
         android:textSize="15sp" />
 
