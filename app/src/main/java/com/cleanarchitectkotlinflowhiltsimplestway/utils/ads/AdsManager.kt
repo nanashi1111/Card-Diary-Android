@@ -107,7 +107,9 @@ class AdsManager @Inject constructor(private val appPreferenceRepository: AppPre
   }
 
   private fun loadOpenAppAds(context: Context) {
-    AppOpenAd.load(context, context.getString(R.string.ads_open), AdRequest.Builder().build(), object :AppOpenAdLoadCallback() {
+    AppOpenAd.load(context, context.getString(R.string.ads_open), AdRequest.Builder()
+      .setHttpTimeoutMillis(2000)
+      .build(), object :AppOpenAdLoadCallback() {
       override fun onAdLoaded(p0: AppOpenAd) {
         super.onAdLoaded(p0)
         Logger.d("Adsmanager: openAdLoaded")

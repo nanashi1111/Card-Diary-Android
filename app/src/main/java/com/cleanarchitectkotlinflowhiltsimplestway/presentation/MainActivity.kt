@@ -13,6 +13,7 @@ import com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard.Dashbo
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.unlock.*
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.ads.AdsManager
 import com.cleanarchitectkotlinflowhiltsimplestway.utils.extension.FileUtils
+import com.dtv.starter.presenter.utils.log.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -32,11 +33,15 @@ class MainActivity : AppCompatActivity() {
 
   private var appLaunched = 0L
 
+  companion object {
+    private const val SPLASH_TIME = 2000L
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     appLaunched = System.currentTimeMillis()
     installSplashScreen().apply {
       setKeepOnScreenCondition {
-        !adsManager.openAdLoadResult
+        !adsManager.openAdLoadResult && System.currentTimeMillis() - appLaunched < SPLASH_TIME
       }
     }
     super.onCreate(savedInstanceState)
@@ -76,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun waitAndDisplayOpenAds() {
     lifecycleScope.launch(Dispatchers.IO) {
-      while (!adsManager.openAdLoadResult) {
+      while (!adsManager.openAdLoadResult && System.currentTimeMillis() - appLaunched < SPLASH_TIME) {
         delay(200)
       }
       withContext(Dispatchers.Main) {

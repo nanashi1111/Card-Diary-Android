@@ -11,17 +11,22 @@ plugins {
 
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "30.0.3"
+    //buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.klmobile.carddiary"
         minSdkVersion 21
-        targetSdkVersion 33
-        versionCode 7
-        versionName "1.1.3"
+        targetSdkVersion 34
+        compileSdk 34
+        versionCode 8
+        versionName "2.0.0"
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+        resValue "string", "ads_id", "ca-app-pub-9211831291242531~3729845183"
+
     }
 
     buildTypes {
@@ -52,6 +57,7 @@ android {
         viewBinding {
             enabled = true
         }
+        compose true
     }
 
     compileOptions {
@@ -73,6 +79,15 @@ android {
             //signingConfig signingConfigs.release
         }
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.2'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    namespace 'com.cleanarchitectkotlinflowhiltsimplestway'
 }
 
 dependencies {
@@ -88,6 +103,20 @@ dependencies {
     implementation dataDependencies.appCompat
     implementation dataDependencies.material
     implementation dataDependencies.constraintLayout
+    implementation 'androidx.activity:activity-compose:1.8.0'
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
+    implementation platform('androidx.compose:compose-bom:2022.10.00')
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-graphics'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.compose.material3:material3'
+    implementation "com.google.accompanist:accompanist-pager:0.13.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
+    androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
 
     compileOnly dataDependencies.javaxAnnotation
     implementation dataDependencies.javaxInject
@@ -104,6 +133,8 @@ dependencies {
     implementation dataDependencies.dexter
     implementation dataDependencies.loggingInterceptor
     implementation dataDependencies.hilt
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
     kapt dataDependencies.hiltCompiler
 
     implementation dataDependencies.reactiveStream
@@ -138,9 +169,11 @@ dependencies {
     implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
     implementation 'net.lingala.zip4j:zip4j:2.11.2'
     implementation 'io.github.itsxtt:pattern-lock:0.2.0'
+    implementation 'com.github.Gurupreet:FontAwesomeCompose:1.0.0'
 
     implementation 'com.google.android.gms:play-services-ads:22.5.0'
     implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
 
     implementation 'io.github.lucksiege:pictureselector:v3.11.1'
     implementation 'io.github.lucksiege:compress:v3.11.1'

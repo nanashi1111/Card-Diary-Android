@@ -3,6 +3,7 @@ package com.cleanarchitectkotlinflowhiltsimplestway.di
 import android.content.Context
 import com.cleanarchitectkotlinflowhiltsimplestway.data.repository.*
 import com.cleanarchitectkotlinflowhiltsimplestway.data.room.AppDatabase
+import com.cleanarchitectkotlinflowhiltsimplestway.data.room.QuoteDatabase
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -27,9 +28,15 @@ class RepositoryModule {
   @Singleton
   fun provideCardRepository(@ApplicationContext context: Context, appDatabase: AppDatabase): CardRepository = CardRepositoryImpl(context, appDatabase)
 
-  @Provides @Singleton
+  @Provides
+  @Singleton
   fun providePatternRepository(@ApplicationContext context: Context, gson: Gson): PatternRepository = PatternRepositoryImpl(context, gson)
 
-  @Provides @Singleton
+  @Provides
+  @Singleton
   fun provideAppPreferenceRepository(@ApplicationContext context: Context): AppPreferenceRepository = AppPreferenceRepositoryImpl(context)
+
+  @Provides
+  @Singleton
+  fun provideQuoteRepository(quoteDatabase: QuoteDatabase): QuoteRepository = QuoteRepositoryImpl(quoteDatabase)
 }

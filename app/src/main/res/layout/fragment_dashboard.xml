@@ -68,7 +68,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/_10sdp"
+            android:padding="@dimen/_12sdp"
             android:id="@+id/ivToggleCalendar"
             android:tint="@color/tint_dark_background_icon_dashboard"
             app:srcCompat="@drawable/ic_diary_calendar" />
@@ -88,9 +88,27 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/_10sdp"
+            android:padding="@dimen/_12sdp"
             android:tint="@color/tint_dark_background_icon_dashboard"
             app:srcCompat="@drawable/ic_edit" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlQuote"
+        android:layout_width="@dimen/dashboard_action_button_height"
+        android:layout_height="@dimen/dashboard_action_button_height"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_20sdp"
+        android:background="@drawable/bg_circled_dark_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rlCreate">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_12sdp"
+            android:tint="@color/tint_dark_background_icon_dashboard"
+            app:srcCompat="@drawable/ic_quotes" />
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

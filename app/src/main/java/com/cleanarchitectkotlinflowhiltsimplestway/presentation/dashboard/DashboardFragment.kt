@@ -1,5 +1,6 @@
 package com.cleanarchitectkotlinflowhiltsimplestway.presentation.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.cleanarchitectkotlinflowhiltsimplestway.R
 import com.cleanarchitectkotlinflowhiltsimplestway.databinding.FragmentDashboardBinding
+import com.cleanarchitectkotlinflowhiltsimplestway.presentation.QuotesActivity
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.base.BaseViewBindingFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardFragment
 import com.cleanarchitectkotlinflowhiltsimplestway.presentation.monthcard.MonthCardState
@@ -58,6 +60,10 @@ class DashboardFragment : BaseViewBindingFragment<FragmentDashboardBinding, Dash
 
       ivSetting.setSafeOnClickListener {
         findNavController().safeNavigate(DashboardFragmentDirections.actionDashboardFragmentToNavigationSetting())
+      }
+
+      rlQuote.setSafeOnClickListener {
+        startActivity(Intent(context, QuotesActivity::class.java))
       }
 
       tvDate.text = dateTimeInDashboard()

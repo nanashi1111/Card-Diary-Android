@@ -102,4 +102,6 @@ From Deira’s souks to its historical streets, and the Arabian desert’s immen
     <string name="add_image_title">Please choose one action</string>
     <string name="add_image_from_camera">Take photo</string>
     <string name="add_image_from_gallery">Select from gallery</string>
+    <string name="title_activity_quotes">QuotesActivity</string>
+    <string name="copied">Text copied to clipboard</string>
 </resources>
